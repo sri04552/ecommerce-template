@@ -88,6 +88,14 @@ class ProductController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
+        // Strip data URIs from input to prevent header overflow / session cookie explosion
+        if ($request->has('primary_image_url') && str_starts_with((string) $request->input('primary_image_url'), 'data:')) {
+            $request->request->remove('primary_image_url');
+        }
+        if ($request->has('image_url') && str_starts_with((string) $request->input('image_url'), 'data:')) {
+            $request->request->remove('image_url');
+        }
+
         $validated = $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'sku' => ['required', 'string', 'max:64', 'unique:products,sku'],
@@ -96,9 +104,9 @@ class ProductController extends Controller
             'base_price' => ['required', 'numeric', 'min:0'],
             'sale_price' => ['nullable', 'numeric', 'min:0'],
             'delivery_fee' => ['nullable', 'numeric', 'min:0'],
-            'has_return_exchange' => ['nullable', 'boolean'],
+            'has_return_exchange' => ['nullable'],
             'return_window_days' => ['nullable', 'integer', 'min:0', 'max:90'],
-            'cod_available' => ['nullable', 'boolean'],
+            'cod_available' => ['nullable'],
             'discount_percentage' => ['nullable', 'numeric', 'min:0', 'max:100'],
             'offer_tag' => ['nullable', 'string', 'max:60'],
             'cost_price' => ['nullable', 'numeric', 'min:0'],
@@ -106,8 +114,8 @@ class ProductController extends Controller
             'description' => ['nullable', 'string'],
             'initial_stock' => ['nullable', 'integer', 'min:0'],
             'allow_backorder' => ['nullable', 'boolean'],
-            'is_featured' => ['nullable', 'boolean'],
-            'is_active' => ['nullable', 'boolean'],
+            'is_featured' => ['nullable'],
+            'is_active' => ['nullable'],
             'images' => ['nullable', 'array'],
             'images.*' => ['nullable', 'image', 'mimes:jpeg,jpg,png,webp', 'max:10240'],
             'image_url' => ['nullable', 'string', 'max:1000'],
@@ -141,15 +149,15 @@ class ProductController extends Controller
                 'base_price' => $basePrice,
                 'sale_price' => $salePrice,
                 'delivery_fee' => isset($validated['delivery_fee']) && $validated['delivery_fee'] !== '' ? (float) $validated['delivery_fee'] : 0.00,
-                'has_return_exchange' => isset($validated['has_return_exchange']) ? (bool) $validated['has_return_exchange'] : true,
-                'return_window_days' => isset($validated['return_window_days']) && $validated['return_window_days'] !== '' ? (int) $validated['return_window_days'] : 7,
-                'cod_available' => isset($validated['cod_available']) ? (bool) $validated['cod_available'] : true,
+                'has_return_exchange' => filter_var($request->input('has_return_exchange', true), FILTER_VALIDATE_BOOLEAN),
+                'return_window_days' => isset($validated['return_window_days']) && $validated['return_window_days'] !== '' ? (int) $validated['return_window_days'] : 3,
+                'cod_available' => filter_var($request->input('cod_available', true), FILTER_VALIDATE_BOOLEAN),
                 'offer_tag' => $validated['offer_tag'] ?? null,
                 'discount_percentage' => $discountPercent,
                 'cost_price' => $validated['cost_price'] ?? null,
                 'has_variants' => false,
-                'is_featured' => ! empty($validated['is_featured']),
-                'is_active' => isset($validated['is_active']) ? (bool) $validated['is_active'] : true,
+                'is_featured' => filter_var($request->input('is_featured', false), FILTER_VALIDATE_BOOLEAN),
+                'is_active' => filter_var($request->input('is_active', true), FILTER_VALIDATE_BOOLEAN),
                 'meta_title' => $validated['meta_title'] ?? null,
                 'meta_description' => $validated['meta_description'] ?? null,
             ]);
@@ -241,6 +249,14 @@ class ProductController extends Controller
             ]);
         }
 
+        // Strip data URIs from input to prevent header overflow / session cookie explosion
+        if ($request->has('primary_image_url') && str_starts_with((string) $request->input('primary_image_url'), 'data:')) {
+            $request->request->remove('primary_image_url');
+        }
+        if ($request->has('image_url') && str_starts_with((string) $request->input('image_url'), 'data:')) {
+            $request->request->remove('image_url');
+        }
+
         $validated = $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'sku' => ['required', 'string', 'max:64', Rule::unique('products')->ignore($product->id)],
@@ -249,16 +265,16 @@ class ProductController extends Controller
             'base_price' => ['required', 'numeric', 'min:0'],
             'sale_price' => ['nullable', 'numeric', 'min:0'],
             'delivery_fee' => ['nullable', 'numeric', 'min:0'],
-            'has_return_exchange' => ['nullable', 'boolean'],
+            'has_return_exchange' => ['nullable'],
             'return_window_days' => ['nullable', 'integer', 'min:0', 'max:90'],
-            'cod_available' => ['nullable', 'boolean'],
+            'cod_available' => ['nullable'],
             'discount_percentage' => ['nullable', 'numeric', 'min:0', 'max:100'],
             'offer_tag' => ['nullable', 'string', 'max:60'],
             'cost_price' => ['nullable', 'numeric', 'min:0'],
             'short_description' => ['nullable', 'string', 'max:500'],
             'description' => ['nullable', 'string'],
-            'is_featured' => ['nullable', 'boolean'],
-            'is_active' => ['nullable', 'boolean'],
+            'is_featured' => ['nullable'],
+            'is_active' => ['nullable'],
             'images' => ['nullable', 'array'],
             'images.*' => ['nullable', 'image', 'mimes:jpeg,jpg,png,webp', 'max:10240'],
             'image_url' => ['nullable', 'string', 'max:1000'],
@@ -288,14 +304,14 @@ class ProductController extends Controller
                 'base_price' => $basePrice,
                 'sale_price' => $salePrice,
                 'delivery_fee' => isset($validated['delivery_fee']) && $validated['delivery_fee'] !== '' ? (float) $validated['delivery_fee'] : 0.00,
-                'has_return_exchange' => isset($validated['has_return_exchange']) ? (bool) $validated['has_return_exchange'] : true,
-                'return_window_days' => isset($validated['return_window_days']) && $validated['return_window_days'] !== '' ? (int) $validated['return_window_days'] : 7,
-                'cod_available' => isset($validated['cod_available']) ? (bool) $validated['cod_available'] : true,
+                'has_return_exchange' => filter_var($request->input('has_return_exchange', true), FILTER_VALIDATE_BOOLEAN),
+                'return_window_days' => isset($validated['return_window_days']) && $validated['return_window_days'] !== '' ? (int) $validated['return_window_days'] : 3,
+                'cod_available' => filter_var($request->input('cod_available', true), FILTER_VALIDATE_BOOLEAN),
                 'offer_tag' => $validated['offer_tag'] ?? null,
                 'discount_percentage' => $discountPercent,
                 'cost_price' => $validated['cost_price'] ?? null,
-                'is_featured' => ! empty($validated['is_featured']),
-                'is_active' => isset($validated['is_active']) ? (bool) $validated['is_active'] : true,
+                'is_featured' => filter_var($request->input('is_featured', false), FILTER_VALIDATE_BOOLEAN),
+                'is_active' => filter_var($request->input('is_active', true), FILTER_VALIDATE_BOOLEAN),
                 'meta_title' => $validated['meta_title'] ?? null,
                 'meta_description' => $validated['meta_description'] ?? null,
             ]);

@@ -152,8 +152,39 @@ export default function ProductCreate({ categories, brands, selectedCategoryId }
     const handleSubmit = (e) => {
         e.preventDefault();
         if (isOptimizing) return;
-        post('/admin/products', {
-            forceFormData: true,
+
+        const payload = {
+            name: data.name,
+            sku: data.sku,
+            category_id: data.category_id || '',
+            brand_id: data.brand_id || '',
+            base_price: data.base_price,
+            sale_price: data.sale_price || '',
+            delivery_fee: data.delivery_fee !== '' ? data.delivery_fee : 0,
+            has_return_exchange: Boolean(data.has_return_exchange),
+            return_window_days: data.return_window_days || 3,
+            cod_available: Boolean(data.cod_available),
+            discount_percentage: data.discount_percentage || '',
+            offer_tag: data.offer_tag || '',
+            cost_price: data.cost_price || '',
+            initial_stock: data.initial_stock || 0,
+            allow_backorder: Boolean(data.allow_backorder),
+            is_active: Boolean(data.is_active),
+            is_featured: Boolean(data.is_featured),
+            short_description: data.short_description || '',
+            description: data.description || '',
+        };
+
+        if (selectedFiles && selectedFiles.length > 0) {
+            payload.images = selectedFiles;
+        }
+
+        if (data.primary_image_url && !data.primary_image_url.startsWith('data:')) {
+            payload.primary_image_url = data.primary_image_url;
+        }
+
+        router.post('/admin/products', payload, {
+            forceFormData: Boolean(selectedFiles && selectedFiles.length > 0),
         });
     };
 

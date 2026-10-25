@@ -53,7 +53,7 @@ export default function ProductEdit({ product, categories, brands, hasOrders = f
         is_featured: Boolean(product.is_featured),
         short_description: product.short_description || '',
         description: product.description || '',
-        primary_image_url: product.images?.[0]?.image_path || '',
+        primary_image_url: (product.images?.[0]?.image_path && !product.images[0].image_path.startsWith('data:')) ? product.images[0].image_path : '',
         images: [],
     });
 
@@ -159,16 +159,41 @@ export default function ProductEdit({ product, categories, brands, hasOrders = f
         e.preventDefault();
         if (hasOrders || isOptimizing) return;
 
-        // Use Inertia router.post with _method: 'put' and forceFormData for proper file uploading in PHP/Laravel
+        // Clean lightweight payload: strip non-modified images and data URIs to avoid header/cookie overflow
+        const payload = {
+            _method: 'put',
+            name: data.name,
+            sku: data.sku,
+            category_id: data.category_id || '',
+            brand_id: data.brand_id || '',
+            base_price: data.base_price,
+            sale_price: data.sale_price || '',
+            delivery_fee: data.delivery_fee !== '' ? data.delivery_fee : 0,
+            has_return_exchange: Boolean(data.has_return_exchange),
+            return_window_days: data.return_window_days || 3,
+            cod_available: Boolean(data.cod_available),
+            discount_percentage: data.discount_percentage || '',
+            offer_tag: data.offer_tag || '',
+            cost_price: data.cost_price || '',
+            is_active: Boolean(data.is_active),
+            is_featured: Boolean(data.is_featured),
+            short_description: data.short_description || '',
+            description: data.description || '',
+        };
+
+        if (selectedFiles && selectedFiles.length > 0) {
+            payload.images = selectedFiles;
+        }
+
+        if (data.primary_image_url && !data.primary_image_url.startsWith('data:')) {
+            payload.primary_image_url = data.primary_image_url;
+        }
+
         router.post(
             `/admin/products/${product.id}`,
+            payload,
             {
-                _method: 'put',
-                ...data,
-                images: selectedFiles,
-            },
-            {
-                forceFormData: true,
+                forceFormData: Boolean(selectedFiles && selectedFiles.length > 0),
             }
         );
     };
