@@ -259,7 +259,7 @@ export default function StorefrontLayout({ children, categories = [] }) {
             <main className="flex-1">{children}</main>
 
             {/* Retail Customer-Facing Footer */}
-            <footer className="bg-brand-surface border-t border-brand-border mt-16 pt-12 pb-8">
+            <footer className="bg-brand-surface border-t border-brand-border pt-12 pb-8">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="grid grid-cols-1 md:grid-cols-4 gap-8 pb-12 border-b border-brand-border">
                         {/* Column 1: Store Bio */}

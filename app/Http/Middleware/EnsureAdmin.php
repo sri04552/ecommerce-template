@@ -21,7 +21,7 @@ class EnsureAdmin
             return redirect()->guest(route('login'));
         }
 
-        if (! $user->hasRole('admin') && ! $user->hasRole('manager')) {
+        if (! $user->hasRole('admin') && ! $user->hasRole('manager') && ! $user->hasRole('super_admin')) {
             abort(403, 'Unauthorized. Administrative credentials required.');
         }
 
