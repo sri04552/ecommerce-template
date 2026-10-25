@@ -1,13 +1,23 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, usePage, router } from '@inertiajs/react';
 import { ShoppingBag, Search, User, Menu, X, Layers, ChevronDown, LogOut, ShieldCheck, MapPin } from 'lucide-react';
+import { getCartCount, onCartChange } from '../utils/cart';
 
 export default function StorefrontLayout({ children, categories = [] }) {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const [userDropdownOpen, setUserDropdownOpen] = useState(false);
     const [searchQuery, setSearchQuery] = useState('');
+    const [cartCount, setCartCount] = useState(0);
     const { auth, storeSettings } = usePage().props;
     const user = auth?.user;
+
+    useEffect(() => {
+        setCartCount(getCartCount());
+        const unsubscribe = onCartChange((detail) => {
+            setCartCount(detail?.count ?? getCartCount());
+        });
+        return unsubscribe;
+    }, []);
 
     const storeName = storeSettings?.store_name || 'Aura Store';
     const announcement = storeSettings?.announcement_text || 'Free standard delivery across India on orders over ₹999';
@@ -42,23 +52,14 @@ export default function StorefrontLayout({ children, categories = [] }) {
                             </span>
                         </Link>
 
-                        {/* Desktop Navigation Links */}
-                        <nav className="hidden md:flex items-center gap-6 text-sm font-medium text-brand-text-muted">
+                        {/* Desktop Navigation Links (Home and All Products only) */}
+                        <nav className="hidden md:flex items-center gap-8 text-sm font-semibold text-brand-text-muted">
                             <Link href="/" className="hover:text-brand-primary transition-colors">
                                 Home
                             </Link>
                             <Link href="/products" className="hover:text-brand-primary transition-colors">
                                 All Products
                             </Link>
-                            {categories.slice(0, 4).map((cat) => (
-                                <Link
-                                    key={cat.id}
-                                    href={`/categories/${cat.slug}`}
-                                    className="hover:text-brand-primary transition-colors"
-                                >
-                                    {cat.name}
-                                </Link>
-                            ))}
                         </nav>
 
                         {/* Search Input & Actions */}
@@ -170,7 +171,13 @@ export default function StorefrontLayout({ children, categories = [] }) {
                                 aria-label="Shopping Cart"
                             >
                                 <ShoppingBag className="w-5 h-5" />
-                                <span className="absolute top-1 right-1 w-2 h-2 rounded-full bg-brand-accent"></span>
+                                {cartCount > 0 ? (
+                                    <span className="absolute -top-1 -right-1 min-w-[18px] h-[18px] px-1 rounded-full bg-brand-primary text-white text-[10px] font-bold flex items-center justify-center shadow-xs">
+                                        {cartCount > 20 ? '20+' : cartCount}
+                                    </span>
+                                ) : (
+                                    <span className="absolute top-1.5 right-1.5 w-1.5 h-1.5 rounded-full bg-slate-300"></span>
+                                )}
                             </Link>
 
                             {/* Mobile Hamburger Toggle */}
@@ -186,7 +193,7 @@ export default function StorefrontLayout({ children, categories = [] }) {
                     </div>
                 </div>
 
-                {/* Mobile Navigation Dropdown */}
+                {/* Mobile Navigation Dropdown (Home and All Products only) */}
                 {mobileMenuOpen && (
                     <div className="md:hidden border-b border-brand-border bg-brand-surface px-4 pt-3 pb-5 space-y-3">
                         <form onSubmit={handleSearch} className="relative mb-3">
@@ -203,28 +210,17 @@ export default function StorefrontLayout({ children, categories = [] }) {
                         <Link
                             href="/"
                             onClick={() => setMobileMenuOpen(false)}
-                            className="block py-2 text-sm font-medium text-brand-text hover:text-brand-primary"
+                            className="block py-2 text-sm font-semibold text-brand-text hover:text-brand-primary"
                         >
                             Home
                         </Link>
                         <Link
                             href="/products"
                             onClick={() => setMobileMenuOpen(false)}
-                            className="block py-2 text-sm font-medium text-brand-text hover:text-brand-primary"
+                            className="block py-2 text-sm font-semibold text-brand-text hover:text-brand-primary"
                         >
                             All Products
                         </Link>
-
-                        {categories.map((cat) => (
-                            <Link
-                                key={cat.id}
-                                href={`/categories/${cat.slug}`}
-                                onClick={() => setMobileMenuOpen(false)}
-                                className="block py-1.5 text-sm text-brand-text-muted hover:text-brand-text"
-                            >
-                                {cat.name}
-                            </Link>
-                        ))}
 
                         <div className="pt-3 border-t border-brand-border">
                             {user ? (

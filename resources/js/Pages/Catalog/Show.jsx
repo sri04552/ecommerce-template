@@ -4,7 +4,8 @@ import StorefrontLayout from '../../Layouts/StorefrontLayout';
 import ProductCard from '../../Components/catalog/ProductCard';
 import Button from '../../Components/ui/Button';
 import Badge from '../../Components/ui/Badge';
-import { ShoppingBag, CheckCircle2, AlertCircle, ArrowLeft, Truck, ShieldCheck, RefreshCw } from 'lucide-react';
+import { ShoppingBag, CheckCircle2, AlertCircle, ArrowLeft, Truck, ShieldCheck, RefreshCw, AlertTriangle, ArrowRight } from 'lucide-react';
+import { addToCart, MAX_CART_LIMIT } from '../../utils/cart';
 
 export default function Show({ product, relatedProducts = [], categories = [] }) {
     const { storeSettings } = usePage().props;
@@ -18,7 +19,7 @@ export default function Show({ product, relatedProducts = [], categories = [] })
     const variants = product.variants || [];
     const [selectedVariant, setSelectedVariant] = useState(variants[0] || null);
     const [quantity, setQuantity] = useState(1);
-    const [addedNotice, setAddedNotice] = useState(false);
+    const [cartNotification, setCartNotification] = useState(null);
 
     // Calculate active price based on variant override or product base price
     const activePrice = selectedVariant?.price || product.base_price;
@@ -33,8 +34,13 @@ export default function Show({ product, relatedProducts = [], categories = [] })
     const inStock = quantityOnHand > 0 || allowBackorder;
 
     const handleAddToCart = () => {
-        setAddedNotice(true);
-        setTimeout(() => setAddedNotice(false), 3000);
+        const res = addToCart(product, selectedVariant, quantity);
+        setCartNotification(res);
+        if (res.success) {
+            setTimeout(() => {
+                setCartNotification((prev) => (prev === res ? null : prev));
+            }, 6000);
+        }
     };
 
     const formatPrice = (amount) => {
@@ -217,17 +223,72 @@ export default function Show({ product, relatedProducts = [], categories = [] })
                                         size="md"
                                         disabled={!inStock}
                                         onClick={handleAddToCart}
-                                        className="flex-1 gap-2 py-2.5"
+                                        className="flex-1 gap-2 py-2.5 font-semibold"
                                     >
                                         <ShoppingBag className="w-4 h-4" />
                                         <span>{inStock ? 'Add to Cart' : 'Sold Out'}</span>
                                     </Button>
                                 </div>
 
-                                {addedNotice && (
-                                    <p className="text-xs text-emerald-600 font-medium flex items-center gap-1.5 animate-fadeIn">
-                                        <CheckCircle2 className="w-4 h-4" /> Added to your cart.
-                                    </p>
+                                {/* Dynamic Cart Feedback & 20-Product Limit Alert */}
+                                {cartNotification && (
+                                    <div
+                                        role="alert"
+                                        className={`p-3.5 rounded-lg border text-xs transition-all animate-fadeIn ${
+                                            cartNotification.success
+                                                ? 'bg-emerald-50 border-emerald-200 text-emerald-900'
+                                                : 'bg-rose-50 border-rose-300 text-rose-950 shadow-sm'
+                                        }`}
+                                    >
+                                        <div className="flex items-start gap-2.5">
+                                            {cartNotification.success ? (
+                                                <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
+                                            ) : (
+                                                <AlertTriangle className="w-4 h-4 text-rose-600 shrink-0 mt-0.5" />
+                                            )}
+                                            <div className="flex-1">
+                                                <div className="flex items-center justify-between gap-2 mb-1">
+                                                    <span className="font-bold">
+                                                        {cartNotification.success
+                                                            ? 'Added Successfully'
+                                                            : 'Cart Limit Notice (Max 20 Items)'}
+                                                    </span>
+                                                    <span
+                                                        className={`text-[10px] font-semibold px-2 py-0.5 rounded-full ${
+                                                            cartNotification.success
+                                                                ? 'bg-emerald-100 text-emerald-800'
+                                                                : 'bg-rose-200 text-rose-900'
+                                                        }`}
+                                                    >
+                                                        {cartNotification.totalItems}/{MAX_CART_LIMIT} Items
+                                                    </span>
+                                                </div>
+                                                <p className="leading-relaxed">
+                                                    {cartNotification.message}
+                                                </p>
+                                                <div className="mt-2.5 pt-2 border-t border-black/10 flex items-center justify-between gap-3">
+                                                    <Link
+                                                        href="/cart"
+                                                        className={`inline-flex items-center gap-1 font-bold underline hover:no-underline ${
+                                                            cartNotification.success
+                                                                ? 'text-emerald-800'
+                                                                : 'text-rose-900'
+                                                        }`}
+                                                    >
+                                                        <span>View Shopping Cart</span>
+                                                        <ArrowRight className="w-3 h-3" />
+                                                    </Link>
+                                                    <button
+                                                        type="button"
+                                                        onClick={() => setCartNotification(null)}
+                                                        className="text-[11px] opacity-70 hover:opacity-100 font-medium"
+                                                    >
+                                                        Dismiss
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 )}
                             </div>
                         </div>
