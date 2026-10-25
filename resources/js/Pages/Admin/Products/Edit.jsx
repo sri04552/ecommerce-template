@@ -43,6 +43,9 @@ export default function ProductEdit({ product, categories, brands, hasOrders = f
         base_price: product.base_price || '',
         sale_price: product.sale_price || '',
         delivery_fee: product.delivery_fee !== null && product.delivery_fee !== undefined ? product.delivery_fee : '',
+        has_return_exchange: product.has_return_exchange !== undefined ? Boolean(product.has_return_exchange) : true,
+        return_window_days: product.return_window_days ?? 7,
+        cod_available: product.cod_available !== undefined ? Boolean(product.cod_available) : true,
         discount_percentage: product.discount_percentage || '',
         offer_tag: initialOfferTag,
         cost_price: product.cost_price || '',
@@ -522,6 +525,76 @@ export default function ProductEdit({ product, categories, brands, hasOrders = f
                                 className="w-full px-3.5 py-2 text-sm bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white disabled:opacity-60 disabled:bg-slate-100"
                             />
                             {errors.cost_price && <p className="text-xs text-rose-500 mt-1">{errors.cost_price}</p>}
+                        </div>
+                    </div>
+
+                    {/* Return, Exchange & Cash on Delivery (COD) Policies */}
+                    <div className="pt-5 mt-4 border-t border-slate-100 space-y-4">
+                        <h3 className="text-xs font-semibold text-slate-700 uppercase tracking-wider">
+                            Return / Exchange & Payment Policies
+                        </h3>
+
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            {/* Return / Exchange Toggle */}
+                            <div className="p-3.5 rounded-lg border border-slate-200 bg-slate-50/50 space-y-3">
+                                <label className={`flex items-center gap-3 ${hasOrders ? 'cursor-not-allowed opacity-60' : 'cursor-pointer'}`}>
+                                    <input
+                                        type="checkbox"
+                                        disabled={hasOrders}
+                                        checked={data.has_return_exchange}
+                                        onChange={(e) => setData('has_return_exchange', e.target.checked)}
+                                        className="h-4 w-4 rounded text-indigo-600 focus:ring-indigo-500 border-slate-300"
+                                    />
+                                    <div>
+                                        <span className="text-sm font-semibold text-slate-800 block">
+                                            Allow Return / Exchange
+                                        </span>
+                                        <span className="text-xs text-slate-500">
+                                            Customers can request returns/exchanges for this item
+                                        </span>
+                                    </div>
+                                </label>
+
+                                {data.has_return_exchange && (
+                                    <div className="pt-2 pl-7 border-t border-slate-200/60">
+                                        <label className="block text-xs font-medium text-slate-700 mb-1">
+                                            Return / Exchange Window
+                                        </label>
+                                        <select
+                                            disabled={hasOrders}
+                                            value={data.return_window_days}
+                                            onChange={(e) => setData('return_window_days', parseInt(e.target.value, 10))}
+                                            className="w-full px-2.5 py-1.5 text-xs bg-white border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 disabled:opacity-60"
+                                        >
+                                            <option value={7}>7 Days Return & Exchange</option>
+                                            <option value={10}>10 Days Return & Exchange</option>
+                                            <option value={14}>14 Days Return & Exchange</option>
+                                            <option value={30}>30 Days Return & Exchange</option>
+                                        </select>
+                                    </div>
+                                )}
+                            </div>
+
+                            {/* Cash on Delivery (COD) Toggle */}
+                            <div className="p-3.5 rounded-lg border border-slate-200 bg-slate-50/50">
+                                <label className={`flex items-center gap-3 ${hasOrders ? 'cursor-not-allowed opacity-60' : 'cursor-pointer'}`}>
+                                    <input
+                                        type="checkbox"
+                                        disabled={hasOrders}
+                                        checked={data.cod_available}
+                                        onChange={(e) => setData('cod_available', e.target.checked)}
+                                        className="h-4 w-4 rounded text-indigo-600 focus:ring-indigo-500 border-slate-300"
+                                    />
+                                    <div>
+                                        <span className="text-sm font-semibold text-slate-800 block">
+                                            Cash on Delivery (COD) Available
+                                        </span>
+                                        <span className="text-xs text-slate-500">
+                                            {data.cod_available ? 'Customers can pay via cash upon delivery' : 'Prepaid orders only (No COD)'}
+                                        </span>
+                                    </div>
+                                </label>
+                            </div>
                         </div>
                     </div>
                 </div>

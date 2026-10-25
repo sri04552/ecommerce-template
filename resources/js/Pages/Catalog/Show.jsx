@@ -18,12 +18,35 @@ import {
     ChevronRight,
     Sparkles,
     Tag,
+    Star,
+    Camera,
+    Image as ImageIcon,
+    Upload,
+    X,
 } from 'lucide-react';
 import { addToCart, MAX_CART_LIMIT } from '../../utils/cart';
+import { optimizeImageToSquareWebP } from '../../utils/imageOptimizer';
 
 export default function Show({ product, relatedProducts = [], categories = [] }) {
-    const { storeSettings } = usePage().props;
+    const { auth, storeSettings } = usePage().props;
+    const user = auth?.user;
     const currency = storeSettings?.currency_symbol || '₹';
+
+    const [reviews, setReviews] = useState(product.reviews || []);
+    const [reviewModalOpen, setReviewModalOpen] = useState(false);
+    const [reviewSubmitting, setReviewSubmitting] = useState(false);
+    const [reviewSuccess, setReviewSuccess] = useState(null);
+    const [reviewError, setReviewError] = useState(null);
+
+    // Review form state
+    const [rating, setRating] = useState(5);
+    const [hoverRating, setHoverRating] = useState(0);
+    const [authorName, setAuthorName] = useState(user?.name || '');
+    const [reviewTitle, setReviewTitle] = useState('');
+    const [reviewComment, setReviewComment] = useState('');
+    const [reviewPhotos, setReviewPhotos] = useState([]);
+    const [photoOptimizing, setPhotoOptimizing] = useState(false);
+    const [previewPhoto, setPreviewPhoto] = useState(null);
 
     const rawImages = product.images || [];
     // Ensure primary image is first if designated
@@ -95,6 +118,86 @@ export default function Show({ product, relatedProducts = [], categories = [] })
             minimumFractionDigits: num % 1 === 0 ? 0 : 2,
             maximumFractionDigits: 2,
         })}`;
+    };
+
+    const totalReviews = reviews.length;
+    const avgRating = totalReviews > 0
+        ? (reviews.reduce((acc, r) => acc + (Number(r.rating) || 5), 0) / totalReviews).toFixed(1)
+        : '5.0';
+
+    const allPhotos = reviews.flatMap((r) => {
+        let photos = r.photos;
+        if (typeof photos === 'string') {
+            try { photos = JSON.parse(photos); } catch (e) { photos = []; }
+        }
+        return Array.isArray(photos) ? photos : [];
+    }).filter(Boolean);
+
+    const handlePhotoUpload = async (e) => {
+        const files = Array.from(e.target.files || []);
+        if (files.length === 0) return;
+        setPhotoOptimizing(true);
+        try {
+            const optimized = [];
+            for (const file of files) {
+                if (reviewPhotos.length + optimized.length >= 3) break;
+                const result = await optimizeImageToSquareWebP(file, 600);
+                optimized.push(result.dataUrl);
+            }
+            setReviewPhotos((prev) => [...prev, ...optimized].slice(0, 3));
+        } catch (err) {
+            console.error('Photo optimization error:', err);
+        } finally {
+            setPhotoOptimizing(false);
+        }
+    };
+
+    const handleReviewSubmit = async (e) => {
+        e.preventDefault();
+        setReviewError(null);
+        setReviewSubmitting(true);
+
+        const payload = {
+            author_name: authorName.trim(),
+            rating,
+            title: reviewTitle.trim() || undefined,
+            comment: reviewComment.trim(),
+            photos: reviewPhotos,
+        };
+
+        try {
+            const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
+            const res = await fetch(`/products/${product.id}/reviews`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    'X-CSRF-TOKEN': csrfToken || '',
+                },
+                body: JSON.stringify(payload),
+            });
+
+            const data = await res.json();
+            if (res.ok && data.success) {
+                setReviewSuccess(data.message || 'Thank you! Your review has been added.');
+                if (data.review) {
+                    setReviews((prev) => [data.review, ...prev]);
+                }
+                setTimeout(() => {
+                    setReviewModalOpen(false);
+                    setReviewSuccess(null);
+                    setReviewTitle('');
+                    setReviewComment('');
+                    setReviewPhotos([]);
+                }, 1800);
+            } else {
+                setReviewError(data.message || 'Could not submit review.');
+            }
+        } catch (err) {
+            setReviewError('Failed to submit review. Please try again.');
+        } finally {
+            setReviewSubmitting(false);
+        }
     };
 
     return (
@@ -418,19 +521,29 @@ export default function Show({ product, relatedProducts = [], categories = [] })
                             </div>
                         </div>
 
-                        {/* Confidence Guarantees */}
-                        <div className="pt-6 border-t border-brand-border grid grid-cols-3 gap-3 text-center text-[11px] text-brand-text-muted">
-                            <div className="flex flex-col items-center gap-1">
+                        {/* Confidence Guarantees: Delivery, COD, Returns & Warranty */}
+                        <div className="pt-6 border-t border-brand-border grid grid-cols-2 sm:grid-cols-4 gap-3 text-center text-[11px] text-brand-text-muted">
+                            <div className="flex flex-col items-center gap-1 p-2 rounded-lg bg-brand-surface-muted border border-brand-border/60">
                                 <Truck className="w-4 h-4 text-brand-primary" />
-                                <span>Fast Delivery</span>
+                                <span className="font-semibold text-brand-secondary">
+                                    {product.delivery_fee > 0 ? `₹${parseFloat(product.delivery_fee)} Delivery` : 'Free Delivery'}
+                                </span>
                             </div>
-                            <div className="flex flex-col items-center gap-1">
-                                <ShieldCheck className="w-4 h-4 text-brand-primary" />
-                                <span>Direct Warranty</span>
+                            <div className="flex flex-col items-center gap-1 p-2 rounded-lg bg-brand-surface-muted border border-brand-border/60">
+                                <ShieldCheck className="w-4 h-4 text-emerald-600" />
+                                <span className="font-semibold text-brand-secondary">
+                                    {product.cod_available ? 'COD Available' : 'Prepaid Only'}
+                                </span>
                             </div>
-                            <div className="flex flex-col items-center gap-1">
+                            <div className="flex flex-col items-center gap-1 p-2 rounded-lg bg-brand-surface-muted border border-brand-border/60">
                                 <RefreshCw className="w-4 h-4 text-brand-primary" />
-                                <span>30-Day Returns</span>
+                                <span className="font-semibold text-brand-secondary">
+                                    {product.has_return_exchange ? `${product.return_window_days || 7} Days Return` : 'Non-Returnable'}
+                                </span>
+                            </div>
+                            <div className="flex flex-col items-center gap-1 p-2 rounded-lg bg-brand-surface-muted border border-brand-border/60">
+                                <CheckCircle2 className="w-4 h-4 text-indigo-600" />
+                                <span className="font-semibold text-brand-secondary">100% Genuine</span>
                             </div>
                         </div>
                     </div>
@@ -444,6 +557,338 @@ export default function Show({ product, relatedProducts = [], categories = [] })
                         </h2>
                         <div className="text-xs sm:text-sm text-brand-text leading-relaxed whitespace-pre-line">
                             {product.description}
+                        </div>
+                    </div>
+                )}
+
+                {/* Customer Ratings & Photo Reviews Section */}
+                <div className="mt-12 bg-white border border-slate-200 rounded-2xl p-6 sm:p-8 shadow-xs">
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-6 border-b border-slate-100 gap-4">
+                        <div>
+                            <div className="flex items-center gap-2">
+                                <h2 className="text-xl font-bold tracking-tight text-slate-900">
+                                    Customer Ratings & Reviews
+                                </h2>
+                                <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-bold bg-amber-50 text-amber-700 border border-amber-200">
+                                    <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
+                                    <span>{avgRating} / 5</span>
+                                </span>
+                            </div>
+                            <p className="text-xs text-slate-500 mt-1">
+                                Real customer feedback with photo verifications and 5-star ratings.
+                            </p>
+                        </div>
+
+                        <button
+                            type="button"
+                            onClick={() => setReviewModalOpen(true)}
+                            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs transition-colors shadow-sm self-start sm:self-auto"
+                        >
+                            <Camera className="w-4 h-4 text-amber-400" />
+                            <span>Rate & Review Product</span>
+                        </button>
+                    </div>
+
+                    {/* Customer Photos Gallery (if any photos uploaded) */}
+                    {allPhotos.length > 0 && (
+                        <div className="py-6 border-b border-slate-100">
+                            <h3 className="text-xs font-bold uppercase tracking-wider text-slate-700 mb-3 flex items-center gap-1.5">
+                                <ImageIcon className="w-4 h-4 text-indigo-600" />
+                                <span>Customer Photos ({allPhotos.length})</span>
+                            </h3>
+                            <div className="flex items-center gap-3 overflow-x-auto pb-2">
+                                {allPhotos.map((photoUrl, idx) => (
+                                    <div
+                                        key={idx}
+                                        onClick={() => setPreviewPhoto(photoUrl)}
+                                        className="w-20 h-20 rounded-xl overflow-hidden border border-slate-200 shrink-0 cursor-pointer hover:opacity-90 hover:scale-105 transition-all shadow-xs"
+                                    >
+                                        <img
+                                            src={photoUrl}
+                                            alt={`Customer review photo ${idx + 1}`}
+                                            className="w-full h-full object-cover"
+                                        />
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    )}
+
+                    {/* Reviews Listing */}
+                    <div className="divide-y divide-slate-100 mt-4">
+                        {reviews.length > 0 ? (
+                            reviews.map((rev) => {
+                                let revPhotos = rev.photos;
+                                if (typeof revPhotos === 'string') {
+                                    try { revPhotos = JSON.parse(revPhotos); } catch (e) { revPhotos = []; }
+                                }
+                                const photoList = Array.isArray(revPhotos) ? revPhotos : [];
+
+                                return (
+                                    <div key={rev.id || Math.random()} className="py-5 space-y-2.5">
+                                        <div className="flex items-center justify-between">
+                                            <div className="flex items-center gap-2">
+                                                <div className="flex items-center gap-1">
+                                                    {[1, 2, 3, 4, 5].map((star) => (
+                                                        <Star
+                                                            key={star}
+                                                            className={`w-3.5 h-3.5 ${
+                                                                star <= (rev.rating || 5)
+                                                                    ? 'fill-amber-400 text-amber-400'
+                                                                    : 'text-slate-300'
+                                                            }`}
+                                                        />
+                                                    ))}
+                                                </div>
+                                                {rev.title && (
+                                                    <span className="font-bold text-xs text-slate-900">{rev.title}</span>
+                                                )}
+                                            </div>
+
+                                            <span className="text-[11px] text-slate-400">
+                                                {rev.created_at
+                                                    ? new Date(rev.created_at).toLocaleDateString('en-IN', {
+                                                          day: '2-digit',
+                                                          month: 'short',
+                                                          year: 'numeric',
+                                                      })
+                                                    : 'Recently'}
+                                            </span>
+                                        </div>
+
+                                        <p className="text-xs text-slate-700 leading-relaxed whitespace-pre-line">
+                                            {rev.comment}
+                                        </p>
+
+                                        {/* Review Photos */}
+                                        {photoList.length > 0 && (
+                                            <div className="flex items-center gap-2 pt-1">
+                                                {photoList.map((pUrl, pIdx) => (
+                                                    <div
+                                                        key={pIdx}
+                                                        onClick={() => setPreviewPhoto(pUrl)}
+                                                        className="w-16 h-16 rounded-lg overflow-hidden border border-slate-200 cursor-pointer hover:opacity-90 transition-opacity"
+                                                    >
+                                                        <img
+                                                            src={pUrl}
+                                                            alt="Customer review uploaded image"
+                                                            className="w-full h-full object-cover"
+                                                        />
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        )}
+
+                                        <div className="flex items-center gap-2 pt-1 text-[11px] text-slate-500">
+                                            <span className="font-semibold text-slate-800">{rev.author_name}</span>
+                                            {rev.is_verified_purchase && (
+                                                <span className="inline-flex items-center gap-1 text-emerald-700 font-semibold bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
+                                                    <CheckCircle2 className="w-3 h-3 text-emerald-600" />
+                                                    <span>Verified Purchase</span>
+                                                </span>
+                                            )}
+                                        </div>
+                                    </div>
+                                );
+                            })
+                        ) : (
+                            <div className="py-12 text-center text-slate-500">
+                                <Star className="w-10 h-10 text-amber-300 fill-amber-100 mx-auto mb-2" />
+                                <h4 className="font-bold text-slate-900 text-sm">No Customer Reviews Yet</h4>
+                                <p className="text-xs text-slate-500 max-w-sm mx-auto mt-1 mb-4">
+                                    Have you purchased this product? Be the first customer to share your photo and 5-star experience!
+                                </p>
+                                <button
+                                    type="button"
+                                    onClick={() => setReviewModalOpen(true)}
+                                    className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs rounded-xl transition-colors shadow-sm"
+                                >
+                                    Write the First Review
+                                </button>
+                            </div>
+                        )}
+                    </div>
+                </div>
+
+                {/* Review Submission Modal */}
+                {reviewModalOpen && (
+                    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs">
+                        <div className="bg-white rounded-2xl shadow-2xl max-w-lg w-full p-6 max-h-[92vh] overflow-y-auto">
+                            <div className="flex items-center justify-between pb-4 border-b border-slate-100">
+                                <div>
+                                    <h3 className="font-bold text-base text-slate-900">Write a Customer Review</h3>
+                                    <p className="text-xs text-slate-500">{product.name}</p>
+                                </div>
+                                <button
+                                    type="button"
+                                    onClick={() => setReviewModalOpen(false)}
+                                    className="p-1 rounded-lg text-slate-400 hover:text-slate-600 hover:bg-slate-100"
+                                >
+                                    <X className="w-5 h-5" />
+                                </button>
+                            </div>
+
+                            {reviewSuccess ? (
+                                <div className="py-8 text-center text-emerald-700">
+                                    <CheckCircle2 className="w-12 h-12 text-emerald-600 mx-auto mb-3" />
+                                    <p className="font-bold text-base">Review Published!</p>
+                                    <p className="text-xs text-slate-600 mt-1">{reviewSuccess}</p>
+                                </div>
+                            ) : (
+                                <form onSubmit={handleReviewSubmit} className="mt-4 space-y-4">
+                                    {reviewError && (
+                                        <div className="p-3 bg-red-50 text-red-700 border border-red-200 rounded-lg text-xs flex items-center gap-2">
+                                            <AlertCircle className="w-4 h-4 shrink-0" />
+                                            <span>{reviewError}</span>
+                                        </div>
+                                    )}
+
+                                    {/* Star Rating Picker */}
+                                    <div>
+                                        <label className="block text-xs font-semibold text-slate-700 mb-1.5">
+                                            Overall Rating *
+                                        </label>
+                                        <div className="flex items-center gap-2">
+                                            {[1, 2, 3, 4, 5].map((star) => (
+                                                <button
+                                                    key={star}
+                                                    type="button"
+                                                    onMouseEnter={() => setHoverRating(star)}
+                                                    onMouseLeave={() => setHoverRating(0)}
+                                                    onClick={() => setRating(star)}
+                                                    className="p-1 text-slate-300 hover:scale-110 transition-transform"
+                                                >
+                                                    <Star
+                                                        className={`w-7 h-7 ${
+                                                            star <= (hoverRating || rating)
+                                                                ? 'fill-amber-400 text-amber-400'
+                                                                : 'text-slate-300'
+                                                        }`}
+                                                    />
+                                                </button>
+                                            ))}
+                                            <span className="text-xs font-bold text-slate-700 ml-2">
+                                                {hoverRating || rating} out of 5 Stars
+                                            </span>
+                                        </div>
+                                    </div>
+
+                                    <div>
+                                        <label className="block text-xs font-semibold text-slate-700 mb-1">
+                                            Your Name *
+                                        </label>
+                                        <input
+                                            type="text"
+                                            value={authorName}
+                                            onChange={(e) => setAuthorName(e.target.value)}
+                                            required
+                                            placeholder="Display name on review"
+                                            className="w-full px-3 py-2 border border-slate-200 rounded-lg text-xs focus:ring-2 focus:ring-indigo-500"
+                                        />
+                                    </div>
+
+                                    <div>
+                                        <label className="block text-xs font-semibold text-slate-700 mb-1">
+                                            Headline / Review Title (Optional)
+                                        </label>
+                                        <input
+                                            type="text"
+                                            value={reviewTitle}
+                                            onChange={(e) => setReviewTitle(e.target.value)}
+                                            placeholder="E.g., Great quality, fits perfectly!"
+                                            className="w-full px-3 py-2 border border-slate-200 rounded-lg text-xs focus:ring-2 focus:ring-indigo-500"
+                                        />
+                                    </div>
+
+                                    <div>
+                                        <label className="block text-xs font-semibold text-slate-700 mb-1">
+                                            Written Feedback *
+                                        </label>
+                                        <textarea
+                                            value={reviewComment}
+                                            onChange={(e) => setReviewComment(e.target.value)}
+                                            required
+                                            rows={3}
+                                            placeholder="Write your honest opinion about the product quality, fit, material..."
+                                            className="w-full px-3 py-2 border border-slate-200 rounded-lg text-xs focus:ring-2 focus:ring-indigo-500"
+                                        />
+                                    </div>
+
+                                    {/* Photo Upload (1:1 Optimized <100KB) */}
+                                    <div>
+                                        <label className="block text-xs font-semibold text-slate-700 mb-1">
+                                            Add Customer Photos (Optional &bull; Max 3)
+                                        </label>
+                                        <div className="flex flex-wrap items-center gap-2">
+                                            {reviewPhotos.map((photo, pIdx) => (
+                                                <div key={pIdx} className="relative w-16 h-16 rounded-lg border border-slate-200 overflow-hidden">
+                                                    <img src={photo} alt="Upload preview" className="w-full h-full object-cover" />
+                                                    <button
+                                                        type="button"
+                                                        onClick={() => setReviewPhotos((prev) => prev.filter((_, i) => i !== pIdx))}
+                                                        className="absolute top-0.5 right-0.5 bg-black/70 text-white rounded-full p-0.5 hover:bg-black"
+                                                    >
+                                                        <X className="w-3 h-3" />
+                                                    </button>
+                                                </div>
+                                            ))}
+
+                                            {reviewPhotos.length < 3 && (
+                                                <label className="w-16 h-16 rounded-lg border-2 border-dashed border-slate-300 hover:border-indigo-500 flex flex-col items-center justify-center cursor-pointer text-slate-400 hover:text-indigo-600 transition-colors">
+                                                    <Camera className="w-5 h-5 mb-0.5" />
+                                                    <span className="text-[9px] font-semibold">Upload</span>
+                                                    <input
+                                                        type="file"
+                                                        accept="image/*"
+                                                        multiple
+                                                        onChange={handlePhotoUpload}
+                                                        className="hidden"
+                                                    />
+                                                </label>
+                                            )}
+                                        </div>
+                                        {photoOptimizing && (
+                                            <p className="text-[11px] text-indigo-600 mt-1">Optimizing photos to 1:1 format...</p>
+                                        )}
+                                    </div>
+
+                                    <div className="flex items-center justify-end gap-2 pt-2 border-t border-slate-100">
+                                        <button
+                                            type="button"
+                                            onClick={() => setReviewModalOpen(false)}
+                                            className="px-4 py-2 border border-slate-200 text-slate-600 rounded-lg text-xs font-semibold hover:bg-slate-50"
+                                        >
+                                            Cancel
+                                        </button>
+                                        <button
+                                            type="submit"
+                                            disabled={reviewSubmitting || photoOptimizing}
+                                            className="px-5 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-xs font-bold transition-colors shadow-sm disabled:opacity-50"
+                                        >
+                                            {reviewSubmitting ? 'Submitting...' : 'Submit Review'}
+                                        </button>
+                                    </div>
+                                </form>
+                            )}
+                        </div>
+                    </div>
+                )}
+
+                {/* Lightbox Photo Preview Modal */}
+                {previewPhoto && (
+                    <div
+                        onClick={() => setPreviewPhoto(null)}
+                        className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-xs cursor-pointer"
+                    >
+                        <div className="relative max-w-lg max-h-[85vh] bg-white rounded-2xl overflow-hidden shadow-2xl p-2" onClick={(e) => e.stopPropagation()}>
+                            <button
+                                type="button"
+                                onClick={() => setPreviewPhoto(null)}
+                                className="absolute top-3 right-3 bg-black/70 hover:bg-black text-white p-1.5 rounded-full z-10 transition-colors"
+                            >
+                                <X className="w-4 h-4" />
+                            </button>
+                            <img src={previewPhoto} alt="Customer preview enlarged" className="w-full h-auto max-h-[75vh] object-contain rounded-xl" />
                         </div>
                     </div>
                 )}

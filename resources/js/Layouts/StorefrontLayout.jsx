@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link, usePage, router } from '@inertiajs/react';
-import { ShoppingBag, Search, User, Menu, X, Layers, ChevronDown, LogOut, ShieldCheck, MapPin } from 'lucide-react';
+import { ShoppingBag, Search, User, Menu, X, Layers, ChevronDown, LogOut, ShieldCheck, MapPin, RotateCcw, Truck, CreditCard } from 'lucide-react';
 import { getCartCount, onCartChange } from '../utils/cart';
 
 export default function StorefrontLayout({ children, categories = [] }) {
@@ -258,97 +258,159 @@ export default function StorefrontLayout({ children, categories = [] }) {
             {/* Main Storefront Content */}
             <main className="flex-1">{children}</main>
 
-            {/* Retail Customer-Facing Footer */}
-            <footer className="bg-brand-surface border-t border-brand-border pt-12 pb-8">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="grid grid-cols-1 md:grid-cols-4 gap-8 pb-12 border-b border-brand-border">
+            {/* Premium Dark E-Commerce Footer */}
+            <footer className="bg-slate-950 text-slate-300 border-t border-slate-800 mt-0">
+                {/* Confidence Bar */}
+                <div className="border-b border-slate-800/80 bg-slate-900/60 py-6">
+                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+                            <div className="flex flex-col items-center gap-1.5">
+                                <div className="w-10 h-10 rounded-full bg-indigo-950/80 text-indigo-400 border border-indigo-800/60 flex items-center justify-center">
+                                    <ShieldCheck className="w-5 h-5" />
+                                </div>
+                                <span className="text-xs font-bold text-white uppercase tracking-wider">100% Genuine</span>
+                                <span className="text-[11px] text-slate-400">Directly sourced authentic items</span>
+                            </div>
+
+                            <div className="flex flex-col items-center gap-1.5">
+                                <div className="w-10 h-10 rounded-full bg-indigo-950/80 text-indigo-400 border border-indigo-800/60 flex items-center justify-center">
+                                    <RotateCcw className="w-5 h-5" />
+                                </div>
+                                <span className="text-xs font-bold text-white uppercase tracking-wider">Easy Returns</span>
+                                <span className="text-[11px] text-slate-400">Instant UPI & bank account refunds</span>
+                            </div>
+
+                            <div className="flex flex-col items-center gap-1.5">
+                                <div className="w-10 h-10 rounded-full bg-indigo-950/80 text-indigo-400 border border-indigo-800/60 flex items-center justify-center">
+                                    <Truck className="w-5 h-5" />
+                                </div>
+                                <span className="text-xs font-bold text-white uppercase tracking-wider">Fast Dispatch</span>
+                                <span className="text-[11px] text-slate-400">Safe tracked delivery across India</span>
+                            </div>
+
+                            <div className="flex flex-col items-center gap-1.5">
+                                <div className="w-10 h-10 rounded-full bg-indigo-950/80 text-indigo-400 border border-indigo-800/60 flex items-center justify-center">
+                                    <CreditCard className="w-5 h-5" />
+                                </div>
+                                <span className="text-xs font-bold text-white uppercase tracking-wider">COD & UPI</span>
+                                <span className="text-[11px] text-slate-400">Cash on delivery & instant UPI</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {/* Footer Main Links */}
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+                    <div className="grid grid-cols-1 md:grid-cols-4 gap-8 pb-10 border-b border-slate-800">
                         {/* Column 1: Store Bio */}
-                        <div className="space-y-3">
-                            <div className="flex items-center gap-2">
-                                <div className="w-7 h-7 rounded-brand bg-brand-primary flex items-center justify-center text-white font-bold text-sm">
+                        <div className="space-y-4">
+                            <div className="flex items-center gap-2.5">
+                                <div className="w-8 h-8 rounded-lg bg-indigo-600 flex items-center justify-center text-white font-bold text-sm shadow-md">
                                     <Layers className="w-4 h-4" />
                                 </div>
-                                <span className="font-bold text-base text-brand-secondary">{storeName}</span>
+                                <span className="font-bold text-lg text-white tracking-tight">{storeName}</span>
                             </div>
-                            <p className="text-xs text-brand-text-muted leading-relaxed">
-                                Your trusted destination for curated premium lifestyle essentials, home goods, and accessories.
+                            <p className="text-xs text-slate-400 leading-relaxed">
+                                Premium Indian online retail destination. Discover handpicked electronics, lifestyle trends, apparel, and home essentials with guaranteed transparent pricing.
                             </p>
+                            <div className="text-xs text-slate-400 space-y-1">
+                                <p><span className="text-slate-300 font-medium">Customer Support:</span> 10 AM – 7 PM IST</p>
+                                <p><span className="text-slate-300 font-medium">Email:</span> support@ecommerce-store.in</p>
+                            </div>
                         </div>
 
                         {/* Column 2: Quick Links */}
-                        <div className="space-y-2.5">
-                            <h4 className="font-semibold text-xs uppercase tracking-wider text-brand-secondary">
-                                Shop
+                        <div className="space-y-3">
+                            <h4 className="font-bold text-xs uppercase tracking-wider text-white">
+                                Shop Categories
                             </h4>
-                            <ul className="space-y-1.5 text-xs text-brand-text-muted">
+                            <ul className="space-y-2 text-xs text-slate-400">
                                 <li>
-                                    <Link href="/products" className="hover:text-brand-primary transition-colors">
+                                    <Link href="/products" className="hover:text-indigo-400 transition-colors">
                                         All Products
                                     </Link>
                                 </li>
                                 <li>
-                                    <Link href="/products?featured=1" className="hover:text-brand-primary transition-colors">
-                                        Featured Collection
+                                    <Link href="/products?featured=1" className="hover:text-indigo-400 transition-colors">
+                                        Today's Deals & Offers
                                     </Link>
                                 </li>
                                 <li>
-                                    <Link href="/cart" className="hover:text-brand-primary transition-colors">
-                                        Shopping Cart
+                                    <Link href="/cart" className="hover:text-indigo-400 transition-colors">
+                                        Shopping Bag ({cartCount})
+                                    </Link>
+                                </li>
+                                <li>
+                                    <Link href="/track" className="hover:text-indigo-400 transition-colors">
+                                        Track Your Order
                                     </Link>
                                 </li>
                             </ul>
                         </div>
 
-                        {/* Column 3: Customer Care */}
-                        <div className="space-y-2.5">
-                            <h4 className="font-semibold text-xs uppercase tracking-wider text-brand-secondary">
-                                Customer Service
+                        {/* Column 3: Customer Care & Returns */}
+                        <div className="space-y-3">
+                            <h4 className="font-bold text-xs uppercase tracking-wider text-white">
+                                Customer Care
                             </h4>
-                            <ul className="space-y-1.5 text-xs text-brand-text-muted">
+                            <ul className="space-y-2 text-xs text-slate-400">
                                 <li>
-                                    <Link href="/account" className="hover:text-brand-primary transition-colors">
-                                        Account Dashboard
+                                    <Link href="/account" className="hover:text-indigo-400 transition-colors">
+                                        My Profile & Orders
                                     </Link>
                                 </li>
                                 <li>
-                                    <Link href="/account/addresses" className="hover:text-brand-primary transition-colors">
-                                        Shipping Addresses
+                                    <Link href="/account/addresses" className="hover:text-indigo-400 transition-colors">
+                                        Saved Delivery Addresses
                                     </Link>
                                 </li>
                                 <li>
-                                    <span className="text-brand-text-muted">Support: support@aurastore.com</span>
+                                    <Link href="/track" className="hover:text-indigo-400 transition-colors">
+                                        Live Shipment Tracking
+                                    </Link>
+                                </li>
+                                <li>
+                                    <span className="hover:text-indigo-400 transition-colors cursor-pointer">
+                                        Returns & UPI Refund Policy
+                                    </span>
                                 </li>
                             </ul>
                         </div>
 
-                        {/* Column 4: Policies & Confidence */}
-                        <div className="space-y-2.5">
-                            <h4 className="font-semibold text-xs uppercase tracking-wider text-brand-secondary">
-                                Customer Policies
+                        {/* Column 4: Payment Methods & Trust */}
+                        <div className="space-y-3">
+                            <h4 className="font-bold text-xs uppercase tracking-wider text-white">
+                                100% Secure Payments
                             </h4>
-                            <ul className="space-y-1.5 text-xs text-brand-text-muted">
-                                <li>
-                                    <span className="hover:text-brand-primary transition-colors cursor-pointer">
-                                        Terms of Service
-                                    </span>
-                                </li>
-                                <li>
-                                    <span className="hover:text-brand-primary transition-colors cursor-pointer">
-                                        Privacy Policy
-                                    </span>
-                                </li>
-                                <li>
-                                    <span className="hover:text-brand-primary transition-colors cursor-pointer">
-                                        30-Day Return Guarantee
-                                    </span>
-                                </li>
-                            </ul>
+                            <p className="text-xs text-slate-400 leading-relaxed">
+                                We accept UPI (Google Pay, PhonePe, Paytm), RuPay, Visa, Mastercard, Net Banking, and Cash on Delivery.
+                            </p>
+                            <div className="flex flex-wrap gap-2 pt-1">
+                                <span className="px-2 py-1 bg-slate-900 border border-slate-700 rounded text-[11px] font-semibold text-slate-200">
+                                    UPI / QR
+                                </span>
+                                <span className="px-2 py-1 bg-slate-900 border border-slate-700 rounded text-[11px] font-semibold text-slate-200">
+                                    RuPay
+                                </span>
+                                <span className="px-2 py-1 bg-slate-900 border border-slate-700 rounded text-[11px] font-semibold text-slate-200">
+                                    Visa / MC
+                                </span>
+                                <span className="px-2 py-1 bg-slate-900 border border-slate-700 rounded text-[11px] font-semibold text-emerald-400">
+                                    Cash on Delivery
+                                </span>
+                            </div>
+                            <p className="text-[11px] text-slate-400 flex items-center gap-1.5 pt-2">
+                                <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
+                                <span>256-Bit SSL Encrypted Checkout</span>
+                            </p>
                         </div>
                     </div>
 
-                    <div className="pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-brand-text-muted">
+                    <div className="pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-400">
                         <p>© {new Date().getFullYear()} {storeName}. All rights reserved.</p>
-                        <p className="text-[11px]">Secure retail e-commerce platform.</p>
+                        <p className="text-[11px] text-slate-400">
+                            Designed for high-performance retail commerce across India.
+                        </p>
                     </div>
                 </div>
             </footer>

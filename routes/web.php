@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
 use App\Http\Controllers\Admin\InventoryController as AdminInventoryController;
+use App\Http\Controllers\Admin\OrderController as AdminOrderController;
 use App\Http\Controllers\Admin\ProductController as AdminProductController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\EmailVerificationNotificationController;
@@ -15,6 +16,7 @@ use App\Http\Controllers\Auth\VerifyEmailController;
 use App\Http\Controllers\Customer\AddressController;
 use App\Http\Controllers\Customer\ProfileController;
 use App\Http\Controllers\Storefront\CatalogController;
+use App\Http\Controllers\Storefront\OrderController as StorefrontOrderController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -30,6 +32,10 @@ Route::get('/categories/{slug}', [CatalogController::class, 'category'])->name('
 Route::get('/cart', function () {
     return Inertia::render('Cart/Index');
 })->name('cart.index');
+Route::get('/track', [StorefrontOrderController::class, 'track'])->name('orders.track');
+Route::post('/checkout/place-order', [StorefrontOrderController::class, 'placeOrder'])->name('checkout.place');
+Route::post('/products/{product}/reviews', [StorefrontOrderController::class, 'storeReview'])->name('products.reviews.store');
+Route::post('/orders/{order}/request-return', [StorefrontOrderController::class, 'requestReturn'])->name('orders.request-return');
 
 /*
 |--------------------------------------------------------------------------
@@ -96,6 +102,9 @@ Route::middleware('auth')->group(function () {
         Route::put('/addresses/{address}', [AddressController::class, 'update'])->name('addresses.update');
         Route::delete('/addresses/{address}', [AddressController::class, 'destroy'])->name('addresses.destroy');
         Route::post('/addresses/{address}/default', [AddressController::class, 'setDefault'])->name('addresses.default');
+
+        // Customer Orders
+        Route::get('/orders', [StorefrontOrderController::class, 'customerOrders'])->name('orders');
     });
 });
 
@@ -123,4 +132,10 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
     // Inventory & Stock Management
     Route::get('/inventory', [AdminInventoryController::class, 'index'])->name('inventory.index');
     Route::post('/inventory/{variant}/adjust', [AdminInventoryController::class, 'adjust'])->name('inventory.adjust');
+
+    // Orders Management & Returns
+    Route::get('/orders', [AdminOrderController::class, 'index'])->name('orders.index');
+    Route::get('/orders/{order}', [AdminOrderController::class, 'show'])->name('orders.show');
+    Route::post('/orders/{order}/update-status', [AdminOrderController::class, 'updateStatus'])->name('orders.update-status');
+    Route::post('/returns/{return}/update-status', [AdminOrderController::class, 'updateReturn'])->name('returns.update-status');
 });

@@ -26,8 +26,30 @@ class Order extends Model
         'shipping_address_snapshot',
         'billing_address_snapshot',
         'shipping_method_id',
+        'payment_method',
         'notes',
     ];
+
+    protected $appends = [
+        'total_amount',
+        'shipping_address',
+        'customer_name',
+    ];
+
+    public function getTotalAmountAttribute()
+    {
+        return $this->grand_total;
+    }
+
+    public function getShippingAddressAttribute()
+    {
+        return $this->shipping_address_snapshot;
+    }
+
+    public function getCustomerNameAttribute()
+    {
+        return $this->shipping_address_snapshot['name'] ?? ($this->user?->name ?? 'Customer');
+    }
 
     protected function casts(): array
     {

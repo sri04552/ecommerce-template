@@ -24,6 +24,15 @@ class OrderItem extends Model
         'total',
     ];
 
+    protected $appends = [
+        'product_name',
+    ];
+
+    public function getProductNameAttribute()
+    {
+        return $this->product_name_snapshot;
+    }
+
     protected function casts(): array
     {
         return [

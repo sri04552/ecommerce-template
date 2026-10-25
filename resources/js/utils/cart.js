@@ -109,6 +109,9 @@ export function addToCart(product, variant = null, requestedQuantity = 1) {
             image,
             slug: product.slug,
             deliveryFee: parseFloat(product.delivery_fee) || 0,
+            codAvailable: product.cod_available !== undefined ? Boolean(product.cod_available) : true,
+            hasReturnExchange: product.has_return_exchange !== undefined ? Boolean(product.has_return_exchange) : true,
+            returnWindowDays: product.return_window_days || 7,
             quantity: qtyToAdd,
         });
     }

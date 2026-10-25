@@ -87,16 +87,19 @@ export default function ProductCard({ product }) {
                         </p>
                     )}
 
-                    <div className="mt-2">
+                    <div className="mt-2 flex items-center justify-between text-[10px]">
                         {product.delivery_fee && parseFloat(product.delivery_fee) > 0 ? (
-                            <span className="text-[10px] text-slate-500 font-medium">
+                            <span className="text-slate-500 font-medium">
                                 +{formatPrice(product.delivery_fee)} Delivery
                             </span>
                         ) : (
-                            <span className="text-[10px] text-emerald-600 font-semibold">
+                            <span className="text-emerald-600 font-semibold">
                                 Free Delivery
                             </span>
                         )}
+                        <span className="text-slate-400 font-medium">
+                            {product.cod_available ? 'COD Available' : 'Prepaid Only'}
+                        </span>
                     </div>
                 </div>
 

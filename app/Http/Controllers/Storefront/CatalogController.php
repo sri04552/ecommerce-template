@@ -110,6 +110,7 @@ class CatalogController extends Controller
                 'brand',
                 'images',
                 'variants.inventoryLevel',
+                'reviews',
             ])
             ->firstOrFail();
 

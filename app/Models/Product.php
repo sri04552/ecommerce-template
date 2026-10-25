@@ -23,6 +23,9 @@ class Product extends Model
         'base_price',
         'sale_price',
         'delivery_fee',
+        'has_return_exchange',
+        'return_window_days',
+        'cod_available',
         'offer_tag',
         'discount_percentage',
         'cost_price',
@@ -39,6 +42,9 @@ class Product extends Model
             'base_price' => 'decimal:2',
             'sale_price' => 'decimal:2',
             'delivery_fee' => 'decimal:2',
+            'has_return_exchange' => 'boolean',
+            'return_window_days' => 'integer',
+            'cod_available' => 'boolean',
             'discount_percentage' => 'decimal:2',
             'cost_price' => 'decimal:2',
             'has_variants' => 'boolean',
@@ -70,6 +76,11 @@ class Product extends Model
     public function primaryImage(): HasOne
     {
         return $this->hasOne(ProductImage::class)->where('is_primary', true);
+    }
+
+    public function reviews(): HasMany
+    {
+        return $this->hasMany(ProductReview::class)->where('is_approved', true)->latest();
     }
 
     /**

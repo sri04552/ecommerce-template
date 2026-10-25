@@ -1,6 +1,6 @@
 import { Link, usePage } from '@inertiajs/react';
 import StorefrontLayout from './StorefrontLayout';
-import { User, MapPin, ShieldCheck, LogOut, CheckCircle2, AlertCircle } from 'lucide-react';
+import { User, MapPin, ShieldCheck, LogOut, CheckCircle2, AlertCircle, ShoppingBag } from 'lucide-react';
 
 export default function CustomerLayout({ title, subtitle, children }) {
     const { auth, flash } = usePage().props;
@@ -13,6 +13,12 @@ export default function CustomerLayout({ title, subtitle, children }) {
             href: '/account',
             icon: User,
             active: currentUrl === '/account',
+        },
+        {
+            name: 'My Orders',
+            href: '/account/orders',
+            icon: ShoppingBag,
+            active: currentUrl.startsWith('/account/orders'),
         },
         {
             name: 'Profile & Security',

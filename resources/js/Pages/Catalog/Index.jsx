@@ -114,18 +114,21 @@ export default function Index({ products, categories = [], selectedCategory = nu
 
                 {/* Main Content: Categories Sidebar & Product Grid */}
                 <div className="grid grid-cols-1 lg:grid-cols-4 gap-8 pt-8">
-                    {/* Category Filter Sidebar */}
+                    {/* Category Filter Sidebar (Sticky with internal scroll) */}
                     <aside className="lg:col-span-1 space-y-6">
-                        <div className="bg-brand-surface border border-brand-border rounded-brand p-5">
-                            <h3 className="font-semibold text-xs uppercase tracking-wider text-brand-secondary mb-3">
-                                Categories
-                            </h3>
+                        <div className="bg-brand-surface border border-brand-border rounded-brand p-5 lg:sticky lg:top-24 lg:max-h-[calc(100vh-7rem)] overflow-y-auto shadow-2xs">
+                            <div className="flex items-center justify-between pb-2 mb-3 border-b border-brand-border/60">
+                                <h3 className="font-bold text-xs uppercase tracking-wider text-brand-secondary">
+                                    Categories
+                                </h3>
+                                <span className="text-[10px] text-brand-text-muted">{categories.length} total</span>
+                            </div>
                             <nav className="space-y-1 text-xs">
                                 <Link
                                     href="/products"
                                     className={`block px-3 py-2 rounded-brand font-medium transition-colors ${
                                         !filters.category
-                                            ? 'bg-brand-primary text-white'
+                                            ? 'bg-brand-primary text-white font-semibold shadow-xs'
                                             : 'text-brand-text-muted hover:text-brand-text hover:bg-brand-surface-muted'
                                     }`}
                                 >
@@ -137,7 +140,7 @@ export default function Index({ products, categories = [], selectedCategory = nu
                                         href={`/products?category=${cat.id}`}
                                         className={`flex items-center justify-between px-3 py-2 rounded-brand font-medium transition-colors ${
                                             Number(filters.category) === cat.id
-                                                ? 'bg-brand-primary text-white'
+                                                ? 'bg-brand-primary text-white font-semibold shadow-xs'
                                                 : 'text-brand-text-muted hover:text-brand-text hover:bg-brand-surface-muted'
                                         }`}
                                     >

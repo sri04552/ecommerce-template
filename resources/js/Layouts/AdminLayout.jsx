@@ -13,6 +13,7 @@ import {
     AlertCircle,
     User,
     ArrowUpRight,
+    ShoppingBag,
 } from 'lucide-react';
 
 export default function AdminLayout({ title, subtitle, actions, children }) {
@@ -22,6 +23,12 @@ export default function AdminLayout({ title, subtitle, actions, children }) {
     const [mobileOpen, setMobileOpen] = useState(false);
 
     const navItems = [
+        {
+            name: 'Orders',
+            href: '/admin/orders',
+            icon: ShoppingBag,
+            active: currentUrl.startsWith('/admin/orders'),
+        },
         {
             name: 'Products',
             href: '/admin/products',

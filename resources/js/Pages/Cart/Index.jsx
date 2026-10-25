@@ -14,6 +14,11 @@ import {
     Truck,
     RotateCcw,
     CheckCircle2,
+    Banknote,
+    CreditCard,
+    X,
+    MapPin,
+    AlertCircle,
 } from 'lucide-react';
 import {
     getCart,
@@ -26,12 +31,26 @@ import {
 } from '../../utils/cart';
 
 export default function CartIndex({ categories = [] }) {
-    const { storeSettings } = usePage().props;
+    const { auth, storeSettings } = usePage().props;
+    const user = auth?.user;
     const currency = storeSettings?.currency_symbol || '₹';
 
     const [cart, setCart] = useState([]);
     const [totalCount, setTotalCount] = useState(0);
     const [alertMessage, setAlertMessage] = useState(null);
+
+    // Checkout Modal State
+    const [checkoutOpen, setCheckoutOpen] = useState(false);
+    const [checkoutLoading, setCheckoutLoading] = useState(false);
+    const [checkoutError, setCheckoutError] = useState(null);
+    const [customerName, setCustomerName] = useState(user?.name || '');
+    const [customerEmail, setCustomerEmail] = useState(user?.email || '');
+    const [customerPhone, setCustomerPhone] = useState(user?.phone || '');
+    const [streetAddress, setStreetAddress] = useState('');
+    const [city, setCity] = useState('');
+    const [state, setState] = useState('');
+    const [postalCode, setPostalCode] = useState('');
+    const [paymentMethod, setPaymentMethod] = useState('cod');
 
     const refreshCart = () => {
         const items = getCart();
@@ -109,6 +128,59 @@ export default function CartIndex({ categories = [] }) {
     const finalTotal = subtotal + totalDeliveryFee;
 
     const limitPercentage = Math.min(100, Math.round((totalCount / MAX_CART_LIMIT) * 100));
+
+    const hasNonCodItem = cart.some((item) => item.codAvailable === false);
+
+    const handleOpenCheckout = () => {
+        if (hasNonCodItem && paymentMethod === 'cod') {
+            setPaymentMethod('prepaid');
+        }
+        setCheckoutOpen(true);
+    };
+
+    const handlePlaceOrder = async (e) => {
+        e.preventDefault();
+        setCheckoutError(null);
+        setCheckoutLoading(true);
+
+        const payload = {
+            customer_name: customerName.trim(),
+            customer_email: customerEmail.trim(),
+            customer_phone: customerPhone.trim(),
+            street_address: streetAddress.trim(),
+            city: city.trim(),
+            state: state.trim(),
+            postal_code: postalCode.trim(),
+            payment_method: paymentMethod,
+            cart_items: cart,
+        };
+
+        try {
+            const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
+            const res = await fetch('/checkout/place-order', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    'X-CSRF-TOKEN': csrfToken || '',
+                },
+                body: JSON.stringify(payload),
+            });
+
+            const data = await res.json();
+            if (res.ok && data.success) {
+                clearCart();
+                setCheckoutOpen(false);
+                window.location.href = data.redirect_url || `/track?order_number=${data.order_number}`;
+            } else {
+                setCheckoutError(data.message || 'Failed to place order. Please check required fields.');
+            }
+        } catch (err) {
+            setCheckoutError('A network error occurred while placing your order. Please retry.');
+        } finally {
+            setCheckoutLoading(false);
+        }
+    };
 
     return (
         <StorefrontLayout categories={categories}>
@@ -389,7 +461,7 @@ export default function CartIndex({ categories = [] }) {
                                     variant="primary"
                                     size="lg"
                                     className="w-full justify-center gap-2 font-bold py-3 shadow-md"
-                                    onClick={() => alert(`Order checkout simulation: Total ${formatPrice(finalTotal)} across ${totalCount} items. (Payment gateway ready for client merchant onboarding).`)}
+                                    onClick={handleOpenCheckout}
                                 >
                                     <span>Proceed to Checkout</span>
                                     <ArrowRight className="w-4 h-4" />
@@ -418,6 +490,249 @@ export default function CartIndex({ categories = [] }) {
                                     <span>Up to 20 products per order dispatch cap</span>
                                 </div>
                             </div>
+                        </div>
+                    </div>
+                )}
+                {/* Checkout Modal */}
+                {checkoutOpen && (
+                    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs">
+                        <div className="bg-white rounded-2xl shadow-2xl max-w-lg w-full p-6 max-h-[92vh] overflow-y-auto">
+                            <div className="flex items-center justify-between pb-4 border-b border-slate-100">
+                                <div>
+                                    <h3 className="font-bold text-base text-slate-900">Delivery & Payment Details</h3>
+                                    <p className="text-xs text-slate-500">Provide shipping address to place your order</p>
+                                </div>
+                                <button
+                                    type="button"
+                                    onClick={() => setCheckoutOpen(false)}
+                                    className="p-1.5 rounded-lg text-slate-400 hover:text-slate-600 hover:bg-slate-100"
+                                >
+                                    <X className="w-5 h-5" />
+                                </button>
+                            </div>
+
+                            <form onSubmit={handlePlaceOrder} className="mt-4 space-y-4">
+                                {checkoutError && (
+                                    <div className="p-3 bg-red-50 text-red-700 border border-red-200 rounded-lg text-xs flex items-center gap-2">
+                                        <AlertCircle className="w-4 h-4 shrink-0" />
+                                        <span>{checkoutError}</span>
+                                    </div>
+                                )}
+
+                                {/* Customer Info */}
+                                <div className="space-y-3">
+                                    <div>
+                                        <label className="block text-xs font-semibold text-slate-700 mb-1">
+                                            Full Name *
+                                        </label>
+                                        <input
+                                            type="text"
+                                            value={customerName}
+                                            onChange={(e) => setCustomerName(e.target.value)}
+                                            required
+                                            placeholder="Enter your full name"
+                                            className="w-full px-3 py-2 border border-slate-200 rounded-lg text-xs focus:ring-2 focus:ring-indigo-500"
+                                        />
+                                    </div>
+
+                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                        <div>
+                                            <label className="block text-xs font-semibold text-slate-700 mb-1">
+                                                Email Address *
+                                            </label>
+                                            <input
+                                                type="email"
+                                                value={customerEmail}
+                                                onChange={(e) => setCustomerEmail(e.target.value)}
+                                                required
+                                                placeholder="Order confirmation email"
+                                                className="w-full px-3 py-2 border border-slate-200 rounded-lg text-xs focus:ring-2 focus:ring-indigo-500"
+                                            />
+                                        </div>
+                                        <div>
+                                            <label className="block text-xs font-semibold text-slate-700 mb-1">
+                                                Phone Number *
+                                            </label>
+                                            <input
+                                                type="tel"
+                                                value={customerPhone}
+                                                onChange={(e) => setCustomerPhone(e.target.value)}
+                                                required
+                                                placeholder="10-digit mobile number"
+                                                className="w-full px-3 py-2 border border-slate-200 rounded-lg text-xs focus:ring-2 focus:ring-indigo-500"
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {/* Shipping Address */}
+                                <div className="space-y-3 pt-2 border-t border-slate-100">
+                                    <p className="text-xs font-bold text-slate-900 flex items-center gap-1.5">
+                                        <MapPin className="w-3.5 h-3.5 text-indigo-600" />
+                                        <span>Shipping Address</span>
+                                    </p>
+
+                                    <div>
+                                        <label className="block text-xs font-semibold text-slate-700 mb-1">
+                                            Street / Flat / Colony / Area *
+                                        </label>
+                                        <input
+                                            type="text"
+                                            value={streetAddress}
+                                            onChange={(e) => setStreetAddress(e.target.value)}
+                                            required
+                                            placeholder="House no, Building, Street address"
+                                            className="w-full px-3 py-2 border border-slate-200 rounded-lg text-xs focus:ring-2 focus:ring-indigo-500"
+                                        />
+                                    </div>
+
+                                    <div className="grid grid-cols-3 gap-2">
+                                        <div>
+                                            <label className="block text-xs font-semibold text-slate-700 mb-1">
+                                                City *
+                                            </label>
+                                            <input
+                                                type="text"
+                                                value={city}
+                                                onChange={(e) => setCity(e.target.value)}
+                                                required
+                                                placeholder="City"
+                                                className="w-full px-3 py-2 border border-slate-200 rounded-lg text-xs focus:ring-2 focus:ring-indigo-500"
+                                            />
+                                        </div>
+                                        <div>
+                                            <label className="block text-xs font-semibold text-slate-700 mb-1">
+                                                State *
+                                            </label>
+                                            <input
+                                                type="text"
+                                                value={state}
+                                                onChange={(e) => setState(e.target.value)}
+                                                required
+                                                placeholder="State"
+                                                className="w-full px-3 py-2 border border-slate-200 rounded-lg text-xs focus:ring-2 focus:ring-indigo-500"
+                                            />
+                                        </div>
+                                        <div>
+                                            <label className="block text-xs font-semibold text-slate-700 mb-1">
+                                                PIN Code *
+                                            </label>
+                                            <input
+                                                type="text"
+                                                value={postalCode}
+                                                onChange={(e) => setPostalCode(e.target.value)}
+                                                required
+                                                placeholder="6-digit PIN"
+                                                className="w-full px-3 py-2 border border-slate-200 rounded-lg text-xs font-mono focus:ring-2 focus:ring-indigo-500"
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {/* Payment Method Selection (COD / Prepaid) */}
+                                <div className="space-y-2 pt-2 border-t border-slate-100">
+                                    <label className="block text-xs font-bold text-slate-900 mb-1">
+                                        Payment Method
+                                    </label>
+
+                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                                        {/* COD Option */}
+                                        <div
+                                            onClick={() => !hasNonCodItem && setPaymentMethod('cod')}
+                                            className={`p-3 rounded-xl border text-xs cursor-pointer transition-all ${
+                                                hasNonCodItem
+                                                    ? 'opacity-50 cursor-not-allowed bg-slate-50 border-slate-200'
+                                                    : paymentMethod === 'cod'
+                                                    ? 'bg-amber-50/70 border-amber-500 ring-2 ring-amber-500/20'
+                                                    : 'bg-white border-slate-200 hover:border-slate-300'
+                                            }`}
+                                        >
+                                            <div className="flex items-center gap-2">
+                                                <input
+                                                    type="radio"
+                                                    name="checkoutPayment"
+                                                    value="cod"
+                                                    disabled={hasNonCodItem}
+                                                    checked={paymentMethod === 'cod'}
+                                                    onChange={() => !hasNonCodItem && setPaymentMethod('cod')}
+                                                    className="text-amber-600 focus:ring-amber-500"
+                                                />
+                                                <span className="font-bold text-slate-900 flex items-center gap-1">
+                                                    <Banknote className="w-3.5 h-3.5 text-amber-600" />
+                                                    <span>Cash on Delivery</span>
+                                                </span>
+                                            </div>
+                                            <p className="text-[11px] text-slate-500 mt-1 pl-5">
+                                                {hasNonCodItem
+                                                    ? 'Unavailable: Cart contains prepaid-only item.'
+                                                    : 'Pay with cash or UPI at delivery doorstep.'}
+                                            </p>
+                                        </div>
+
+                                        {/* Prepaid Online Option */}
+                                        <div
+                                            onClick={() => setPaymentMethod('prepaid')}
+                                            className={`p-3 rounded-xl border text-xs cursor-pointer transition-all ${
+                                                paymentMethod === 'prepaid'
+                                                    ? 'bg-emerald-50/70 border-emerald-500 ring-2 ring-emerald-500/20'
+                                                    : 'bg-white border-slate-200 hover:border-slate-300'
+                                            }`}
+                                        >
+                                            <div className="flex items-center gap-2">
+                                                <input
+                                                    type="radio"
+                                                    name="checkoutPayment"
+                                                    value="prepaid"
+                                                    checked={paymentMethod === 'prepaid'}
+                                                    onChange={() => setPaymentMethod('prepaid')}
+                                                    className="text-emerald-600 focus:ring-emerald-500"
+                                                />
+                                                <span className="font-bold text-slate-900 flex items-center gap-1">
+                                                    <CreditCard className="w-3.5 h-3.5 text-emerald-600" />
+                                                    <span>Prepaid Online</span>
+                                                </span>
+                                            </div>
+                                            <p className="text-[11px] text-slate-500 mt-1 pl-5">
+                                                Instant UPI, Cards & NetBanking dispatch priority.
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {/* Order summary */}
+                                <div className="p-3 bg-slate-50 rounded-xl border border-slate-200 space-y-1 text-xs">
+                                    <div className="flex justify-between text-slate-600">
+                                        <span>Items ({totalCount})</span>
+                                        <span>{formatPrice(subtotal)}</span>
+                                    </div>
+                                    <div className="flex justify-between text-slate-600">
+                                        <span>Delivery Charges</span>
+                                        <span className="font-semibold">{isFreeDelivery ? 'FREE' : formatPrice(totalDeliveryFee)}</span>
+                                    </div>
+                                    <div className="flex justify-between text-slate-900 font-bold text-sm pt-1 border-t border-slate-200">
+                                        <span>Total Amount</span>
+                                        <span>{formatPrice(finalTotal)}</span>
+                                    </div>
+                                </div>
+
+                                <div className="flex items-center justify-end gap-2 pt-2">
+                                    <button
+                                        type="button"
+                                        onClick={() => setCheckoutOpen(false)}
+                                        className="px-4 py-2 border border-slate-200 text-slate-600 rounded-lg text-xs font-semibold hover:bg-slate-50"
+                                    >
+                                        Cancel
+                                    </button>
+                                    <button
+                                        type="submit"
+                                        disabled={checkoutLoading}
+                                        className="px-6 py-2.5 bg-brand-primary hover:bg-brand-primary/90 text-white rounded-lg text-xs font-bold transition-all shadow-md flex items-center gap-1.5 disabled:opacity-50"
+                                    >
+                                        <CheckCircle2 className="w-4 h-4" />
+                                        <span>{checkoutLoading ? 'Placing Order...' : 'Confirm & Place Order'}</span>
+                                    </button>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 )}
