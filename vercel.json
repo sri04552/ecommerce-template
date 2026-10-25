@@ -1,6 +1,9 @@
 {
   "version": 2,
   "framework": null,
+  "regions": [
+    "hnd1"
+  ],
   "functions": {
     "api/index.php": {
       "runtime": "vercel-php@0.8.0",
@@ -31,9 +34,9 @@
   "outputDirectory": "public",
   "env": {
     "APP_ENV": "production",
-    "APP_DEBUG": "true",
+    "APP_DEBUG": "false",
     "LOG_CHANNEL": "stderr",
     "SESSION_DRIVER": "cookie",
-    "CACHE_STORE": "array"
+    "CACHE_STORE": "file"
   }
 }

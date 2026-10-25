@@ -111,19 +111,21 @@ require __DIR__.'/../vendor/autoload.php';
 // Bootstrap Laravel
 /** @var Application $app */
 $app = require_once __DIR__.'/../bootstrap/app.php';
+$app->useStoragePath($tmp.'/storage');
 
-// Bootstrap Console Kernel
-$consoleKernel = $app->make(ConsoleKernel::class);
-$consoleKernel->bootstrap();
-
-// Ensure baseline schema is initialized (non-destructive)
-try {
-    if (! Schema::hasTable('store_settings')) {
-        Artisan::call('migrate', ['--force' => true]);
-        Artisan::call('db:seed', ['--class' => 'Database\\Seeders\\ProductionCleanSeeder', '--force' => true]);
+// Ensure baseline schema is initialized once per container instance
+if (! file_exists($tmp.'/.schema_ready')) {
+    try {
+        if (! Schema::hasTable('store_settings')) {
+            $consoleKernel = $app->make(ConsoleKernel::class);
+            $consoleKernel->bootstrap();
+            Artisan::call('migrate', ['--force' => true]);
+            Artisan::call('db:seed', ['--class' => 'Database\\Seeders\\ProductionCleanSeeder', '--force' => true]);
+        }
+        touch($tmp.'/.schema_ready');
+    } catch (Throwable $e) {
+        error_log('Database setup: '.$e->getMessage());
     }
-} catch (Throwable $e) {
-    error_log('Database setup: '.$e->getMessage());
 }
 
 $app->handleRequest(Request::capture());
