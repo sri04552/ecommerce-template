@@ -15,7 +15,5 @@ createInertiaApp({
         const root = createRoot(el);
         root.render(<App {...props} />);
     },
-    progress: {
-        color: 'var(--brand-primary, #2563eb)',
-    },
+    progress: false,
 });
