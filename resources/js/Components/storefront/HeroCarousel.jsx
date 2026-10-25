@@ -117,13 +117,13 @@ export default function HeroCarousel() {
         setCurrent((prev) => (prev - 1 + slideCount) % slideCount);
     }, [slideCount]);
 
-    // Auto-sliding interval
+    // Auto-sliding interval (3 seconds)
     useEffect(() => {
         if (isPaused) return;
 
         const timer = setInterval(() => {
             nextSlide();
-        }, 5500);
+        }, 3000);
 
         return () => clearInterval(timer);
     }, [nextSlide, isPaused]);
@@ -186,7 +186,7 @@ export default function HeroCarousel() {
                         key={slide.id}
                         aria-hidden={!isActive}
                         style={{ backgroundColor: slide.bgColor }}
-                        className={`absolute inset-0 w-full h-full transition-opacity duration-1000 ease-in-out ${
+                        className={`absolute inset-0 w-full h-full transition-opacity duration-500 ease-in-out ${
                             isActive
                                 ? 'opacity-100 z-10 pointer-events-auto'
                                 : 'opacity-0 z-0 pointer-events-none'
