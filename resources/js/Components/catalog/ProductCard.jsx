@@ -1,12 +1,24 @@
-import { Link } from '@inertiajs/react';
+import { Link, usePage } from '@inertiajs/react';
 import Badge from '../ui/Badge';
 import { ShoppingBag } from 'lucide-react';
 
 export default function ProductCard({ product }) {
+    const { storeSettings } = usePage().props;
+    const currency = storeSettings?.currency_symbol || '₹';
+
     const primaryImage = product.primary_image?.image_path || product.images?.[0]?.image_path;
     const hasDiscount = product.sale_price && parseFloat(product.sale_price) < parseFloat(product.base_price);
     const displayPrice = hasDiscount ? product.sale_price : product.base_price;
     const originalPrice = product.base_price;
+
+    const formatPrice = (amount) => {
+        const num = parseFloat(amount);
+        if (isNaN(num)) return amount;
+        return `${currency}${num.toLocaleString('en-IN', {
+            minimumFractionDigits: num % 1 === 0 ? 0 : 2,
+            maximumFractionDigits: 2,
+        })}`;
+    };
 
     return (
         <div className="group relative bg-brand-surface border border-brand-border rounded-brand overflow-hidden flex flex-col justify-between hover:shadow-md transition-shadow">
@@ -67,11 +79,11 @@ export default function ProductCard({ product }) {
                 <div className="mt-4 pt-3 border-t border-brand-border flex items-center justify-between z-10 relative">
                     <div className="flex items-baseline gap-2">
                         <span className="text-base font-bold text-brand-secondary">
-                            ${parseFloat(displayPrice).toFixed(2)}
+                            {formatPrice(displayPrice)}
                         </span>
                         {hasDiscount && (
                             <span className="text-xs text-brand-text-muted line-through">
-                                ${parseFloat(originalPrice).toFixed(2)}
+                                {formatPrice(originalPrice)}
                             </span>
                         )}
                     </div>

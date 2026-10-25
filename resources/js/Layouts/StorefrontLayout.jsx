@@ -10,7 +10,7 @@ export default function StorefrontLayout({ children, categories = [] }) {
     const user = auth?.user;
 
     const storeName = storeSettings?.store_name || 'Aura Store';
-    const announcement = storeSettings?.announcement_text || 'Free standard shipping on all orders over $75';
+    const announcement = storeSettings?.announcement_text || 'Free standard delivery across India on orders over ₹999';
 
     const handleSearch = (e) => {
         e.preventDefault();

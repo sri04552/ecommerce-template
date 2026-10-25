@@ -81,9 +81,9 @@ class ProductionCleanSeeder extends Seeder
             Setting::setMany([
                 'store_name' => config('ecommerce.store_name', 'Ecommerce Store'),
                 'store_email' => 'support@example.com',
-                'store_phone' => '+1 (555) 000-0000',
-                'store_currency' => config('ecommerce.currency', 'USD'),
-                'store_currency_symbol' => config('ecommerce.currency_symbol', '$'),
+                'store_phone' => '+91 98765 43210',
+                'store_currency' => config('ecommerce.currency', 'INR'),
+                'store_currency_symbol' => config('ecommerce.currency_symbol', '₹'),
                 'active_theme' => config('ecommerce.theme.active', 'modern'),
                 'theme_primary_color' => config('ecommerce.theme.primary_color', '#2563eb'),
                 'theme_primary_hover' => config('ecommerce.theme.primary_hover', '#1d4ed8'),
@@ -94,12 +94,12 @@ class ProductionCleanSeeder extends Seeder
 
             // 4. Default Shipping Methods
             ShippingMethod::firstOrCreate(['code' => 'standard'], [
-                'name' => 'Standard Ground Shipping',
-                'base_cost' => 5.00,
-                'per_item_cost' => 1.00,
-                'free_shipping_threshold' => 75.00,
-                'estimated_days_min' => 3,
-                'estimated_days_max' => 6,
+                'name' => 'Standard Delivery (All India)',
+                'base_cost' => 99.00,
+                'per_item_cost' => 0.00,
+                'free_shipping_threshold' => 999.00,
+                'estimated_days_min' => 2,
+                'estimated_days_max' => 5,
                 'is_active' => true,
             ]);
 

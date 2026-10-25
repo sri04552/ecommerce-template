@@ -35,7 +35,7 @@ export default function Welcome({
                                 <Truck className="w-4 h-4" />
                             </div>
                             <h4 className="font-semibold text-xs text-brand-secondary">Free Shipping</h4>
-                            <p className="text-[11px] text-brand-text-muted">On eligible orders over $75</p>
+                            <p className="text-[11px] text-brand-text-muted">On eligible orders over ₹999</p>
                         </div>
 
                         <div className="flex flex-col items-center space-y-1.5">

@@ -182,7 +182,7 @@ export default function ProductEdit({ product, categories, brands }) {
                     <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-4">
                         <div>
                             <label className="block text-sm font-medium text-slate-700 mb-1">
-                                Base Price ($) <span className="text-rose-500">*</span>
+                                Base Price (₹) <span className="text-rose-500">*</span>
                             </label>
                             <input
                                 type="number"
@@ -198,7 +198,7 @@ export default function ProductEdit({ product, categories, brands }) {
 
                         <div>
                             <label className="block text-sm font-medium text-slate-700 mb-1">
-                                Sale Price ($)
+                                Sale Price (₹)
                             </label>
                             <input
                                 type="number"
@@ -213,7 +213,7 @@ export default function ProductEdit({ product, categories, brands }) {
 
                         <div>
                             <label className="block text-sm font-medium text-slate-700 mb-1">
-                                Cost Price ($)
+                                Cost Price (₹)
                             </label>
                             <input
                                 type="number"

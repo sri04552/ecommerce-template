@@ -12,8 +12,8 @@ return [
     |
     */
     'store_name' => env('APP_NAME', 'Ecommerce Store'),
-    'currency' => env('STORE_CURRENCY', 'USD'),
-    'currency_symbol' => env('STORE_CURRENCY_SYMBOL', '$'),
+    'currency' => env('STORE_CURRENCY', 'INR'),
+    'currency_symbol' => env('STORE_CURRENCY_SYMBOL', '₹'),
 
     /*
     |--------------------------------------------------------------------------

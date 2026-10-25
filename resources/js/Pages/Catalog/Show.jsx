@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Head, Link } from '@inertiajs/react';
+import { Head, Link, usePage } from '@inertiajs/react';
 import StorefrontLayout from '../../Layouts/StorefrontLayout';
 import ProductCard from '../../Components/catalog/ProductCard';
 import Button from '../../Components/ui/Button';
@@ -7,6 +7,9 @@ import Badge from '../../Components/ui/Badge';
 import { ShoppingBag, CheckCircle2, AlertCircle, ArrowLeft, Truck, ShieldCheck, RefreshCw } from 'lucide-react';
 
 export default function Show({ product, relatedProducts = [], categories = [] }) {
+    const { storeSettings } = usePage().props;
+    const currency = storeSettings?.currency_symbol || '₹';
+
     const images = product.images || [];
     const [selectedImage, setSelectedImage] = useState(
         product.primary_image?.image_path || images[0]?.image_path || null
@@ -32,6 +35,15 @@ export default function Show({ product, relatedProducts = [], categories = [] })
     const handleAddToCart = () => {
         setAddedNotice(true);
         setTimeout(() => setAddedNotice(false), 3000);
+    };
+
+    const formatPrice = (amount) => {
+        const num = parseFloat(amount);
+        if (isNaN(num)) return amount;
+        return `${currency}${num.toLocaleString('en-IN', {
+            minimumFractionDigits: num % 1 === 0 ? 0 : 2,
+            maximumFractionDigits: 2,
+        })}`;
     };
 
     return (
@@ -136,11 +148,11 @@ export default function Show({ product, relatedProducts = [], categories = [] })
                             {/* Price Block */}
                             <div className="flex items-baseline gap-3 pt-2">
                                 <span className="text-3xl font-extrabold text-brand-secondary">
-                                    ${parseFloat(displayPrice).toFixed(2)}
+                                    {formatPrice(displayPrice)}
                                 </span>
                                 {hasDiscount && (
                                     <span className="text-base text-brand-text-muted line-through">
-                                        ${parseFloat(activePrice).toFixed(2)}
+                                        {formatPrice(activePrice)}
                                     </span>
                                 )}
                             </div>

@@ -233,15 +233,15 @@ export default function ProductsIndex({ products, categories, filters }) {
                                                 {product.sale_price ? (
                                                     <div>
                                                         <span className="font-semibold text-slate-900 block">
-                                                            ${Number(product.sale_price).toFixed(2)}
+                                                            ₹{Number(product.sale_price).toLocaleString('en-IN', { minimumFractionDigits: Number(product.sale_price) % 1 === 0 ? 0 : 2 })}
                                                         </span>
                                                         <span className="text-xs text-slate-400 line-through">
-                                                            ${Number(product.base_price).toFixed(2)}
+                                                            ₹{Number(product.base_price).toLocaleString('en-IN', { minimumFractionDigits: Number(product.base_price) % 1 === 0 ? 0 : 2 })}
                                                         </span>
                                                     </div>
                                                 ) : (
                                                     <span className="font-semibold text-slate-900">
-                                                        ${Number(product.base_price).toFixed(2)}
+                                                        ₹{Number(product.base_price).toLocaleString('en-IN', { minimumFractionDigits: Number(product.base_price) % 1 === 0 ? 0 : 2 })}
                                                     </span>
                                                 )}
                                             </td>

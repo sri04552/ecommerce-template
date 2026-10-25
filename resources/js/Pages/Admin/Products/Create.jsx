@@ -175,7 +175,7 @@ export default function ProductCreate({ categories, brands }) {
                     <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-4">
                         <div>
                             <label className="block text-sm font-medium text-slate-700 mb-1">
-                                Base Price ($) <span className="text-rose-500">*</span>
+                                Base Price (₹) <span className="text-rose-500">*</span>
                             </label>
                             <input
                                 type="number"
@@ -183,7 +183,7 @@ export default function ProductCreate({ categories, brands }) {
                                 min="0"
                                 value={data.base_price}
                                 onChange={(e) => setData('base_price', e.target.value)}
-                                placeholder="29.99"
+                                placeholder="1299.00"
                                 className="w-full px-3.5 py-2 text-sm bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white"
                                 required
                             />
@@ -192,7 +192,7 @@ export default function ProductCreate({ categories, brands }) {
 
                         <div>
                             <label className="block text-sm font-medium text-slate-700 mb-1">
-                                Sale Price ($)
+                                Sale Price (₹)
                             </label>
                             <input
                                 type="number"
@@ -208,7 +208,7 @@ export default function ProductCreate({ categories, brands }) {
 
                         <div>
                             <label className="block text-sm font-medium text-slate-700 mb-1">
-                                Cost Price ($)
+                                Cost Price (₹)
                             </label>
                             <input
                                 type="number"
