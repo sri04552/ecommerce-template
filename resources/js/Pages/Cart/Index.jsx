@@ -19,6 +19,7 @@ import {
     X,
     MapPin,
     AlertCircle,
+    Tag,
 } from 'lucide-react';
 import {
     getCart,
@@ -125,7 +126,60 @@ export default function CartIndex({ categories = [] }) {
         0
     );
     const isFreeDelivery = totalDeliveryFee === 0;
-    const finalTotal = subtotal + totalDeliveryFee;
+    const [couponCodeInput, setCouponCodeInput] = useState('');
+    const [appliedCoupon, setAppliedCoupon] = useState(null);
+    const [couponLoading, setCouponLoading] = useState(false);
+    const [couponError, setCouponError] = useState(null);
+    const [couponSuccess, setCouponSuccess] = useState(null);
+
+    const handleApplyCoupon = async (e) => {
+        if (e) e.preventDefault();
+        const code = couponCodeInput.trim().toUpperCase();
+        if (!code) return;
+        setCouponLoading(true);
+        setCouponError(null);
+        setCouponSuccess(null);
+
+        try {
+            const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
+            const res = await fetch('/api/coupons/apply', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    'X-CSRF-TOKEN': csrfToken || '',
+                },
+                body: JSON.stringify({
+                    coupon_code: code,
+                    cart_subtotal: subtotal,
+                }),
+            });
+
+            const data = await res.json();
+            if (res.ok && data.valid) {
+                setAppliedCoupon(data);
+                setCouponSuccess(data.message);
+                setCouponError(null);
+            } else {
+                setCouponError(data.message || 'Invalid coupon code.');
+                setAppliedCoupon(null);
+            }
+        } catch (err) {
+            setCouponError('Network error applying coupon. Please try again.');
+        } finally {
+            setCouponLoading(false);
+        }
+    };
+
+    const handleRemoveCoupon = () => {
+        setAppliedCoupon(null);
+        setCouponSuccess(null);
+        setCouponError(null);
+        setCouponCodeInput('');
+    };
+
+    const discountAmount = appliedCoupon?.discount_amount ? parseFloat(appliedCoupon.discount_amount) : 0;
+    const finalTotal = Math.max(0, subtotal + totalDeliveryFee - discountAmount);
 
     const limitPercentage = Math.min(100, Math.round((totalCount / MAX_CART_LIMIT) * 100));
 
@@ -152,6 +206,7 @@ export default function CartIndex({ categories = [] }) {
             state: state.trim(),
             postal_code: postalCode.trim(),
             payment_method: paymentMethod,
+            coupon_code: appliedCoupon ? appliedCoupon.coupon_code : null,
             cart_items: cart,
         };
 
@@ -448,6 +503,68 @@ export default function CartIndex({ categories = [] }) {
                                             )}
                                         </span>
                                     </div>
+                                    {discountAmount > 0 && (
+                                        <div className="flex justify-between text-emerald-600 font-semibold">
+                                            <span>Coupon Discount ({appliedCoupon?.coupon_code})</span>
+                                            <span className="font-mono">-{formatPrice(discountAmount)}</span>
+                                        </div>
+                                    )}
+                                </div>
+
+                                {/* Promo Code / Coupon Section */}
+                                <div className="pt-2 border-t border-brand-border">
+                                    {appliedCoupon ? (
+                                        <div className="p-2.5 bg-emerald-50 border border-emerald-200 rounded-lg flex items-center justify-between text-xs">
+                                            <div className="flex items-center gap-2">
+                                                <Tag className="w-4 h-4 text-emerald-600 shrink-0" />
+                                                <div>
+                                                    <span className="font-bold text-emerald-800 font-mono tracking-wider">{appliedCoupon.coupon_code}</span>
+                                                    <p className="text-[11px] text-emerald-600 font-medium">You save {formatPrice(discountAmount)}</p>
+                                                </div>
+                                            </div>
+                                            <button
+                                                type="button"
+                                                onClick={handleRemoveCoupon}
+                                                className="text-xs font-semibold text-rose-600 hover:text-rose-800 hover:underline"
+                                            >
+                                                Remove
+                                            </button>
+                                        </div>
+                                    ) : (
+                                        <form onSubmit={handleApplyCoupon} className="space-y-1.5">
+                                            <label className="block text-[11px] font-semibold text-brand-secondary uppercase tracking-wider">
+                                                Have a Promo Code?
+                                            </label>
+                                            <div className="flex gap-2">
+                                                <input
+                                                    type="text"
+                                                    value={couponCodeInput}
+                                                    onChange={(e) => setCouponCodeInput(e.target.value.toUpperCase())}
+                                                    placeholder="Enter code (e.g. FESTIVE20)"
+                                                    className="flex-1 px-3 py-1.5 text-xs uppercase font-mono font-bold bg-brand-surface-muted border border-brand-border rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-primary"
+                                                />
+                                                <button
+                                                    type="submit"
+                                                    disabled={couponLoading || !couponCodeInput.trim()}
+                                                    className="px-3 py-1.5 text-xs font-bold bg-brand-secondary text-white rounded-lg hover:bg-brand-secondary/90 disabled:opacity-50 transition-colors"
+                                                >
+                                                    {couponLoading ? '...' : 'Apply'}
+                                                </button>
+                                            </div>
+                                            {couponError && (
+                                                <p className="text-[11px] text-rose-600 font-medium flex items-center gap-1 mt-1">
+                                                    <AlertCircle className="w-3.5 h-3.5 shrink-0" />
+                                                    <span>{couponError}</span>
+                                                </p>
+                                            )}
+                                            {couponSuccess && (
+                                                <p className="text-[11px] text-emerald-600 font-medium flex items-center gap-1 mt-1">
+                                                    <CheckCircle2 className="w-3.5 h-3.5 shrink-0" />
+                                                    <span>{couponSuccess}</span>
+                                                </p>
+                                            )}
+                                        </form>
+                                    )}
                                 </div>
 
                                 <div className="pt-3 border-t border-brand-border flex items-baseline justify-between text-base">

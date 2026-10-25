@@ -14,6 +14,10 @@ import {
     User,
     ArrowUpRight,
     ShoppingBag,
+    Tag,
+    BarChart3,
+    Clock,
+    LayoutDashboard,
 } from 'lucide-react';
 
 export default function AdminLayout({ title, subtitle, actions, children }) {
@@ -21,31 +25,56 @@ export default function AdminLayout({ title, subtitle, actions, children }) {
     const user = auth?.user;
     const currentUrl = usePage().url;
     const [mobileOpen, setMobileOpen] = useState(false);
+    const adminPrefix = storeSettings?.admin_prefix || 'admin';
 
     const navItems = [
         {
+            name: 'Dashboard',
+            href: `/${adminPrefix}/dashboard`,
+            icon: LayoutDashboard,
+            active: currentUrl === `/${adminPrefix}` || currentUrl === `/${adminPrefix}/dashboard`,
+        },
+        {
             name: 'Orders',
-            href: '/admin/orders',
+            href: `/${adminPrefix}/orders`,
             icon: ShoppingBag,
-            active: currentUrl.startsWith('/admin/orders'),
+            active: currentUrl.startsWith(`/${adminPrefix}/orders`),
         },
         {
             name: 'Products',
-            href: '/admin/products',
+            href: `/${adminPrefix}/products`,
             icon: Package,
-            active: currentUrl.startsWith('/admin/products'),
+            active: currentUrl.startsWith(`/${adminPrefix}/products`),
         },
         {
             name: 'Categories',
-            href: '/admin/categories',
+            href: `/${adminPrefix}/categories`,
             icon: FolderTree,
-            active: currentUrl.startsWith('/admin/categories'),
+            active: currentUrl.startsWith(`/${adminPrefix}/categories`),
         },
         {
             name: 'Inventory',
-            href: '/admin/inventory',
+            href: `/${adminPrefix}/inventory`,
             icon: Warehouse,
-            active: currentUrl.startsWith('/admin/inventory'),
+            active: currentUrl.startsWith(`/${adminPrefix}/inventory`),
+        },
+        {
+            name: 'Coupons & Offers',
+            href: `/${adminPrefix}/coupons`,
+            icon: Tag,
+            active: currentUrl.startsWith(`/${adminPrefix}/coupons`),
+        },
+        {
+            name: 'Analytics & Sales',
+            href: `/${adminPrefix}/analytics`,
+            icon: BarChart3,
+            active: currentUrl.startsWith(`/${adminPrefix}/analytics`),
+        },
+        {
+            name: 'Abandoned Carts',
+            href: `/${adminPrefix}/abandoned-carts`,
+            icon: Clock,
+            active: currentUrl.startsWith(`/${adminPrefix}/abandoned-carts`),
         },
     ];
 

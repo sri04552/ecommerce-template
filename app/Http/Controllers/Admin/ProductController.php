@@ -8,12 +8,14 @@ use App\Models\Category;
 use App\Models\Product;
 use App\Models\ProductImage;
 use App\Models\ProductVariant;
+use App\Models\InventoryLevel;
 use App\Services\CatalogService;
 use App\Services\InventoryService;
 use App\Services\ImageOptimizationService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -186,6 +188,30 @@ class ProductController extends Controller
                     'Initial stock on product creation',
                     $request->user()?->id
                 );
+            }
+
+            // Custom Product Variants Matrix (Size / Color Options)
+            if ($request->input('has_variants') && is_array($request->input('variants'))) {
+                $product->update(['has_variants' => true]);
+                foreach ($request->input('variants') as $vData) {
+                    if (empty($vData['sku'])) continue;
+                    $customVariant = ProductVariant::updateOrCreate(
+                        ['product_id' => $product->id, 'sku' => strtoupper(trim($vData['sku']))],
+                        [
+                            'title' => $vData['title'] ?? null,
+                            'price' => ! empty($vData['price']) ? (float) $vData['price'] : $product->base_price,
+                            'attributes' => $vData['attributes'] ?? null,
+                            'is_active' => true,
+                        ]
+                    );
+
+                    if (isset($vData['stock'])) {
+                        InventoryLevel::updateOrCreate(
+                            ['product_variant_id' => $customVariant->id],
+                            ['quantity_on_hand' => (int) $vData['stock'], 'quantity_reserved' => 0]
+                        );
+                    }
+                }
             }
 
             // Process manual multi-image uploads (strictly sub-100kb WebP, 1:1 square ratio)
@@ -398,5 +424,156 @@ class ProductController extends Controller
 
         return redirect()->route('admin.products.index')
             ->with('success', 'Product removed successfully.');
+    }
+
+    /**
+     * Export all products to a CSV download.
+     */
+    public function export(): \Symfony\Component\HttpFoundation\StreamedResponse
+    {
+        $headers = [
+            'Content-Type' => 'text/csv',
+            'Content-Disposition' => 'attachment; filename="products_export_'.date('Y-m-d').'.csv"',
+        ];
+
+        $callback = function () {
+            $handle = fopen('php://output', 'w');
+            fputcsv($handle, ['Name', 'Slug', 'SKU', 'Category', 'Base Price', 'Sale Price', 'Delivery Fee', 'COD Available', 'Returnable', 'Return Window Days', 'Stock', 'Status']);
+
+            Product::with(['category', 'variants.inventoryLevel'])->chunk(100, function ($products) use ($handle) {
+                foreach ($products as $p) {
+                    $stock = $p->variants->first()?->inventoryLevel?->quantity_on_hand ?? 0;
+                    fputcsv($handle, [
+                        $p->name,
+                        $p->slug,
+                        $p->sku,
+                        $p->category?->name ?? 'General',
+                        $p->base_price,
+                        $p->sale_price ?? '',
+                        $p->delivery_fee ?? 0.00,
+                        $p->cod_available ? 'Yes' : 'No',
+                        $p->returnable ? 'Yes' : 'No',
+                        $p->return_window_days ?? 3,
+                        $stock,
+                        $p->is_active ? 'Active' : 'Inactive',
+                    ]);
+                }
+            });
+
+            fclose($handle);
+        };
+
+        return response()->stream($callback, 200, $headers);
+    }
+
+    /**
+     * Download sample CSV template for bulk product import.
+     */
+    public function importTemplate(): \Symfony\Component\HttpFoundation\StreamedResponse
+    {
+        $headers = [
+            'Content-Type' => 'text/csv',
+            'Content-Disposition' => 'attachment; filename="product_import_template.csv"',
+        ];
+
+        $callback = function () {
+            $handle = fopen('php://output', 'w');
+            fputcsv($handle, ['Name', 'Slug', 'SKU', 'Category', 'Base Price', 'Sale Price', 'Delivery Fee', 'COD Available', 'Returnable', 'Return Window Days', 'Stock', 'Status']);
+            fputcsv($handle, ['Premium Cotton T-Shirt', 'premium-cotton-tshirt', 'TSHIRT-001', 'Clothing', '799.00', '599.00', '49.00', 'Yes', 'Yes', '3', '50', 'Active']);
+            fputcsv($handle, ['Stainless Steel Water Bottle', 'stainless-steel-bottle', 'BOTTLE-001', 'Accessories', '499.00', '', '0.00', 'Yes', 'No', '3', '100', 'Active']);
+            fclose($handle);
+        };
+
+        return response()->stream($callback, 200, $headers);
+    }
+
+    /**
+     * Import products from uploaded CSV file.
+     */
+    public function import(Request $request): RedirectResponse
+    {
+        $request->validate([
+            'csv_file' => ['required', 'file', 'mimes:csv,txt', 'max:5120'],
+        ]);
+
+        $file = $request->file('csv_file');
+        $handle = fopen($file->getRealPath(), 'r');
+        $header = fgetcsv($handle);
+
+        if (! $header || count($header) < 5) {
+            return back()->with('error', 'Invalid CSV format. Please download and use the official CSV template.');
+        }
+
+        $imported = 0;
+        $updated = 0;
+
+        DB::transaction(function () use ($handle, &$imported, &$updated) {
+            while (($row = fgetcsv($handle)) !== false) {
+                if (empty($row[0]) || empty($row[2])) {
+                    continue;
+                }
+
+                $name = trim($row[0]);
+                $slug = ! empty($row[1]) ? Str::slug($row[1]) : Str::slug($name);
+                $sku = strtoupper(trim($row[2]));
+                $categoryName = ! empty($row[3]) ? trim($row[3]) : 'General';
+                $basePrice = (float) ($row[4] ?? 0);
+                $salePrice = ! empty($row[5]) ? (float) $row[5] : null;
+                $deliveryFee = isset($row[6]) ? (float) $row[6] : 0.00;
+                $codAvailable = ! empty($row[7]) ? in_array(strtolower(trim($row[7])), ['yes', '1', 'true']) : true;
+                $returnable = ! empty($row[8]) ? in_array(strtolower(trim($row[8])), ['yes', '1', 'true']) : true;
+                $returnWindow = ! empty($row[9]) ? (int) $row[9] : 3;
+                $stock = ! empty($row[10]) ? (int) $row[10] : 10;
+                $isActive = ! empty($row[11]) ? in_array(strtolower(trim($row[11])), ['active', 'yes', '1', 'true']) : true;
+
+                $category = Category::firstOrCreate(['slug' => Str::slug($categoryName)], [
+                    'name' => $categoryName,
+                    'is_active' => true,
+                ]);
+
+                $product = Product::updateOrCreate(
+                    ['sku' => $sku],
+                    [
+                        'name' => $name,
+                        'slug' => $slug,
+                        'category_id' => $category->id,
+                        'base_price' => $basePrice,
+                        'sale_price' => $salePrice,
+                        'delivery_fee' => $deliveryFee,
+                        'cod_available' => $codAvailable,
+                        'has_return_exchange' => $returnable,
+                        'return_window_days' => $returnWindow,
+                        'is_active' => $isActive,
+                        'status' => $isActive ? 'active' : 'draft',
+                    ]
+                );
+
+                $variant = ProductVariant::updateOrCreate(
+                    ['product_id' => $product->id, 'is_default' => true],
+                    [
+                        'sku' => $sku,
+                        'price' => $basePrice,
+                    ]
+                );
+
+                InventoryLevel::updateOrCreate(
+                    ['product_variant_id' => $variant->id],
+                    [
+                        'quantity_on_hand' => $stock,
+                        'quantity_reserved' => 0,
+                    ]
+                );
+
+                if ($product->wasRecentlyCreated) {
+                    $imported++;
+                } else {
+                    $updated++;
+                }
+            }
+
+            fclose($handle);
+        });
+
+        return back()->with('success', "Bulk Import Complete: {$imported} new products imported, {$updated} existing products updated.");
     }
 }

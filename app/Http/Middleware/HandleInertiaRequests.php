@@ -53,6 +53,7 @@ class HandleInertiaRequests extends Middleware
                     'phone_verified' => $user->hasVerifiedPhone(),
                     'status' => $user->status,
                     'is_customer' => $user->isCustomer(),
+                    'is_admin' => $user->hasRole('admin') || $user->hasRole('manager') || $user->hasRole('super_admin'),
                     'roles' => $user->roles->pluck('name')->toArray(),
                 ] : null,
             ],
@@ -67,6 +68,7 @@ class HandleInertiaRequests extends Middleware
                 'sms_auth' => app(SmsManager::class)->isConfigured(),
             ],
             'storeSettings' => [
+                'admin_prefix' => config('ecommerce.admin_prefix', 'admin'),
                 'store_name' => config('ecommerce.store_name', 'Ecommerce Store'),
                 'announcement_text' => 'Fast delivery across India • Best prices & genuine products guaranteed',
                 'currency' => config('ecommerce.currency', 'INR'),

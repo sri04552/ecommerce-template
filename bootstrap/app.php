@@ -19,6 +19,8 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
         $middleware->alias([
             'admin' => EnsureAdmin::class,
+            'admin.ip' => \App\Http\Middleware\AdminIpWhitelist::class,
+            'admin.2fa' => \App\Http\Middleware\AdminTwoFactorMiddleware::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

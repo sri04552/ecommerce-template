@@ -13,15 +13,21 @@ class Cart extends Model
 
     protected $fillable = [
         'user_id',
+        'customer_name',
+        'customer_email',
+        'customer_phone',
         'session_token',
         'currency',
         'expires_at',
+        'recovery_token',
+        'recovery_mail_sent_at',
     ];
 
     protected function casts(): array
     {
         return [
             'expires_at' => 'datetime',
+            'recovery_mail_sent_at' => 'datetime',
         ];
     }
 

@@ -120,6 +120,16 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(Order::class);
     }
 
+    public function wishlistItems(): HasMany
+    {
+        return $this->hasMany(Wishlist::class);
+    }
+
+    public function wishlistProducts(): BelongsToMany
+    {
+        return $this->belongsToMany(Product::class, 'wishlists')->withTimestamps();
+    }
+
     /**
      * Carts owned by the user.
      */

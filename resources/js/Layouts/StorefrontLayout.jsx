@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link, usePage, router } from '@inertiajs/react';
-import { ShoppingBag, Search, User, Menu, X, Layers, ChevronDown, LogOut, ShieldCheck, MapPin, RotateCcw, Truck, CreditCard } from 'lucide-react';
+import { ShoppingBag, Search, User, Menu, X, Layers, ChevronDown, LogOut, ShieldCheck, MapPin, RotateCcw, Truck, CreditCard, Heart } from 'lucide-react';
 import { getCartCount, onCartChange } from '../utils/cart';
 
 export default function StorefrontLayout({ children, categories = [] }) {
@@ -21,6 +21,7 @@ export default function StorefrontLayout({ children, categories = [] }) {
 
     const storeName = storeSettings?.store_name || 'Aura Store';
     const announcement = storeSettings?.announcement_text || 'Free standard delivery across India on orders over ₹999';
+    const adminPrefix = storeSettings?.admin_prefix || 'admin';
 
     const handleSearch = (e) => {
         e.preventDefault();
@@ -127,10 +128,19 @@ export default function StorefrontLayout({ children, categories = [] }) {
                                                     <span>Addresses</span>
                                                 </Link>
 
+                                                <Link
+                                                    href="/account/wishlist"
+                                                    onClick={() => setUserDropdownOpen(false)}
+                                                    className="flex items-center gap-2.5 px-3.5 py-2 text-brand-text hover:bg-brand-surface-muted transition-colors"
+                                                >
+                                                    <Heart className="w-4 h-4 text-rose-500" />
+                                                    <span>My Wishlist</span>
+                                                </Link>
+
                                                 {user.roles && (user.roles.includes('admin') || user.roles.includes('manager')) && (
                                                     <div className="pt-1 mt-1 border-t border-brand-border">
                                                         <Link
-                                                            href="/admin/products"
+                                                            href={`/${adminPrefix}/dashboard`}
                                                             onClick={() => setUserDropdownOpen(false)}
                                                             className="flex items-center gap-2.5 px-3.5 py-2 text-brand-primary font-semibold hover:bg-brand-surface-muted transition-colors"
                                                         >

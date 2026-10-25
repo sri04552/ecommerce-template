@@ -17,6 +17,20 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Admin Portal Security Configurations
+    |--------------------------------------------------------------------------
+    |
+    | - admin_prefix: Custom URL slug for the administration portal.
+    | - admin_allowed_ips: Comma-separated list of allowed IPs for admin access.
+    | - admin_2fa_enabled: Whether 2-Factor OTP verification is enforced for admins.
+    |
+    */
+    'admin_prefix' => env('ADMIN_PREFIX', 'admin'),
+    'admin_allowed_ips' => env('ADMIN_ALLOWED_IPS', ''),
+    'admin_2fa_enabled' => env('ADMIN_2FA_ENABLED', false),
+
+    /*
+    |--------------------------------------------------------------------------
     | Theme and Brand Design Tokens
     |--------------------------------------------------------------------------
     |

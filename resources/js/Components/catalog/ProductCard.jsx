@@ -1,10 +1,44 @@
+import { useState } from 'react';
 import { Link, usePage } from '@inertiajs/react';
 import Badge from '../ui/Badge';
-import { ShoppingBag, Sparkles } from 'lucide-react';
+import { ShoppingBag, Sparkles, Heart } from 'lucide-react';
 
 export default function ProductCard({ product }) {
-    const { storeSettings } = usePage().props;
+    const { auth, storeSettings } = usePage().props;
     const currency = storeSettings?.currency_symbol || '₹';
+    const [inWishlist, setInWishlist] = useState(false);
+    const [wishlistLoading, setWishlistLoading] = useState(false);
+
+    const handleWishlistToggle = async (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+
+        if (!auth?.user) {
+            window.location.href = '/login';
+            return;
+        }
+
+        setWishlistLoading(true);
+        try {
+            const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
+            const res = await fetch(`/api/wishlist/${product.id}/toggle`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    'X-CSRF-TOKEN': csrfToken || '',
+                },
+            });
+            const data = await res.json();
+            if (res.ok && data.success) {
+                setInWishlist(data.in_wishlist);
+            }
+        } catch (err) {
+            console.error('Failed to update wishlist:', err);
+        } finally {
+            setWishlistLoading(false);
+        }
+    };
 
     const primaryImage = product.primary_image?.image_path || product.images?.[0]?.image_path;
     const hasDiscount = product.sale_price && parseFloat(product.sale_price) < parseFloat(product.base_price);
@@ -63,6 +97,17 @@ export default function ProductCard({ product }) {
                         </Badge>
                     )}
                 </div>
+
+                {/* Floating Wishlist Heart Button */}
+                <button
+                    type="button"
+                    onClick={handleWishlistToggle}
+                    disabled={wishlistLoading}
+                    className="absolute top-2.5 right-2.5 z-20 p-2 rounded-full bg-white/90 text-slate-400 hover:text-rose-500 hover:bg-white shadow-xs transition-colors"
+                    title={inWishlist ? 'Remove from Wishlist' : 'Save to Wishlist'}
+                >
+                    <Heart className={`w-4 h-4 ${inWishlist ? 'text-rose-500 fill-rose-500' : ''}`} />
+                </button>
             </div>
 
             {/* Product Content Details */}

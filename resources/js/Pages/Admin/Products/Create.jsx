@@ -46,6 +46,8 @@ export default function ProductCreate({ categories, brands, selectedCategoryId }
         cost_price: '',
         initial_stock: 0,
         allow_backorder: false,
+        has_variants: false,
+        variants: [],
         is_active: true,
         is_featured: false,
         short_description: '',
@@ -169,6 +171,8 @@ export default function ProductCreate({ categories, brands, selectedCategoryId }
             cost_price: data.cost_price || '',
             initial_stock: data.initial_stock || 0,
             allow_backorder: Boolean(data.allow_backorder),
+            has_variants: Boolean(data.has_variants),
+            variants: data.variants || [],
             is_active: Boolean(data.is_active),
             is_featured: Boolean(data.is_featured),
             short_description: data.short_description || '',
@@ -541,6 +545,135 @@ export default function ProductCreate({ categories, brands, selectedCategoryId }
                                 Allow backorders when out of stock
                             </span>
                         </label>
+                    </div>
+
+                    {/* Product Variants Matrix (Size / Color Options) */}
+                    <div className="pt-5 mt-4 border-t border-slate-100 space-y-4">
+                        <div className="flex items-center justify-between">
+                            <div>
+                                <h3 className="text-xs font-semibold text-slate-700 uppercase tracking-wider">
+                                    Product Variants (Sizes, Colors, Styles)
+                                </h3>
+                                <p className="text-xs text-slate-500">Enable if this product comes in multiple selectable options</p>
+                            </div>
+                            <label className="flex items-center gap-2 cursor-pointer">
+                                <input
+                                    type="checkbox"
+                                    checked={data.has_variants}
+                                    onChange={(e) => {
+                                        const checked = e.target.checked;
+                                        setData('has_variants', checked);
+                                        if (checked && (!data.variants || data.variants.length === 0)) {
+                                            setData('variants', [
+                                                { title: 'Standard / Default', sku: `${data.sku || 'SKU'}-S`, price: data.base_price || '', stock: 20 },
+                                            ]);
+                                        }
+                                    }}
+                                    className="rounded border-slate-300 text-indigo-600 focus:ring-indigo-500 w-4 h-4"
+                                />
+                                <span className="text-xs font-bold text-slate-800">Has Variants</span>
+                            </label>
+                        </div>
+
+                        {data.has_variants && (
+                            <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 space-y-3">
+                                <div className="flex items-center justify-between pb-2 border-b border-slate-200">
+                                    <span className="text-xs font-bold text-slate-700">Configured Variant Options</span>
+                                    <button
+                                        type="button"
+                                        onClick={() => {
+                                            const count = (data.variants || []).length + 1;
+                                            const newVariant = {
+                                                title: `Option ${count}`,
+                                                sku: `${data.sku || 'SKU'}-${count}`,
+                                                price: data.base_price || '',
+                                                stock: 10,
+                                            };
+                                            setData('variants', [...(data.variants || []), newVariant]);
+                                        }}
+                                        className="text-xs font-bold text-indigo-600 hover:text-indigo-800"
+                                    >
+                                        + Add Variant Option
+                                    </button>
+                                </div>
+
+                                <div className="space-y-2">
+                                    {(data.variants || []).map((v, vIdx) => (
+                                        <div key={vIdx} className="grid grid-cols-12 gap-2 items-center bg-white p-2.5 rounded-lg border border-slate-200 text-xs">
+                                            <div className="col-span-4">
+                                                <label className="text-[10px] text-slate-500 font-medium block">Title (e.g. Size M / Black)</label>
+                                                <input
+                                                    type="text"
+                                                    value={v.title}
+                                                    onChange={(e) => {
+                                                        const next = [...data.variants];
+                                                        next[vIdx].title = e.target.value;
+                                                        setData('variants', next);
+                                                    }}
+                                                    className="w-full px-2 py-1 text-xs border border-slate-300 rounded focus:ring-1 focus:ring-indigo-500"
+                                                    required
+                                                />
+                                            </div>
+                                            <div className="col-span-3">
+                                                <label className="text-[10px] text-slate-500 font-medium block">SKU</label>
+                                                <input
+                                                    type="text"
+                                                    value={v.sku}
+                                                    onChange={(e) => {
+                                                        const next = [...data.variants];
+                                                        next[vIdx].sku = e.target.value.toUpperCase();
+                                                        setData('variants', next);
+                                                    }}
+                                                    className="w-full px-2 py-1 text-xs uppercase font-mono border border-slate-300 rounded focus:ring-1 focus:ring-indigo-500"
+                                                    required
+                                                />
+                                            </div>
+                                            <div className="col-span-2">
+                                                <label className="text-[10px] text-slate-500 font-medium block">Price (₹)</label>
+                                                <input
+                                                    type="number"
+                                                    step="0.01"
+                                                    value={v.price}
+                                                    onChange={(e) => {
+                                                        const next = [...data.variants];
+                                                        next[vIdx].price = e.target.value;
+                                                        setData('variants', next);
+                                                    }}
+                                                    className="w-full px-2 py-1 text-xs border border-slate-300 rounded focus:ring-1 focus:ring-indigo-500"
+                                                />
+                                            </div>
+                                            <div className="col-span-2">
+                                                <label className="text-[10px] text-slate-500 font-medium block">Stock</label>
+                                                <input
+                                                    type="number"
+                                                    min="0"
+                                                    value={v.stock}
+                                                    onChange={(e) => {
+                                                        const next = [...data.variants];
+                                                        next[vIdx].stock = e.target.value;
+                                                        setData('variants', next);
+                                                    }}
+                                                    className="w-full px-2 py-1 text-xs border border-slate-300 rounded focus:ring-1 focus:ring-indigo-500"
+                                                />
+                                            </div>
+                                            <div className="col-span-1 text-right pt-3">
+                                                <button
+                                                    type="button"
+                                                    onClick={() => {
+                                                        const next = data.variants.filter((_, i) => i !== vIdx);
+                                                        setData('variants', next);
+                                                    }}
+                                                    className="text-rose-500 hover:text-rose-700 font-bold text-sm"
+                                                    title="Remove Variant"
+                                                >
+                                                    ×
+                                                </button>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
                     </div>
 
                     {/* Return, Exchange & Cash on Delivery (COD) Policies */}

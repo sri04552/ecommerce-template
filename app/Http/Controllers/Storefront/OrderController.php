@@ -12,6 +12,7 @@ use App\Models\OrderReturn;
 use App\Models\Product;
 use App\Models\ProductReview;
 use App\Models\ProductVariant;
+use App\Models\Promotion;
 use App\Services\CatalogService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
@@ -81,6 +82,7 @@ class OrderController extends Controller
             'state' => ['required', 'string', 'max:100'],
             'postal_code' => ['required', 'string', 'max:20'],
             'payment_method' => ['required', 'string', 'in:cod,prepaid'],
+            'coupon_code' => ['nullable', 'string', 'max:50'],
             'cart_items' => ['required', 'array', 'min:1', 'max:20'],
             'cart_items.*.productId' => ['required', 'integer'],
             'cart_items.*.variantId' => ['nullable'],
@@ -119,7 +121,20 @@ class OrderController extends Controller
                 $shippingTotal += ($deliveryFee * $qty);
             }
 
-            $grandTotal = $subtotal + $shippingTotal;
+            // Coupon discount calculation
+            $discountTotal = 0.00;
+            $appliedCouponCode = null;
+            if (! empty($validated['coupon_code'])) {
+                $code = strtoupper(trim($validated['coupon_code']));
+                $promo = Promotion::where('coupon_code', $code)->first();
+                if ($promo && $promo->getValidationError($subtotal) === null) {
+                    $discountTotal = $promo->calculateDiscount($subtotal);
+                    $appliedCouponCode = $promo->coupon_code;
+                    $promo->increment('used_count');
+                }
+            }
+
+            $grandTotal = max(0.00, ($subtotal + $shippingTotal) - $discountTotal);
             $orderNumber = 'ORD-'.strtoupper(Str::random(4)).'-'.date('dmy').'-'.random_int(100, 999);
 
             $shippingSnapshot = [
@@ -132,6 +147,11 @@ class OrderController extends Controller
                 'country' => 'India',
             ];
 
+            $orderNotes = 'Customer online web order';
+            if ($appliedCouponCode) {
+                $orderNotes .= " | Applied coupon: {$appliedCouponCode} (-₹{$discountTotal})";
+            }
+
             $order = Order::create([
                 'order_number' => $orderNumber,
                 'user_id' => $request->user()?->id,
@@ -141,13 +161,13 @@ class OrderController extends Controller
                 'payment_method' => $validated['payment_method'],
                 'currency' => 'INR',
                 'subtotal' => $subtotal,
-                'discount_total' => 0.00,
+                'discount_total' => $discountTotal,
                 'shipping_total' => $shippingTotal,
                 'tax_total' => 0.00,
                 'grand_total' => $grandTotal,
                 'shipping_address_snapshot' => $shippingSnapshot,
                 'billing_address_snapshot' => $shippingSnapshot,
-                'notes' => 'Customer online web order',
+                'notes' => $orderNotes,
             ]);
 
             foreach ($validated['cart_items'] as $item) {
@@ -305,6 +325,45 @@ class OrderController extends Controller
             'success' => true,
             'message' => 'Thank you for your review! Your 5-star rating and photo have been published.',
             'review' => $review,
+        ]);
+    }
+
+    /**
+     * Display or print GST-compliant Tax Invoice for an order.
+     */
+    public function invoice(Order $order): Response
+    {
+        $order->loadMissing(['items.variant.product', 'shipments']);
+
+        $storeState = config('ecommerce.store_state', 'Karnataka');
+        $storeGstin = config('ecommerce.gstin', '29AAAAA0000A1Z5');
+        $customerState = $order->shipping_address_snapshot['state'] ?? 'Karnataka';
+
+        $isIntraState = strcasecmp(trim($customerState), trim($storeState)) === 0;
+
+        // Standard GST tax rate (18% inclusive in consumer pricing)
+        $taxableAmount = round($order->subtotal / 1.18, 2);
+        $totalGst = round($order->subtotal - $taxableAmount, 2);
+
+        $taxBreakdown = [
+            'is_intra_state' => $isIntraState,
+            'taxable_amount' => $taxableAmount,
+            'total_gst' => $totalGst,
+            'cgst_rate' => $isIntraState ? 9.0 : 0.0,
+            'cgst_amount' => $isIntraState ? round($totalGst / 2, 2) : 0.0,
+            'sgst_rate' => $isIntraState ? 9.0 : 0.0,
+            'sgst_amount' => $isIntraState ? round($totalGst / 2, 2) : 0.0,
+            'igst_rate' => $isIntraState ? 0.0 : 18.0,
+            'igst_amount' => $isIntraState ? 0.0 : $totalGst,
+            'supplier_state' => $storeState,
+            'place_of_supply' => $customerState,
+            'supplier_gstin' => $storeGstin,
+        ];
+
+        return Inertia::render('Storefront/Invoice', [
+            'order' => $order,
+            'taxBreakdown' => $taxBreakdown,
+            'categories' => $this->catalogService->getVisibleCategories(),
         ]);
     }
 }

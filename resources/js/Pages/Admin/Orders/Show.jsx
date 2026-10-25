@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link, useForm, Head } from '@inertiajs/react';
+import { Link, useForm, Head, router } from '@inertiajs/react';
 import AdminLayout from '@/Layouts/AdminLayout';
 import {
     ArrowLeft,
@@ -18,6 +18,8 @@ import {
     Building2,
     QrCode,
     X,
+    Printer,
+    Send,
 } from 'lucide-react';
 
 export default function OrderShow({ order, returns }) {
@@ -115,13 +117,23 @@ export default function OrderShow({ order, returns }) {
             title={`Order ${order.order_number}`}
             subtitle="View customer order items, update courier tracking and manage return requests"
             actions={
-                <Link
-                    href="/admin/orders"
-                    className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-slate-600 bg-white border border-slate-200 rounded-lg hover:bg-slate-50 transition-colors shadow-sm"
-                >
-                    <ArrowLeft className="w-4 h-4" />
-                    <span>Back to Orders</span>
-                </Link>
+                <div className="flex items-center gap-2">
+                    <a
+                        href={`/orders/${order.id}/invoice`}
+                        target="_blank"
+                        className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-slate-700 bg-white border border-slate-300 rounded-lg hover:bg-slate-50 transition-colors shadow-2xs"
+                    >
+                        <Printer className="w-3.5 h-3.5 text-slate-500" />
+                        <span>Print Tax Invoice</span>
+                    </a>
+                    <Link
+                        href="/admin/orders"
+                        className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-slate-600 bg-white border border-slate-200 rounded-lg hover:bg-slate-50 transition-colors shadow-sm"
+                    >
+                        <ArrowLeft className="w-4 h-4" />
+                        <span>Back to Orders</span>
+                    </Link>
+                </div>
             }
         >
             <div className="space-y-6">
@@ -392,6 +404,21 @@ export default function OrderShow({ order, returns }) {
                                 <Truck className="w-4 h-4 text-indigo-600" />
                                 <span>Update Order Status & Tracking</span>
                             </h3>
+
+                            {/* Shiprocket Automated Courier Dispatch */}
+                            <div className="mb-4 p-3.5 bg-indigo-50 border border-indigo-100 rounded-xl flex items-center justify-between gap-3">
+                                <div>
+                                    <p className="text-xs font-bold text-indigo-950">Shiprocket Courier Partner</p>
+                                    <p className="text-[11px] text-indigo-700 mt-0.5">Auto-assign courier partner & generate live AWB</p>
+                                </div>
+                                <button
+                                    type="button"
+                                    onClick={() => router.post(`/admin/orders/${order.id}/generate-shiprocket-awb`, {}, { preserveScroll: true })}
+                                    className="px-3 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs rounded-lg shadow-xs transition-colors shrink-0"
+                                >
+                                    Generate AWB
+                                </button>
+                            </div>
 
                             <form onSubmit={handleStatusUpdate} className="space-y-4">
                                 <div>

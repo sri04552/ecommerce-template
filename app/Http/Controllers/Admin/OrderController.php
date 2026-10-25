@@ -8,6 +8,8 @@ use App\Models\Order;
 use App\Models\OrderHistory;
 use App\Models\OrderReturn;
 use App\Models\Shipment;
+use App\Services\Shipping\ShiprocketService;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -188,5 +190,47 @@ class OrderController extends Controller
         }
 
         return back()->with('success', "Refund of ₹{$validated['refund_amount']} recorded successfully. Customer notified via email with UTR: {$validated['refund_transaction_id']}.");
+    }
+
+    /**
+     * Generate 1-Click AWB Tracking with Shiprocket.
+     */
+    public function generateShiprocketAwb(Request $request, Order $order, ShiprocketService $shiprocket): RedirectResponse
+    {
+        $res = $shiprocket->createAndAssignAwb($order);
+
+        if (! empty($res['success'])) {
+            $msg = "AWB {$res['awb']} generated via {$res['carrier']} successfully.";
+            if (! empty($res['is_simulated'])) {
+                $msg .= ' (Sandbox simulated tracking)';
+            }
+
+            return back()->with('success', $msg);
+        }
+
+        return back()->with('error', $res['message'] ?? 'Failed to generate courier AWB.');
+    }
+
+    /**
+     * Automated Webhook handler for Courier tracking status updates.
+     */
+    public function trackingWebhook(Request $request): JsonResponse
+    {
+        $awb = $request->input('awb') ?? $request->input('awb_code');
+        $status = strtoupper(trim((string) $request->input('current_status', '')));
+
+        if (! empty($awb)) {
+            $shipment = Shipment::where('tracking_number', $awb)->first();
+            if ($shipment) {
+                if (in_array($status, ['DELIVERED', 'DLVD'])) {
+                    $shipment->update(['delivered_at' => now()]);
+                    $shipment->order->update(['status' => 'delivered']);
+                } elseif (in_array($status, ['OUT_FOR_DELIVERY', 'OFD'])) {
+                    $shipment->order->update(['status' => 'out_for_delivery']);
+                }
+            }
+        }
+
+        return response()->json(['status' => 'ok']);
     }
 }
