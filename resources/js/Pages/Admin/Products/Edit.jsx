@@ -44,7 +44,7 @@ export default function ProductEdit({ product, categories, brands, hasOrders = f
         sale_price: product.sale_price || '',
         delivery_fee: product.delivery_fee !== null && product.delivery_fee !== undefined ? product.delivery_fee : '',
         has_return_exchange: product.has_return_exchange !== undefined ? Boolean(product.has_return_exchange) : true,
-        return_window_days: product.return_window_days ?? 7,
+        return_window_days: product.return_window_days ?? 3,
         cod_available: product.cod_available !== undefined ? Boolean(product.cod_available) : true,
         discount_percentage: product.discount_percentage || '',
         offer_tag: initialOfferTag,
@@ -566,10 +566,9 @@ export default function ProductEdit({ product, categories, brands, hasOrders = f
                                             onChange={(e) => setData('return_window_days', parseInt(e.target.value, 10))}
                                             className="w-full px-2.5 py-1.5 text-xs bg-white border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 disabled:opacity-60"
                                         >
+                                            <option value={3}>3 Days Return & Exchange (Recommended)</option>
                                             <option value={7}>7 Days Return & Exchange</option>
                                             <option value={10}>10 Days Return & Exchange</option>
-                                            <option value={14}>14 Days Return & Exchange</option>
-                                            <option value={30}>30 Days Return & Exchange</option>
                                         </select>
                                     </div>
                                 )}

@@ -483,7 +483,7 @@ export default function CartIndex({ categories = [] }) {
                                 </div>
                                 <div className="flex items-center gap-2">
                                     <RotateCcw className="w-4 h-4 text-brand-primary shrink-0" />
-                                    <span>30-Day Hassle-Free Returns Guarantee</span>
+                                    <span>3-Day Hassle-Free Returns Guarantee</span>
                                 </div>
                                 <div className="flex items-center gap-2">
                                     <ShieldCheck className="w-4 h-4 text-brand-primary shrink-0" />

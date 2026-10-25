@@ -19,6 +19,9 @@ class OrderReturn extends Model
         'details',
         'status',
         'refund_method',
+        'refund_amount',
+        'refund_transaction_id',
+        'refunded_at',
         'payout_details',
         'admin_notes',
     ];
@@ -27,6 +30,8 @@ class OrderReturn extends Model
     {
         return [
             'payout_details' => 'array',
+            'refund_amount' => 'decimal:2',
+            'refunded_at' => 'datetime',
         ];
     }
 

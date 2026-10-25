@@ -110,6 +110,19 @@ export default function CustomerOrders({ orders, categories = [] }) {
                                 ))}
                             </div>
 
+                            {/* Refund Paid Badge / Notice */}
+                            {order.returns?.[0]?.status === 'refunded' && (
+                                <div className="p-2.5 rounded-lg bg-emerald-50 border border-emerald-200 text-xs text-emerald-900 flex items-center justify-between">
+                                    <div className="flex items-center gap-1.5 font-bold">
+                                        <CheckCircle2 className="w-4 h-4 text-emerald-600" />
+                                        <span>Refund Paid: {currency}{Number(order.returns[0].refund_amount).toLocaleString('en-IN', { minimumFractionDigits: 2 })}</span>
+                                    </div>
+                                    <span className="font-mono text-[11px] text-emerald-800 font-bold">
+                                        UTR: {order.returns[0].refund_transaction_id}
+                                    </span>
+                                </div>
+                            )}
+
                             {/* Payment and Courier Footer */}
                             <div className="pt-3 border-t border-slate-100 flex flex-wrap items-center justify-between text-xs text-slate-500 gap-2">
                                 <div className="flex items-center gap-2">

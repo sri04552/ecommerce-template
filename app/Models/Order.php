@@ -88,4 +88,9 @@ class Order extends Model
     {
         return $this->belongsTo(ShippingMethod::class);
     }
+
+    public function returns(): HasMany
+    {
+        return $this->hasMany(OrderReturn::class)->orderBy('created_at', 'desc');
+    }
 }

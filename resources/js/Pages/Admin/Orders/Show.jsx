@@ -17,6 +17,7 @@ import {
     AlertCircle,
     Building2,
     QrCode,
+    X,
 } from 'lucide-react';
 
 export default function OrderShow({ order, returns }) {
@@ -29,6 +30,37 @@ export default function OrderShow({ order, returns }) {
     });
 
     const [returnProcessingId, setReturnProcessingId] = useState(null);
+    const [refundModalReturn, setRefundModalReturn] = useState(null);
+    const [refundAmount, setRefundAmount] = useState('');
+    const [refundUtr, setRefundUtr] = useState('');
+    const [refundNote, setRefundNote] = useState('');
+    const [refundSubmitting, setRefundSubmitting] = useState(false);
+
+    const openRefundModal = (ret) => {
+        setRefundModalReturn(ret);
+        setRefundAmount(ret.item?.subtotal || order.total_amount);
+        setRefundUtr('');
+        setRefundNote('');
+    };
+
+    const handleProcessRefund = (e) => {
+        e.preventDefault();
+        if (!refundModalReturn || !refundUtr.trim()) return;
+        setRefundSubmitting(true);
+
+        post(`/admin/returns/${refundModalReturn.id}/process-refund`, {
+            data: {
+                refund_amount: parseFloat(refundAmount),
+                refund_transaction_id: refundUtr.trim(),
+                admin_notes: refundNote.trim() || undefined,
+            },
+            preserveScroll: true,
+            onFinish: () => {
+                setRefundSubmitting(false);
+                setRefundModalReturn(null);
+            },
+        });
+    };
 
     const handleStatusUpdate = (e) => {
         e.preventDefault();
@@ -267,38 +299,57 @@ export default function OrderShow({ order, returns }) {
                                                 </div>
                                             )}
 
-                                            {/* Admin Actions */}
-                                            {ret.status === 'requested' && (
-                                                <div className="flex items-center gap-2 pt-2">
-                                                    <button
-                                                        type="button"
-                                                        onClick={() => handleReturnStatusUpdate(ret.id, 'approved')}
-                                                        disabled={returnProcessingId === ret.id}
-                                                        className="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-xs font-semibold transition-colors disabled:opacity-50"
-                                                    >
-                                                        Approve Return
-                                                    </button>
-                                                    <button
-                                                        type="button"
-                                                        onClick={() => handleReturnStatusUpdate(ret.id, 'rejected')}
-                                                        disabled={returnProcessingId === ret.id}
-                                                        className="px-3 py-1.5 bg-red-600 hover:bg-red-700 text-white rounded-lg text-xs font-semibold transition-colors disabled:opacity-50"
-                                                    >
-                                                        Reject
-                                                    </button>
+                                            {/* Paid Refund Status Display */}
+                                            {ret.status === 'refunded' ? (
+                                                <div className="p-3 bg-emerald-50 border border-emerald-200 rounded-lg text-xs space-y-1 text-emerald-950">
+                                                    <div className="flex items-center gap-1.5 font-bold text-emerald-800">
+                                                        <CheckCircle2 className="w-4 h-4 text-emerald-600" />
+                                                        <span>Refund Paid & Verified: ₹{Number(ret.refund_amount).toLocaleString('en-IN', { minimumFractionDigits: 2 })}</span>
+                                                    </div>
+                                                    <p className="font-mono text-xs text-emerald-800">
+                                                        Bank UTR / UPI Ref: <span className="font-bold">{ret.refund_transaction_id}</span>
+                                                    </p>
+                                                    {ret.refunded_at && (
+                                                        <p className="text-[11px] text-emerald-600">
+                                                            Processed on {new Date(ret.refunded_at).toLocaleString('en-IN')}
+                                                        </p>
+                                                    )}
+                                                    <p className="text-[10px] text-emerald-700 italic">
+                                                        Automated notification sent to {order.customer_email}.
+                                                    </p>
                                                 </div>
-                                            )}
-
-                                            {ret.status === 'approved' && (
-                                                <div className="pt-2">
+                                            ) : (
+                                                /* Admin Actions for Pending / Approved returns */
+                                                <div className="flex flex-wrap items-center gap-2 pt-2 border-t border-slate-100">
                                                     <button
                                                         type="button"
-                                                        onClick={() => handleReturnStatusUpdate(ret.id, 'completed')}
-                                                        disabled={returnProcessingId === ret.id}
-                                                        className="px-3 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-xs font-semibold transition-colors disabled:opacity-50"
+                                                        onClick={() => openRefundModal(ret)}
+                                                        className="px-3.5 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-xs font-bold transition-colors shadow-xs flex items-center gap-1.5"
                                                     >
-                                                        Mark Refund / Exchange Complete
+                                                        <Banknote className="w-3.5 h-3.5" />
+                                                        <span>Issue & Record Refund (Paid via UPI/Bank)</span>
                                                     </button>
+
+                                                    {ret.status === 'requested' && (
+                                                        <>
+                                                            <button
+                                                                type="button"
+                                                                onClick={() => handleReturnStatusUpdate(ret.id, 'approved')}
+                                                                disabled={returnProcessingId === ret.id}
+                                                                className="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-xs font-semibold transition-colors disabled:opacity-50"
+                                                            >
+                                                                Approve Return
+                                                            </button>
+                                                            <button
+                                                                type="button"
+                                                                onClick={() => handleReturnStatusUpdate(ret.id, 'rejected')}
+                                                                disabled={returnProcessingId === ret.id}
+                                                                className="px-3 py-1.5 bg-red-600 hover:bg-red-700 text-white rounded-lg text-xs font-semibold transition-colors disabled:opacity-50"
+                                                            >
+                                                                Reject
+                                                            </button>
+                                                        </>
+                                                    )}
                                                 </div>
                                             )}
                                         </div>
@@ -452,6 +503,104 @@ export default function OrderShow({ order, returns }) {
                         </div>
                     </div>
                 </div>
+
+                {/* Process Refund Modal */}
+                {refundModalReturn && (
+                    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs">
+                        <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full p-6">
+                            <div className="flex items-center justify-between pb-4 border-b border-slate-100">
+                                <div>
+                                    <h3 className="font-bold text-base text-slate-900">Record & Issue Customer Refund</h3>
+                                    <p className="text-xs text-slate-500">Order #{order.order_number}</p>
+                                </div>
+                                <button
+                                    type="button"
+                                    onClick={() => setRefundModalReturn(null)}
+                                    className="p-1 rounded-lg text-slate-400 hover:text-slate-600 hover:bg-slate-100"
+                                >
+                                    <X className="w-5 h-5" />
+                                </button>
+                            </div>
+
+                            <form onSubmit={handleProcessRefund} className="mt-4 space-y-4">
+                                <div className="p-3 bg-slate-50 rounded-xl border border-slate-200 text-xs space-y-1">
+                                    <span className="font-bold text-slate-700 block">Transfer Destination:</span>
+                                    {refundModalReturn.refund_method === 'upi' ? (
+                                        <p className="font-mono text-indigo-700 font-bold">UPI: {refundModalReturn.payout_details?.upi_id}</p>
+                                    ) : (
+                                        <div className="text-slate-600 space-y-0.5">
+                                            <p>A/C: <span className="font-mono font-bold text-slate-900">{refundModalReturn.payout_details?.account_number}</span></p>
+                                            <p>IFSC: <span className="font-mono font-bold text-slate-900">{refundModalReturn.payout_details?.ifsc_code}</span> ({refundModalReturn.payout_details?.bank_name})</p>
+                                            <p>Holder: {refundModalReturn.payout_details?.account_holder}</p>
+                                        </div>
+                                    )}
+                                </div>
+
+                                <div>
+                                    <label className="block text-xs font-semibold text-slate-700 mb-1">
+                                        Refund Amount (₹) *
+                                    </label>
+                                    <input
+                                        type="number"
+                                        step="0.01"
+                                        value={refundAmount}
+                                        onChange={(e) => setRefundAmount(e.target.value)}
+                                        required
+                                        className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm font-bold focus:ring-2 focus:ring-indigo-500"
+                                    />
+                                </div>
+
+                                <div>
+                                    <label className="block text-xs font-semibold text-slate-700 mb-1">
+                                        Bank UTR / UPI Transaction Reference Number *
+                                    </label>
+                                    <input
+                                        type="text"
+                                        value={refundUtr}
+                                        onChange={(e) => setRefundUtr(e.target.value)}
+                                        required
+                                        placeholder="e.g. UPI/4294829104 or HDFC0001928374"
+                                        className="w-full px-3 py-2 border border-slate-200 rounded-lg text-xs font-mono focus:ring-2 focus:ring-indigo-500"
+                                    />
+                                    <p className="text-[11px] text-slate-400 mt-1">
+                                        This UTR number will be sent to the customer via email and displayed on their tracking screen so they can trace the bank credit.
+                                    </p>
+                                </div>
+
+                                <div>
+                                    <label className="block text-xs font-semibold text-slate-700 mb-1">
+                                        Admin Notes / Remarks (Optional)
+                                    </label>
+                                    <textarea
+                                        value={refundNote}
+                                        onChange={(e) => setRefundNote(e.target.value)}
+                                        rows={2}
+                                        placeholder="Optional audit remarks..."
+                                        className="w-full px-3 py-2 border border-slate-200 rounded-lg text-xs"
+                                    />
+                                </div>
+
+                                <div className="flex items-center justify-end gap-2 pt-2 border-t border-slate-100">
+                                    <button
+                                        type="button"
+                                        onClick={() => setRefundModalReturn(null)}
+                                        className="px-4 py-2 border border-slate-200 text-slate-600 rounded-lg text-xs font-semibold hover:bg-slate-50"
+                                    >
+                                        Cancel
+                                    </button>
+                                    <button
+                                        type="submit"
+                                        disabled={refundSubmitting}
+                                        className="px-5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-xs font-bold transition-colors shadow-sm disabled:opacity-50 flex items-center gap-1.5"
+                                    >
+                                        <CheckCircle2 className="w-4 h-4" />
+                                        <span>{refundSubmitting ? 'Recording & Notifying...' : 'Confirm Paid & Send Receipt'}</span>
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                )}
             </div>
         </AdminLayout>
     );

@@ -39,7 +39,7 @@ class OrderController extends Controller
 
         if (! empty($orderNumber)) {
             $order = Order::where('order_number', $orderNumber)
-                ->with(['items.variant.product', 'shipments', 'histories'])
+                ->with(['items.variant.product', 'shipments', 'histories', 'returns.item'])
                 ->first();
         }
 
@@ -57,7 +57,7 @@ class OrderController extends Controller
     {
         $user = $request->user();
         $orders = Order::where('user_id', $user->id)
-            ->with(['items', 'shipments', 'histories'])
+            ->with(['items', 'shipments', 'histories', 'returns.item'])
             ->latest()
             ->paginate(10);
 

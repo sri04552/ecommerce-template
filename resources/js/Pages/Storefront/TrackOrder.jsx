@@ -269,6 +269,79 @@ export default function TrackOrder({ order, queriedOrderNumber, categories = [] 
                             )}
                         </div>
 
+                        {/* Processed Refunds & Return Status Card */}
+                        {order.returns && order.returns.length > 0 && (
+                            <div className="space-y-3">
+                                {order.returns.map((ret) => (
+                                    <div
+                                        key={ret.id}
+                                        className={`rounded-2xl p-5 border shadow-xs ${
+                                            ret.status === 'refunded'
+                                                ? 'bg-emerald-50/90 border-emerald-300'
+                                                : 'bg-amber-50/80 border-amber-200'
+                                        }`}
+                                    >
+                                        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-3 border-b border-black/5">
+                                            <div className="flex items-center gap-2">
+                                                {ret.status === 'refunded' ? (
+                                                    <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-emerald-600 text-white shadow-xs">
+                                                        <CheckCircle2 className="w-3.5 h-3.5" />
+                                                        <span>Refund Paid & Transferred</span>
+                                                    </span>
+                                                ) : (
+                                                    <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-amber-600 text-white shadow-xs">
+                                                        <RotateCcw className="w-3.5 h-3.5" />
+                                                        <span className="capitalize">{ret.type} {ret.status}</span>
+                                                    </span>
+                                                )}
+                                                <span className="text-xs text-slate-500">
+                                                    Requested on {new Date(ret.created_at).toLocaleDateString('en-IN')}
+                                                </span>
+                                            </div>
+
+                                            {ret.status === 'refunded' && (
+                                                <div className="text-right">
+                                                    <span className="text-[11px] text-emerald-800 font-semibold uppercase">Amount Paid:</span>
+                                                    <span className="text-base sm:text-lg font-black text-emerald-950 ml-1">
+                                                        {currency}{Number(ret.refund_amount).toLocaleString('en-IN', { minimumFractionDigits: 2 })}
+                                                    </span>
+                                                </div>
+                                            )}
+                                        </div>
+
+                                        {ret.status === 'refunded' ? (
+                                            <div className="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+                                                <div className="bg-white p-3 rounded-xl border border-emerald-200 space-y-1">
+                                                    <p className="text-[11px] text-slate-500 font-medium">Bank UTR / UPI Ref ID</p>
+                                                    <p className="font-mono text-xs sm:text-sm font-bold text-slate-900 select-all">{ret.refund_transaction_id}</p>
+                                                    <p className="text-[10px] text-slate-400">Verifiable in your bank statement or UPI app</p>
+                                                </div>
+                                                <div className="bg-white p-3 rounded-xl border border-emerald-200 space-y-1">
+                                                    <p className="text-[11px] text-slate-500 font-medium">Credited To Account</p>
+                                                    {ret.refund_method === 'upi' ? (
+                                                        <p className="font-mono font-bold text-indigo-700">{ret.payout_details?.upi_id}</p>
+                                                    ) : (
+                                                        <p className="font-bold text-slate-800">
+                                                            {ret.payout_details?.bank_name} &bull; A/C ending in {ret.payout_details?.account_number ? String(ret.payout_details.account_number).slice(-4) : '****'}
+                                                        </p>
+                                                    )}
+                                                    {ret.refunded_at && (
+                                                        <p className="text-[10px] text-slate-400">
+                                                            Transferred at {new Date(ret.refunded_at).toLocaleString('en-IN')}
+                                                        </p>
+                                                    )}
+                                                </div>
+                                            </div>
+                                        ) : (
+                                            <p className="text-xs text-amber-900 mt-2">
+                                                Reason: <span className="font-semibold">{ret.reason}</span>. Your return pickup is in progress. Refund will be credited to your {ret.refund_method?.toUpperCase()} account.
+                                            </p>
+                                        )}
+                                    </div>
+                                ))}
+                            </div>
+                        )}
+
                         {/* Order Items & Customer Details Grid */}
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                             {/* Items List (2 cols) */}
@@ -469,7 +542,7 @@ export default function TrackOrder({ order, queriedOrderNumber, categories = [] 
                                             <span className="text-[10px] text-indigo-600 font-semibold uppercase">100% Secure</span>
                                         </div>
                                         <p className="text-[11px] text-slate-500">
-                                            Please provide your UPI ID or Bank Account details where the refund amount should be deposited upon pickup.
+                                            In compliance with our 3-Day Return Policy & Indian Consumer Protection Rules: provide your UPI ID or Bank Account where the refund should be deposited. A bank UTR reference receipt will be emailed to you immediately upon transfer.
                                         </p>
 
                                         <div className="flex gap-4">

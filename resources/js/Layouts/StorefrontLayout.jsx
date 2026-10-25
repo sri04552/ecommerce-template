@@ -276,7 +276,7 @@ export default function StorefrontLayout({ children, categories = [] }) {
                                 <div className="w-10 h-10 rounded-full bg-indigo-950/80 text-indigo-400 border border-indigo-800/60 flex items-center justify-center">
                                     <RotateCcw className="w-5 h-5" />
                                 </div>
-                                <span className="text-xs font-bold text-white uppercase tracking-wider">Easy Returns</span>
+                                <span className="text-xs font-bold text-white uppercase tracking-wider">3-Day Easy Returns</span>
                                 <span className="text-[11px] text-slate-400">Instant UPI & bank account refunds</span>
                             </div>
 

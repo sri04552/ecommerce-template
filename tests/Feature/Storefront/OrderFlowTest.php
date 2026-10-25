@@ -2,11 +2,15 @@
 
 namespace Tests\Feature\Storefront;
 
+use App\Mail\CustomerRefundProcessedMail;
 use App\Models\Category;
 use App\Models\Order;
 use App\Models\OrderItem;
+use App\Models\OrderReturn;
 use App\Models\Product;
 use App\Models\ProductVariant;
+use App\Models\Role;
+use App\Models\User;
 use Database\Seeders\ProductionCleanSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Mail;
@@ -256,5 +260,79 @@ class OrderFlowTest extends TestCase
             'order_id' => $order->id,
             'refund_method' => 'upi',
         ]);
+    }
+
+    public function test_admin_can_process_refund_with_bank_utr_and_notify_customer(): void
+    {
+        $adminRole = Role::where('name', 'admin')->first();
+        $admin = User::factory()->create();
+        $admin->roles()->attach($adminRole);
+
+        $order = Order::create([
+            'order_number' => 'ORD-REF-778899',
+            'customer_email' => 'customer@example.com',
+            'customer_phone' => '9876543210',
+            'status' => 'delivered',
+            'payment_method' => 'cod',
+            'currency' => 'INR',
+            'subtotal' => 1499.00,
+            'discount_total' => 0,
+            'shipping_total' => 0,
+            'tax_total' => 0,
+            'grand_total' => 1499.00,
+            'shipping_address_snapshot' => [
+                'name' => 'Suresh Reddy',
+                'street' => 'Banjara Hills',
+                'city' => 'Hyderabad',
+                'state' => 'Telangana',
+                'postal_code' => '500034',
+            ],
+            'billing_address_snapshot' => [
+                'street' => 'Banjara Hills',
+                'city' => 'Hyderabad',
+                'state' => 'Telangana',
+                'postal_code' => '500034',
+            ],
+        ]);
+
+        $item = OrderItem::create([
+            'order_id' => $order->id,
+            'product_name_snapshot' => 'Premium Silk Kurta',
+            'sku_snapshot' => 'KURTA-01',
+            'unit_price' => 1499.00,
+            'quantity' => 1,
+            'subtotal' => 1499.00,
+            'tax_amount' => 0,
+            'total' => 1499.00,
+        ]);
+
+        $return = OrderReturn::create([
+            'order_id' => $order->id,
+            'order_item_id' => $item->id,
+            'type' => 'return',
+            'reason' => 'Defective stitching',
+            'status' => 'requested',
+            'refund_method' => 'upi',
+            'payout_details' => ['upi_id' => 'suresh@icici'],
+        ]);
+
+        $response = $this->actingAs($admin)->post("/admin/returns/{$return->id}/process-refund", [
+            'refund_amount' => 1499.00,
+            'refund_transaction_id' => 'UPI/4294829104',
+            'admin_notes' => 'Returned item verified, amount sent via PhonePe UPI',
+        ]);
+
+        $response->assertRedirect();
+        $response->assertSessionHas('success');
+
+        $this->assertDatabaseHas('order_returns', [
+            'id' => $return->id,
+            'status' => 'refunded',
+            'refund_transaction_id' => 'UPI/4294829104',
+        ]);
+
+        Mail::assertSent(CustomerRefundProcessedMail::class, function ($mail) use ($order) {
+            return $mail->hasTo($order->customer_email);
+        });
     }
 }

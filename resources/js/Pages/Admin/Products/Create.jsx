@@ -39,7 +39,7 @@ export default function ProductCreate({ categories, brands, selectedCategoryId }
         sale_price: '',
         delivery_fee: '',
         has_return_exchange: true,
-        return_window_days: 7,
+        return_window_days: 3,
         cod_available: true,
         discount_percentage: '',
         offer_tag: '',
@@ -548,10 +548,9 @@ export default function ProductCreate({ categories, brands, selectedCategoryId }
                                             onChange={(e) => setData('return_window_days', parseInt(e.target.value, 10))}
                                             className="w-full px-2.5 py-1.5 text-xs bg-white border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
                                         >
+                                            <option value={3}>3 Days Return & Exchange (Recommended)</option>
                                             <option value={7}>7 Days Return & Exchange</option>
                                             <option value={10}>10 Days Return & Exchange</option>
-                                            <option value={14}>14 Days Return & Exchange</option>
-                                            <option value={30}>30 Days Return & Exchange</option>
                                         </select>
                                     </div>
                                 )}

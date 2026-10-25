@@ -138,4 +138,5 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
     Route::get('/orders/{order}', [AdminOrderController::class, 'show'])->name('orders.show');
     Route::post('/orders/{order}/update-status', [AdminOrderController::class, 'updateStatus'])->name('orders.update-status');
     Route::post('/returns/{return}/update-status', [AdminOrderController::class, 'updateReturn'])->name('returns.update-status');
+    Route::post('/returns/{return}/process-refund', [AdminOrderController::class, 'processRefund'])->name('returns.process-refund');
 });
