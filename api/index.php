@@ -43,6 +43,17 @@ $dbConnection = getenv('DB_CONNECTION') ?: '';
 $dbHost = getenv('DB_HOST') ?: '';
 $hasPersistentDb = in_array($dbConnection, ['mysql', 'mariadb'], true) && ! empty($dbHost);
 
+if (! $hasPersistentDb) {
+    $sqliteDb = $tmp.'/database.sqlite';
+    if (! file_exists($sqliteDb)) {
+        touch($sqliteDb);
+    }
+    putenv('DB_CONNECTION=sqlite');
+    putenv('DB_DATABASE='.$sqliteDb);
+    $_ENV['DB_CONNECTION'] = 'sqlite';
+    $_ENV['DB_DATABASE'] = $sqliteDb;
+}
+
 $requestUri = $_SERVER['REQUEST_URI'] ?? '/';
 $requestPath = parse_url($requestUri, PHP_URL_PATH) ?: '/';
 
@@ -105,16 +116,14 @@ $app = require_once __DIR__.'/../bootstrap/app.php';
 $consoleKernel = $app->make(ConsoleKernel::class);
 $consoleKernel->bootstrap();
 
-// If persistent MySQL database is connected, ensure schema is up to date (safe, non-destructive)
-if ($hasPersistentDb) {
-    try {
-        if (! Schema::hasTable('store_settings')) {
-            Artisan::call('migrate', ['--force' => true]);
-            Artisan::call('db:seed', ['--class' => 'Database\\Seeders\\ProductionCleanSeeder', '--force' => true]);
-        }
-    } catch (Throwable $e) {
-        error_log('Persistent database setup: '.$e->getMessage());
+// Ensure baseline schema is initialized (non-destructive)
+try {
+    if (! Schema::hasTable('store_settings')) {
+        Artisan::call('migrate', ['--force' => true]);
+        Artisan::call('db:seed', ['--class' => 'Database\\Seeders\\ProductionCleanSeeder', '--force' => true]);
     }
+} catch (Throwable $e) {
+    error_log('Database setup: '.$e->getMessage());
 }
 
 $app->handleRequest(Request::capture());

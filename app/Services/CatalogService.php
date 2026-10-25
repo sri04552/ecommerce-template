@@ -19,13 +19,17 @@ class CatalogService
      */
     public function getFeaturedProducts(int $limit = 8): Collection
     {
-        return Product::query()
-            ->where('is_active', true)
-            ->where('is_featured', true)
-            ->with(['category', 'primaryImage', 'images'])
-            ->latest()
-            ->take($limit)
-            ->get();
+        try {
+            return Product::query()
+                ->where('is_active', true)
+                ->where('is_featured', true)
+                ->with(['category', 'primaryImage', 'images'])
+                ->latest()
+                ->take($limit)
+                ->get();
+        } catch (\Throwable $e) {
+            return new Collection;
+        }
     }
 
     /**
@@ -35,12 +39,16 @@ class CatalogService
      */
     public function getNewArrivals(int $limit = 8): Collection
     {
-        return Product::query()
-            ->where('is_active', true)
-            ->with(['category', 'primaryImage', 'images'])
-            ->latest()
-            ->take($limit)
-            ->get();
+        try {
+            return Product::query()
+                ->where('is_active', true)
+                ->with(['category', 'primaryImage', 'images'])
+                ->latest()
+                ->take($limit)
+                ->get();
+        } catch (\Throwable $e) {
+            return new Collection;
+        }
     }
 
     /**
@@ -50,13 +58,17 @@ class CatalogService
      */
     public function getVisibleCategories(): Collection
     {
-        return Category::query()
-            ->where('is_active', true)
-            ->withCount(['products' => function (Builder $query) {
-                $query->where('is_active', true);
-            }])
-            ->orderBy('sort_order')
-            ->get();
+        try {
+            return Category::query()
+                ->where('is_active', true)
+                ->withCount(['products' => function (Builder $query) {
+                    $query->where('is_active', true);
+                }])
+                ->orderBy('sort_order')
+                ->get();
+        } catch (\Throwable $e) {
+            return new Collection;
+        }
     }
 
     /**
@@ -69,41 +81,51 @@ class CatalogService
         ?bool $featuredOnly = false,
         int $perPage = 12
     ): LengthAwarePaginator {
-        $query = Product::query()
-            ->where('is_active', true)
-            ->with(['category', 'primaryImage', 'images', 'variants.inventoryLevel']);
+        try {
+            $query = Product::query()
+                ->where('is_active', true)
+                ->with(['category', 'primaryImage', 'images', 'variants.inventoryLevel']);
 
-        if (! empty($search)) {
-            $term = trim($search);
-            $query->where(function (Builder $q) use ($term) {
-                $q->where('name', 'like', "%{$term}%")
-                    ->orWhere('short_description', 'like', "%{$term}%")
-                    ->orWhere('description', 'like', "%{$term}%")
-                    ->orWhere('sku', 'like', "%{$term}%");
-            });
+            if (! empty($search)) {
+                $term = trim($search);
+                $query->where(function (Builder $q) use ($term) {
+                    $q->where('name', 'like', "%{$term}%")
+                        ->orWhere('short_description', 'like', "%{$term}%")
+                        ->orWhere('description', 'like', "%{$term}%")
+                        ->orWhere('sku', 'like', "%{$term}%");
+                });
+            }
+
+            if (! empty($categoryId)) {
+                // Include products in this category and all its children
+                $categoryIds = Category::where('id', $categoryId)
+                    ->orWhere('parent_id', $categoryId)
+                    ->pluck('id');
+                $query->whereIn('category_id', $categoryIds);
+            }
+
+            if ($featuredOnly) {
+                $query->where('is_featured', true);
+            }
+
+            match ($sort) {
+                'price_asc' => $query->orderBy('base_price', 'asc'),
+                'price_desc' => $query->orderBy('base_price', 'desc'),
+                'name_asc' => $query->orderBy('name', 'asc'),
+                'name_desc' => $query->orderBy('name', 'desc'),
+                default => $query->latest(),
+            };
+
+            return $query->paginate($perPage)->withQueryString();
+        } catch (\Throwable $e) {
+            return new \Illuminate\Pagination\LengthAwarePaginator(
+                [],
+                0,
+                $perPage,
+                1,
+                ['path' => request()->url(), 'query' => request()->query()]
+            );
         }
-
-        if (! empty($categoryId)) {
-            // Include products in this category and all its children
-            $categoryIds = Category::where('id', $categoryId)
-                ->orWhere('parent_id', $categoryId)
-                ->pluck('id');
-            $query->whereIn('category_id', $categoryIds);
-        }
-
-        if ($featuredOnly) {
-            $query->where('is_featured', true);
-        }
-
-        match ($sort) {
-            'price_asc' => $query->orderBy('base_price', 'asc'),
-            'price_desc' => $query->orderBy('base_price', 'desc'),
-            'name_asc' => $query->orderBy('name', 'asc'),
-            'name_desc' => $query->orderBy('name', 'desc'),
-            default => $query->latest(),
-        };
-
-        return $query->paginate($perPage)->withQueryString();
     }
 
     /**
