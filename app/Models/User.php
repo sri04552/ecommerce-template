@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Database\Factories\UserFactory;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -10,7 +11,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
-class User extends Authenticatable
+class User extends Authenticatable implements MustVerifyEmail
 {
     /** @use HasFactory<UserFactory> */
     use HasFactory, Notifiable;
@@ -69,6 +70,30 @@ class User extends Authenticatable
     public function hasRole(string $roleName): bool
     {
         return $this->roles->contains('name', $roleName);
+    }
+
+    /**
+     * Check if the user has a verified phone number.
+     */
+    public function hasVerifiedPhone(): bool
+    {
+        return ! empty($this->phone) && $this->phone_verified_at !== null;
+    }
+
+    /**
+     * Check if the user has the customer role.
+     */
+    public function isCustomer(): bool
+    {
+        return $this->hasRole('customer');
+    }
+
+    /**
+     * Phone verification codes requested by the user.
+     */
+    public function phoneVerificationCodes(): HasMany
+    {
+        return $this->hasMany(PhoneVerificationCode::class);
     }
 
     /**

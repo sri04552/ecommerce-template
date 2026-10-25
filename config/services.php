@@ -35,4 +35,23 @@ return [
         ],
     ],
 
+    'google' => [
+        'client_id' => env('GOOGLE_CLIENT_ID'),
+        'client_secret' => env('GOOGLE_CLIENT_SECRET'),
+        'redirect' => env('GOOGLE_REDIRECT_URI', '/auth/google/callback'),
+    ],
+
+    'sms' => [
+        'default_provider' => env('SMS_PROVIDER', 'log'), // log, twilio, msg91, array
+        'twilio' => [
+            'sid' => env('TWILIO_SID'),
+            'auth_token' => env('TWILIO_AUTH_TOKEN'),
+            'from' => env('TWILIO_FROM'),
+        ],
+        'msg91' => [
+            'auth_key' => env('MSG91_AUTH_KEY'),
+            'template_id' => env('MSG91_TEMPLATE_ID'),
+        ],
+    ],
+
 ];

@@ -1,8 +1,11 @@
 import { useState } from 'react';
+import { Link, usePage } from '@inertiajs/react';
 import { ShoppingBag, Search, User, Menu, X, Layers, Sparkles } from 'lucide-react';
 
 export default function StorefrontLayout({ children, storeName = 'Ecommerce Store' }) {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+    const { auth } = usePage().props;
+    const user = auth?.user;
 
     return (
         <div className="min-h-screen flex flex-col bg-brand-surface-muted text-brand-text">
@@ -54,13 +57,18 @@ export default function StorefrontLayout({ children, storeName = 'Ecommerce Stor
                                 />
                             </div>
 
-                            <button
-                                type="button"
-                                aria-label="Customer Account"
-                                className="p-2 rounded-brand text-brand-text-muted hover:text-brand-text hover:bg-brand-surface-muted transition-colors"
+                            <Link
+                                href={user ? '/account' : '/login'}
+                                aria-label={user ? 'Customer Account' : 'Sign In'}
+                                className="p-2 rounded-brand text-brand-text-muted hover:text-brand-text hover:bg-brand-surface-muted transition-colors flex items-center gap-1.5 text-xs font-medium"
                             >
                                 <User className="w-5 h-5" />
-                            </button>
+                                {user ? (
+                                    <span className="hidden xl:inline max-w-[100px] truncate">{user.name}</span>
+                                ) : (
+                                    <span className="hidden xl:inline">Sign In</span>
+                                )}
+                            </Link>
 
                             <button
                                 type="button"
@@ -113,6 +121,14 @@ export default function StorefrontLayout({ children, storeName = 'Ecommerce Stor
                         >
                             Tech Stack
                         </a>
+                        <div className="pt-2 border-t border-brand-border">
+                            <Link
+                                href={user ? '/account' : '/login'}
+                                className="block py-2 text-sm font-semibold text-brand-primary"
+                            >
+                                {user ? `My Account (${user.name})` : 'Sign In / Register'}
+                            </Link>
+                        </div>
                     </div>
                 )}
             </header>

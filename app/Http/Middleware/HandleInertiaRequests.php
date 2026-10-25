@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Services\Sms\SmsManager;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 
@@ -35,9 +36,36 @@ class HandleInertiaRequests extends Middleware
      */
     public function share(Request $request): array
     {
+        $user = $request->user();
+        if ($user) {
+            $user->loadMissing('roles');
+        }
+
         return [
             ...parent::share($request),
-            //
+            'auth' => [
+                'user' => $user ? [
+                    'id' => $user->id,
+                    'name' => $user->name,
+                    'email' => $user->email,
+                    'phone' => $user->phone,
+                    'email_verified' => $user->hasVerifiedEmail(),
+                    'phone_verified' => $user->hasVerifiedPhone(),
+                    'status' => $user->status,
+                    'is_customer' => $user->isCustomer(),
+                    'roles' => $user->roles->pluck('name')->toArray(),
+                ] : null,
+            ],
+            'flash' => [
+                'success' => fn () => $request->session()->get('success'),
+                'error' => fn () => $request->session()->get('error'),
+                'status' => fn () => $request->session()->get('status'),
+                'warning' => fn () => $request->session()->get('warning'),
+            ],
+            'features' => [
+                'google_auth' => ! empty(config('services.google.client_id')),
+                'sms_auth' => app(SmsManager::class)->isConfigured(),
+            ],
         ];
     }
 }

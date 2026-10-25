@@ -2,7 +2,9 @@
 
 namespace App\Providers;
 
+use App\Services\OtpService;
 use App\Services\SettingsService;
+use App\Services\Sms\SmsManager;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\ServiceProvider;
 
@@ -15,6 +17,14 @@ class AppServiceProvider extends ServiceProvider
     {
         $this->app->singleton(SettingsService::class, function () {
             return new SettingsService;
+        });
+
+        $this->app->singleton(SmsManager::class, function () {
+            return new SmsManager;
+        });
+
+        $this->app->singleton(OtpService::class, function ($app) {
+            return new OtpService($app->make(SmsManager::class));
         });
     }
 
