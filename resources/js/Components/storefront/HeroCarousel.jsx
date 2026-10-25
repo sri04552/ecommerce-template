@@ -1,6 +1,21 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { Link } from '@inertiajs/react';
-import { ChevronLeft, ChevronRight, ArrowRight, Sparkles, Flame, ShoppingBag, Gift, CheckCircle2 } from 'lucide-react';
+import {
+    ChevronLeft,
+    ChevronRight,
+    ArrowRight,
+    Sparkles,
+    Flame,
+    ShoppingBag,
+    Gift,
+    Truck,
+    CreditCard,
+    Percent,
+    Clock,
+    Star,
+    RotateCcw,
+    ShieldCheck,
+} from 'lucide-react';
 import Button from '../ui/Button';
 
 const SLIDES = [
@@ -26,7 +41,10 @@ const SLIDES = [
             text: 'Explore Catalog',
             url: '/products?featured=1',
         },
-        highlights: ['Free Shipping Over $75', 'Member Cashback Rewards'],
+        highlights: [
+            { icon: Truck, text: 'Free Shipping Over $75' },
+            { icon: CreditCard, text: 'Member Cashback Rewards' },
+        ],
     },
     {
         id: 'slide-2',
@@ -50,7 +68,10 @@ const SLIDES = [
             text: 'View Trending',
             url: '/products?featured=1',
         },
-        highlights: ['Up to 50% Off Selected', 'Daily Limited Quantities'],
+        highlights: [
+            { icon: Percent, text: 'Up to 50% Off Selected' },
+            { icon: Clock, text: 'Daily Limited Quantities' },
+        ],
     },
     {
         id: 'slide-3',
@@ -74,7 +95,10 @@ const SLIDES = [
             text: 'Browse Categories',
             url: '/categories',
         },
-        highlights: ['★ 4.9/5 Customer Rating', '30-Day Easy Returns'],
+        highlights: [
+            { icon: Star, text: '4.9/5 Customer Rating' },
+            { icon: RotateCcw, text: '30-Day Easy Returns' },
+        ],
     },
     {
         id: 'slide-4',
@@ -98,7 +122,10 @@ const SLIDES = [
             text: 'Best Sellers',
             url: '/products?featured=1',
         },
-        highlights: ['Express Nationwide Shipping', 'Guaranteed Satisfaction'],
+        highlights: [
+            { icon: Truck, text: 'Express Nationwide Delivery' },
+            { icon: ShieldCheck, text: '100% Quality Guaranteed' },
+        ],
     },
 ];
 
@@ -271,14 +298,17 @@ export default function HeroCarousel() {
                                         </Link>
                                     </div>
 
-                                    {/* Value / Trust Highlights */}
-                                    <div className="flex flex-wrap items-center gap-x-5 gap-y-2 pt-2 border-t border-slate-900/15 text-xs sm:text-sm font-semibold text-slate-900">
-                                        {slide.highlights.map((h, i) => (
-                                            <div key={i} className="inline-flex items-center gap-1.5">
-                                                <CheckCircle2 className="w-4 h-4 text-emerald-700 shrink-0" />
-                                                <span>{h}</span>
-                                            </div>
-                                        ))}
+                                    {/* Value / Trust Highlights without divider line */}
+                                    <div className="flex flex-wrap items-center gap-x-6 gap-y-2.5 pt-1 text-xs sm:text-sm font-semibold text-slate-900">
+                                        {slide.highlights.map((item, i) => {
+                                            const ItemIcon = item.icon;
+                                            return (
+                                                <div key={i} className="inline-flex items-center gap-2">
+                                                    <ItemIcon className="w-4 h-4 text-slate-950 shrink-0" />
+                                                    <span>{item.text}</span>
+                                                </div>
+                                            );
+                                        })}
                                     </div>
                                 </div>
                             </div>
