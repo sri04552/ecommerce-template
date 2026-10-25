@@ -6,18 +6,14 @@
         <title inertia>{{ config('app.name', 'Ecommerce Platform') }}</title>
 
         <!-- Dynamic Brand Design Tokens -->
+        @php
+            $themeTokens = \App\Facades\Setting::getThemeTokens();
+        @endphp
         <style id="brand-theme-tokens">
             :root {
-                --brand-primary: {{ config('ecommerce.theme.primary_color', '#2563eb') }};
-                --brand-primary-hover: {{ config('ecommerce.theme.primary_hover', '#1d4ed8') }};
-                --brand-secondary: {{ config('ecommerce.theme.secondary_color', '#0f172a') }};
-                --brand-accent: {{ config('ecommerce.theme.accent_color', '#f59e0b') }};
-                --brand-surface: #ffffff;
-                --brand-surface-muted: #f8fafc;
-                --brand-text: #0f172a;
-                --brand-text-muted: #64748b;
-                --brand-border: #e2e8f0;
-                --brand-radius: {{ config('ecommerce.theme.border_radius', '0.5rem') }};
+                @foreach ($themeTokens as $tokenName => $tokenValue)
+                    {{ $tokenName }}: {{ $tokenValue }};
+                @endforeach
             }
         </style>
 
