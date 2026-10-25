@@ -194,18 +194,22 @@ class SettingsService
         }
 
         $this->memoryCache = Cache::remember(self::CACHE_KEY, self::CACHE_TTL, function () {
-            $records = StoreSetting::all();
-            $data = [];
+            try {
+                $records = StoreSetting::all();
+                $data = [];
 
-            foreach ($records as $record) {
-                $data[$record->key] = [
-                    'value' => $record->typed_value,
-                    'type' => $record->type,
-                    'group' => $record->group,
-                ];
+                foreach ($records as $record) {
+                    $data[$record->key] = [
+                        'value' => $record->typed_value,
+                        'type' => $record->type,
+                        'group' => $record->group,
+                    ];
+                }
+
+                return $data;
+            } catch (\Throwable) {
+                return [];
             }
-
-            return $data;
         });
 
         return $this->memoryCache;
