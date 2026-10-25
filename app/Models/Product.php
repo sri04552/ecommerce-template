@@ -22,6 +22,7 @@ class Product extends Model
         'description',
         'base_price',
         'sale_price',
+        'delivery_fee',
         'offer_tag',
         'discount_percentage',
         'cost_price',
@@ -37,6 +38,7 @@ class Product extends Model
         return [
             'base_price' => 'decimal:2',
             'sale_price' => 'decimal:2',
+            'delivery_fee' => 'decimal:2',
             'discount_percentage' => 'decimal:2',
             'cost_price' => 'decimal:2',
             'has_variants' => 'boolean',

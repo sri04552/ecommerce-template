@@ -113,13 +113,13 @@ require __DIR__.'/../vendor/autoload.php';
 $app = require_once __DIR__.'/../bootstrap/app.php';
 $app->useStoragePath($tmp.'/storage');
 
-// Ensure baseline schema is initialized once per container instance
+// Ensure baseline schema and latest migrations are applied once per container instance
 if (! file_exists($tmp.'/.schema_ready')) {
     try {
+        $consoleKernel = $app->make(ConsoleKernel::class);
+        $consoleKernel->bootstrap();
+        Artisan::call('migrate', ['--force' => true]);
         if (! Schema::hasTable('store_settings')) {
-            $consoleKernel = $app->make(ConsoleKernel::class);
-            $consoleKernel->bootstrap();
-            Artisan::call('migrate', ['--force' => true]);
             Artisan::call('db:seed', ['--class' => 'Database\\Seeders\\ProductionCleanSeeder', '--force' => true]);
         }
         touch($tmp.'/.schema_ready');

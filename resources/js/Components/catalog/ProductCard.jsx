@@ -86,6 +86,18 @@ export default function ProductCard({ product }) {
                             {product.short_description}
                         </p>
                     )}
+
+                    <div className="mt-2">
+                        {product.delivery_fee && parseFloat(product.delivery_fee) > 0 ? (
+                            <span className="text-[10px] text-slate-500 font-medium">
+                                +{formatPrice(product.delivery_fee)} Delivery
+                            </span>
+                        ) : (
+                            <span className="text-[10px] text-emerald-600 font-semibold">
+                                Free Delivery
+                            </span>
+                        )}
+                    </div>
                 </div>
 
                 <div className="mt-4 pt-3 border-t border-brand-border flex items-center justify-between z-10 relative">

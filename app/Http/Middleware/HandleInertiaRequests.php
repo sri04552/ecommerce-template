@@ -68,7 +68,7 @@ class HandleInertiaRequests extends Middleware
             ],
             'storeSettings' => [
                 'store_name' => config('ecommerce.store_name', 'Ecommerce Store'),
-                'announcement_text' => 'Free standard delivery across India on orders over ₹999',
+                'announcement_text' => 'Fast delivery across India • Best prices & genuine products guaranteed',
                 'currency' => config('ecommerce.currency', 'INR'),
                 'currency_symbol' => config('ecommerce.currency_symbol', '₹'),
             ],

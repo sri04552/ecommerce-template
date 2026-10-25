@@ -1,7 +1,21 @@
 import { useState } from 'react';
 import { useForm, Link } from '@inertiajs/react';
 import AdminLayout from '@/Layouts/AdminLayout';
-import { ArrowLeft, Save, Image as ImageIcon, Plus, Upload, X, Tag, Percent, Sparkles, CheckCircle2 } from 'lucide-react';
+import {
+    ArrowLeft,
+    Save,
+    Image as ImageIcon,
+    Plus,
+    Upload,
+    X,
+    Tag,
+    Percent,
+    Sparkles,
+    CheckCircle2,
+    Loader2,
+    Truck,
+} from 'lucide-react';
+import { optimizeImageToSquareWebP } from '../../../utils/imageOptimizer';
 
 export default function ProductCreate({ categories, brands, selectedCategoryId }) {
     const searchParamCategory = typeof window !== 'undefined'
@@ -11,6 +25,7 @@ export default function ProductCreate({ categories, brands, selectedCategoryId }
 
     const [selectedFiles, setSelectedFiles] = useState([]);
     const [previewUrls, setPreviewUrls] = useState([]);
+    const [isOptimizing, setIsOptimizing] = useState(false);
     const [offerType, setOfferType] = useState('none');
     const [customOffer, setCustomOffer] = useState('');
 
@@ -22,6 +37,7 @@ export default function ProductCreate({ categories, brands, selectedCategoryId }
         brand_id: '',
         base_price: '',
         sale_price: '',
+        delivery_fee: '',
         discount_percentage: '',
         offer_tag: '',
         cost_price: '',
@@ -35,20 +51,33 @@ export default function ProductCreate({ categories, brands, selectedCategoryId }
         images: [],
     });
 
-    const handleFileChange = (e) => {
-        const files = Array.from(e.target.files || []);
-        if (files.length === 0) return;
+    const handleFileChange = async (e) => {
+        const rawFiles = Array.from(e.target.files || []);
+        if (rawFiles.length === 0) return;
 
-        const updatedFiles = [...selectedFiles, ...files];
-        setSelectedFiles(updatedFiles);
-        setData('images', updatedFiles);
+        setIsOptimizing(true);
+        try {
+            const optimizedResults = await Promise.all(
+                rawFiles.map((file) => optimizeImageToSquareWebP(file))
+            );
 
-        const newPreviews = files.map((file) => ({
-            name: file.name,
-            size: (file.size / 1024).toFixed(1) + ' KB',
-            url: URL.createObjectURL(file),
-        }));
-        setPreviewUrls((prev) => [...prev, ...newPreviews]);
+            const newFiles = optimizedResults.map((r) => r.file);
+            const newPreviews = optimizedResults.map((r) => ({
+                name: r.file.name,
+                size: `${r.sizeKb} KB (1:1)`,
+                url: r.previewUrl,
+            }));
+
+            const updatedFiles = [...selectedFiles, ...newFiles];
+            setSelectedFiles(updatedFiles);
+            setData('images', updatedFiles);
+            setPreviewUrls((prev) => [...prev, ...newPreviews]);
+        } catch (err) {
+            console.error('Image optimization failed:', err);
+            alert('Failed to process one or more images. Please ensure they are valid image files.');
+        } finally {
+            setIsOptimizing(false);
+        }
     };
 
     const removeFile = (index) => {
@@ -119,6 +148,7 @@ export default function ProductCreate({ categories, brands, selectedCategoryId }
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        if (isOptimizing) return;
         post('/admin/products', {
             forceFormData: true,
         });
@@ -131,7 +161,7 @@ export default function ProductCreate({ categories, brands, selectedCategoryId }
     return (
         <AdminLayout
             title="Create Product"
-            subtitle="Add a new item to your store catalog with auto-optimized 1:1 images and deals."
+            subtitle="Add a new item to your store catalog with auto-optimized 1:1 images, custom delivery fees, and deals."
             actions={
                 <Link
                     href="/admin/products"
@@ -278,17 +308,17 @@ export default function ProductCreate({ categories, brands, selectedCategoryId }
                     </div>
                 </div>
 
-                {/* Pricing, Discounts & Offers Card */}
+                {/* Pricing, Discounts, Delivery & Offers Card */}
                 <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-2xs">
                     <div className="flex items-center justify-between mb-4 pb-2 border-b border-slate-100">
                         <div className="flex items-center gap-2">
                             <Tag className="w-5 h-5 text-indigo-600" />
                             <h2 className="text-base font-semibold text-slate-900">
-                                Pricing, Discounts & Offers
+                                Pricing, Discounts & Delivery
                             </h2>
                         </div>
                         <span className="text-xs bg-amber-50 text-amber-700 font-medium px-2.5 py-1 rounded-full border border-amber-200 flex items-center gap-1">
-                            <Sparkles className="w-3.5 h-3.5" /> Flipkart / Amazon Style Deals
+                            <Sparkles className="w-3.5 h-3.5" /> Deals
                         </span>
                     </div>
 
@@ -374,8 +404,31 @@ export default function ProductCreate({ categories, brands, selectedCategoryId }
                         )}
                     </div>
 
-                    {/* Special Offer Tag Selector */}
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-1">
+                    {/* Delivery Fee & Special Offer Selector */}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-1 mb-4">
+                        <div>
+                            <div className="flex items-center justify-between mb-1">
+                                <label className="block text-sm font-medium text-slate-700 flex items-center gap-1.5">
+                                    <Truck className="w-4 h-4 text-indigo-600" />
+                                    <span>Delivery Fee (₹)</span>
+                                </label>
+                                <span className="text-[11px] text-emerald-600 font-semibold">0 = Free Delivery</span>
+                            </div>
+                            <input
+                                type="number"
+                                step="0.01"
+                                min="0"
+                                value={data.delivery_fee}
+                                onChange={(e) => setData('delivery_fee', e.target.value)}
+                                placeholder="0.00 (Leave blank or 0 for Free Delivery)"
+                                className="w-full px-3.5 py-2 text-sm bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white"
+                            />
+                            <p className="text-xs text-slate-500 mt-1">
+                                If 0 or blank, checkout charges ₹0 delivery. If entered, this exact fee is applied.
+                            </p>
+                            {errors.delivery_fee && <p className="text-xs text-rose-500 mt-1">{errors.delivery_fee}</p>}
+                        </div>
+
                         <div>
                             <label className="block text-sm font-medium text-slate-700 mb-1">
                                 Special Offer Badge / Deal Tag
@@ -393,23 +446,20 @@ export default function ProductCreate({ categories, brands, selectedCategoryId }
                                 <option value="Special Offer">Special Offer</option>
                                 <option value="custom">Custom Offer Tag...</option>
                             </select>
-                        </div>
 
-                        {offerType === 'custom' && (
-                            <div>
-                                <label className="block text-sm font-medium text-slate-700 mb-1">
-                                    Enter Custom Offer Text
-                                </label>
-                                <input
-                                    type="text"
-                                    value={customOffer}
-                                    onChange={(e) => handleCustomOfferChange(e.target.value)}
-                                    placeholder="e.g. Diwali Super Saver, Flat ₹500 Off"
-                                    maxLength={40}
-                                    className="w-full px-3.5 py-2 text-sm bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white font-medium"
-                                />
-                            </div>
-                        )}
+                            {offerType === 'custom' && (
+                                <div className="mt-2">
+                                    <input
+                                        type="text"
+                                        value={customOffer}
+                                        onChange={(e) => handleCustomOfferChange(e.target.value)}
+                                        placeholder="e.g. Super Saver, Flat ₹500 Off"
+                                        maxLength={40}
+                                        className="w-full px-3.5 py-1.5 text-xs bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white font-medium"
+                                    />
+                                </div>
+                            )}
+                        </div>
                     </div>
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-4 mt-4 border-t border-slate-100">
@@ -460,7 +510,7 @@ export default function ProductCreate({ categories, brands, selectedCategoryId }
                     </div>
                 </div>
 
-                {/* Media Uploads Card - Manual Uploads + Auto 1:1 Square + Auto Sub-100KB */}
+                {/* Media Uploads Card - Client-side Auto 1:1 Square + Sub-100KB Optimization */}
                 <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-2xs">
                     <div className="flex items-center justify-between mb-4 pb-2 border-b border-slate-100">
                         <div className="flex items-center gap-2">
@@ -470,34 +520,39 @@ export default function ProductCreate({ categories, brands, selectedCategoryId }
                             </h2>
                         </div>
                         <span className="text-xs bg-indigo-50 text-indigo-700 font-semibold px-2.5 py-1 rounded-full border border-indigo-200">
-                            Auto 1:1 Square &bull; Auto &lt;100KB WebP
+                            Auto 1:1 Square &bull; Client Optimized &lt;100KB WebP
                         </span>
                     </div>
 
                     {/* Drag-and-drop & File Selection Box */}
                     <div className="space-y-4">
-                        <div className="border-2 border-dashed border-slate-300 hover:border-indigo-500 rounded-xl p-6 text-center bg-slate-50/60 hover:bg-indigo-50/20 transition-all cursor-pointer relative">
+                        <div className={`border-2 border-dashed ${isOptimizing ? 'border-indigo-400 bg-indigo-50/40' : 'border-slate-300 hover:border-indigo-500 bg-slate-50/60 hover:bg-indigo-50/20'} rounded-xl p-6 text-center transition-all cursor-pointer relative`}>
                             <input
                                 type="file"
                                 id="manual-image-input"
                                 multiple
+                                disabled={isOptimizing}
                                 accept="image/png,image/jpeg,image/webp,image/jpg"
                                 onChange={handleFileChange}
-                                className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
+                                className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10 disabled:cursor-not-allowed"
                             />
                             <div className="flex flex-col items-center justify-center pointer-events-none">
                                 <div className="w-12 h-12 rounded-full bg-indigo-100 text-indigo-600 flex items-center justify-center mb-2">
-                                    <Upload className="w-6 h-6" />
+                                    {isOptimizing ? (
+                                        <Loader2 className="w-6 h-6 animate-spin" />
+                                    ) : (
+                                        <Upload className="w-6 h-6" />
+                                    )}
                                 </div>
                                 <p className="text-sm font-semibold text-slate-800">
-                                    Click here or drag images to upload
+                                    {isOptimizing ? 'Optimizing images to 1:1 square (<100KB)...' : 'Click here or drag images to upload'}
                                 </p>
                                 <p className="text-xs text-slate-500 mt-1">
-                                    Upload 1 or more images. If 1 image is uploaded, it displays as a clean static product photo. If 2+ images are uploaded, it turns into an auto-sliding carousel!
+                                    Upload 1 or more images. 1 image = static photo. 2+ images = auto-sliding carousel!
                                 </p>
                                 <div className="mt-3 flex items-center gap-2 text-[11px] text-emerald-600 font-semibold">
                                     <Sparkles className="w-3.5 h-3.5" />
-                                    <span>Server automatically center-crops to 1:1 square & compresses below 100KB</span>
+                                    <span>Browser auto-crops to 1:1 square & compresses under 100KB to guarantee instant saving</span>
                                 </div>
                             </div>
                         </div>
@@ -510,7 +565,7 @@ export default function ProductCreate({ categories, brands, selectedCategoryId }
                                         Selected Images ({previewUrls.length}):
                                     </p>
                                     <span className="text-xs text-slate-500">
-                                        First image will be the primary cover image
+                                        First image is the primary cover image
                                     </span>
                                 </div>
 
@@ -606,11 +661,11 @@ export default function ProductCreate({ categories, brands, selectedCategoryId }
                     </Link>
                     <button
                         type="submit"
-                        disabled={processing}
+                        disabled={processing || isOptimizing}
                         className="inline-flex items-center gap-2 px-6 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-medium text-sm rounded-lg shadow-sm transition-colors disabled:opacity-50"
                     >
                         <Save className="w-4 h-4" />
-                        <span>{processing ? 'Processing 1:1 Images...' : 'Save & Publish Product'}</span>
+                        <span>{processing ? 'Saving...' : isOptimizing ? 'Optimizing Photos...' : 'Save & Publish Product'}</span>
                     </button>
                 </div>
             </form>

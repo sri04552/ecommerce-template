@@ -274,6 +274,18 @@ export default function Show({ product, relatedProducts = [], categories = [] })
                                         You save {formatPrice(parseFloat(activePrice) - parseFloat(activeSalePrice))} on this order
                                     </p>
                                 )}
+                                <div className="flex items-center gap-2 pt-2 text-xs">
+                                    <Truck className="w-4 h-4 text-brand-primary shrink-0" />
+                                    {product.delivery_fee && parseFloat(product.delivery_fee) > 0 ? (
+                                        <span className="text-brand-text font-medium">
+                                            Delivery: <strong className="font-bold text-brand-secondary">{formatPrice(product.delivery_fee)}</strong>
+                                        </span>
+                                    ) : (
+                                        <span className="text-emerald-700 font-bold bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded-full text-[11px]">
+                                            FREE Delivery
+                                        </span>
+                                    )}
+                                </div>
                             </div>
 
                             {/* Short Description */}

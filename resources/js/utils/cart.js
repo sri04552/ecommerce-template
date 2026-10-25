@@ -108,6 +108,7 @@ export function addToCart(product, variant = null, requestedQuantity = 1) {
             originalPrice,
             image,
             slug: product.slug,
+            deliveryFee: parseFloat(product.delivery_fee) || 0,
             quantity: qtyToAdd,
         });
     }

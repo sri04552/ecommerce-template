@@ -42,7 +42,7 @@ const SLIDES = [
             url: '/products?featured=1',
         },
         highlights: [
-            { icon: Truck, text: 'Free Shipping Over ₹999' },
+            { icon: Truck, text: 'Fast & Secure Delivery' },
             { icon: CreditCard, text: 'Member Cashback Rewards' },
         ],
     },

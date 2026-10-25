@@ -101,11 +101,12 @@ export default function CartIndex({ categories = [] }) {
         0
     );
 
-    const FREE_SHIPPING_THRESHOLD = 999;
-    const isFreeShipping = subtotal >= FREE_SHIPPING_THRESHOLD;
-    const shippingFee = subtotal > 0 ? (isFreeShipping ? 0 : 99) : 0;
-    const finalTotal = subtotal + shippingFee;
-    const amountNeededForFreeShipping = Math.max(0, FREE_SHIPPING_THRESHOLD - subtotal);
+    const totalDeliveryFee = cart.reduce(
+        (sum, item) => sum + ((parseFloat(item.deliveryFee) || 0) * (parseInt(item.quantity, 10) || 1)),
+        0
+    );
+    const isFreeDelivery = totalDeliveryFee === 0;
+    const finalTotal = subtotal + totalDeliveryFee;
 
     const limitPercentage = Math.min(100, Math.round((totalCount / MAX_CART_LIMIT) * 100));
 
@@ -344,25 +345,17 @@ export default function CartIndex({ categories = [] }) {
                                     Order Summary
                                 </h2>
 
-                                {/* Free Shipping Notification */}
+                                {/* Free / Custom Delivery Notification */}
                                 <div className="p-3 bg-brand-surface-muted rounded-lg border border-brand-border text-xs">
-                                    {isFreeShipping ? (
+                                    {isFreeDelivery ? (
                                         <div className="flex items-center gap-2 text-emerald-700 font-semibold">
                                             <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
-                                            <span>You unlocked FREE Standard Delivery across India!</span>
+                                            <span>All items in your cart qualify for FREE Delivery!</span>
                                         </div>
                                     ) : (
-                                        <div className="space-y-1.5">
-                                            <div className="flex items-center gap-1.5 text-brand-secondary font-medium">
-                                                <Truck className="w-4 h-4 text-brand-primary shrink-0" />
-                                                <span>Add {formatPrice(amountNeededForFreeShipping)} more for FREE Delivery!</span>
-                                            </div>
-                                            <div className="w-full bg-slate-200 h-1.5 rounded-full overflow-hidden">
-                                                <div
-                                                    className="bg-brand-primary h-full transition-all"
-                                                    style={{ width: `${Math.min(100, (subtotal / FREE_SHIPPING_THRESHOLD) * 100)}%` }}
-                                                />
-                                            </div>
+                                        <div className="flex items-center gap-2 text-brand-secondary font-medium">
+                                            <Truck className="w-4 h-4 text-brand-primary shrink-0" />
+                                            <span>Order Delivery Fee: {formatPrice(totalDeliveryFee)}</span>
                                         </div>
                                     )}
                                 </div>
@@ -374,19 +367,19 @@ export default function CartIndex({ categories = [] }) {
                                         <span className="font-semibold">{formatPrice(subtotal)}</span>
                                     </div>
                                     <div className="flex justify-between text-brand-text">
-                                        <span>Estimated Delivery (All India)</span>
+                                        <span>Delivery Fee</span>
                                         <span>
-                                            {isFreeShipping ? (
+                                            {isFreeDelivery ? (
                                                 <strong className="text-emerald-600 uppercase font-bold">FREE</strong>
                                             ) : (
-                                                formatPrice(shippingFee)
+                                                formatPrice(totalDeliveryFee)
                                             )}
                                         </span>
                                     </div>
                                 </div>
 
                                 <div className="pt-3 border-t border-brand-border flex items-baseline justify-between text-base">
-                                    <span className="font-bold text-brand-secondary">Estimated Total</span>
+                                    <span className="font-bold text-brand-secondary">Total Payable</span>
                                     <span className="font-extrabold text-xl text-brand-secondary">
                                         {formatPrice(finalTotal)}
                                     </span>
