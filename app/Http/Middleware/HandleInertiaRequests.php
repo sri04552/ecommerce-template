@@ -66,6 +66,11 @@ class HandleInertiaRequests extends Middleware
                 'google_auth' => ! empty(config('services.google.client_id')),
                 'sms_auth' => app(SmsManager::class)->isConfigured(),
             ],
+            'storeSettings' => [
+                'store_name' => config('ecommerce.store_name', 'Ecommerce Store'),
+                'announcement_text' => 'Free standard shipping on all orders over $75',
+                'currency' => 'USD',
+            ],
         ];
     }
 }

@@ -1,266 +1,218 @@
-import { Head } from '@inertiajs/react';
+import { Head, Link } from '@inertiajs/react';
 import StorefrontLayout from '../Layouts/StorefrontLayout';
+import ProductCard from '../Components/catalog/ProductCard';
 import Button from '../Components/ui/Button';
-import Card from '../Components/ui/Card';
-import Badge from '../Components/ui/Badge';
-import { Server, Palette, ShieldCheck, Cpu, Globe, CheckCircle2, ArrowRight } from 'lucide-react';
+import { ArrowRight, Truck, ShieldCheck, RefreshCw, ShoppingBag } from 'lucide-react';
 
 export default function Welcome({
-    laravelVersion,
-    phpVersion,
-    storeName = 'Ecommerce Store',
-    _themeConfig = {},
+    featuredProducts = [],
+    newArrivals = [],
+    categories = [],
+    heroBanner = null,
+    storeName = 'Aura Store',
 }) {
+    const banner = heroBanner || {
+        title: 'Modern Essentials for Everyday Living',
+        subtitle: 'Discover our curated collection of premium goods engineered for quality, function, and comfort.',
+        cta_text: 'Explore Catalog',
+        cta_url: '/products',
+    };
+
     return (
-        <StorefrontLayout storeName={storeName}>
-            <Head title="Agency Ecommerce Template — Phase 1 Foundation" />
+        <StorefrontLayout categories={categories}>
+            <Head title={`${storeName} — Modern Lifestyle Essentials`} />
 
             {/* Hero Section */}
-            <section className="relative overflow-hidden py-16 sm:py-24">
+            <section className="relative bg-gradient-to-b from-brand-surface to-brand-surface-muted border-b border-brand-border py-16 sm:py-24">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="text-center max-w-3xl mx-auto space-y-6">
-                        <div className="inline-flex items-center gap-2">
-                            <Badge variant="primary">Phase 1 Complete</Badge>
-                            <Badge variant="success">Foundation Verified</Badge>
-                        </div>
+                        <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-brand-primary/10 text-brand-primary">
+                            New Season Collection
+                        </span>
 
                         <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-brand-secondary">
-                            Modular, High-Performance <br />
-                            <span className="text-brand-primary">Ecommerce Template</span>
+                            {banner.title}
                         </h1>
 
-                        <p className="text-lg text-brand-text-muted leading-relaxed">
-                            Reusable architecture designed for rapid agency client deployments.
-                            Fully independent instances running seamlessly on both cPanel shared
-                            hosting and cloud VPS.
+                        <p className="text-base sm:text-lg text-brand-text-muted leading-relaxed max-w-2xl mx-auto">
+                            {banner.subtitle}
                         </p>
 
-                        <div className="flex flex-wrap items-center justify-center gap-4 pt-4">
-                            <Button variant="primary" size="lg" className="gap-2">
-                                Explore Architecture <ArrowRight className="w-4 h-4" />
-                            </Button>
-                            <Button variant="outline" size="lg">
-                                Review Design Tokens
-                            </Button>
+                        <div className="pt-2 flex flex-wrap justify-center gap-4">
+                            <Link href={banner.cta_url || '/products'}>
+                                <Button variant="primary" size="lg" className="gap-2">
+                                    <span>{banner.cta_text || 'Shop Catalog'}</span>
+                                    <ArrowRight className="w-4 h-4" />
+                                </Button>
+                            </Link>
+                            <Link href="/products?featured=1">
+                                <Button variant="outline" size="lg">
+                                    Featured Items
+                                </Button>
+                            </Link>
                         </div>
                     </div>
                 </div>
             </section>
 
-            {/* Core Architectural Foundations Section */}
-            <section id="features" className="py-12 bg-brand-surface border-y border-brand-border">
+            {/* Value Propositions */}
+            <section className="py-8 bg-brand-surface border-b border-brand-border">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="text-center max-w-2xl mx-auto mb-12">
-                        <h2 className="text-2xl sm:text-3xl font-bold text-brand-secondary">
-                            Engineered for Agency Scale & Flexibility
-                        </h2>
-                        <p className="text-sm text-brand-text-muted mt-2">
-                            Key foundational constraints and architectural principles active in this
-                            build.
-                        </p>
-                    </div>
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+                        <div className="flex flex-col items-center space-y-1.5">
+                            <div className="w-9 h-9 rounded-full bg-brand-primary/10 text-brand-primary flex items-center justify-center mb-1">
+                                <Truck className="w-4 h-4" />
+                            </div>
+                            <h4 className="font-semibold text-xs text-brand-secondary">Free Shipping</h4>
+                            <p className="text-[11px] text-brand-text-muted">On eligible orders over $75</p>
+                        </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                        {/* Feature 1 */}
-                        <Card className="flex flex-col justify-between">
-                            <div className="space-y-3">
-                                <div className="w-10 h-10 rounded-brand bg-brand-primary/10 text-brand-primary flex items-center justify-center">
-                                    <Server className="w-5 h-5" />
-                                </div>
-                                <h3 className="font-semibold text-brand-secondary text-base">
-                                    Single-Tenant Isolation
-                                </h3>
-                                <p className="text-xs text-brand-text-muted leading-normal">
-                                    Every client instance is self-contained with its own database,
-                                    domain, storage and credentials. Zero multi-tenant
-                                    cross-contamination.
-                                </p>
+                        <div className="flex flex-col items-center space-y-1.5">
+                            <div className="w-9 h-9 rounded-full bg-brand-primary/10 text-brand-primary flex items-center justify-center mb-1">
+                                <ShieldCheck className="w-4 h-4" />
                             </div>
-                            <div className="mt-4 pt-4 border-t border-brand-border flex items-center gap-1.5 text-xs text-emerald-600 font-medium">
-                                <CheckCircle2 className="w-3.5 h-3.5" /> Ready for cloning
-                            </div>
-                        </Card>
+                            <h4 className="font-semibold text-xs text-brand-secondary">Guaranteed Quality</h4>
+                            <p className="text-[11px] text-brand-text-muted">Directly sourced premium materials</p>
+                        </div>
 
-                        {/* Feature 2 */}
-                        <Card className="flex flex-col justify-between">
-                            <div className="space-y-3">
-                                <div className="w-10 h-10 rounded-brand bg-brand-accent/20 text-amber-700 flex items-center justify-center">
-                                    <Globe className="w-5 h-5" />
-                                </div>
-                                <h3 className="font-semibold text-brand-secondary text-base">
-                                    Dual Hosting Target
-                                </h3>
-                                <p className="text-xs text-brand-text-muted leading-normal">
-                                    Pre-compiled release packages and dynamic queue fallbacks run on
-                                    PHP shared hosting as reliably as cloud VPS.
-                                </p>
+                        <div className="flex flex-col items-center space-y-1.5">
+                            <div className="w-9 h-9 rounded-full bg-brand-primary/10 text-brand-primary flex items-center justify-center mb-1">
+                                <RefreshCw className="w-4 h-4" />
                             </div>
-                            <div className="mt-4 pt-4 border-t border-brand-border flex items-center gap-1.5 text-xs text-emerald-600 font-medium">
-                                <CheckCircle2 className="w-3.5 h-3.5" /> Shared & VPS ready
-                            </div>
-                        </Card>
+                            <h4 className="font-semibold text-xs text-brand-secondary">Hassle-Free Returns</h4>
+                            <p className="text-[11px] text-brand-text-muted">30-day customer satisfaction guarantee</p>
+                        </div>
 
-                        {/* Feature 3 */}
-                        <Card className="flex flex-col justify-between">
-                            <div className="space-y-3">
-                                <div className="w-10 h-10 rounded-brand bg-purple-50 text-purple-600 flex items-center justify-center">
-                                    <Palette className="w-5 h-5" />
-                                </div>
-                                <h3 className="font-semibold text-brand-secondary text-base">
-                                    Dynamic Theme Tokens
-                                </h3>
-                                <p className="text-xs text-brand-text-muted leading-normal">
-                                    CSS variables bound to Tailwind v4 semantic tokens allow instant
-                                    client brand color updates without recompiling frontend assets.
-                                </p>
+                        <div className="flex flex-col items-center space-y-1.5">
+                            <div className="w-9 h-9 rounded-full bg-brand-primary/10 text-brand-primary flex items-center justify-center mb-1">
+                                <ShoppingBag className="w-4 h-4" />
                             </div>
-                            <div className="mt-4 pt-4 border-t border-brand-border flex items-center gap-1.5 text-xs text-emerald-600 font-medium">
-                                <CheckCircle2 className="w-3.5 h-3.5" /> Design tokens active
-                            </div>
-                        </Card>
-
-                        {/* Feature 4 */}
-                        <Card className="flex flex-col justify-between">
-                            <div className="space-y-3">
-                                <div className="w-10 h-10 rounded-brand bg-emerald-50 text-emerald-600 flex items-center justify-center">
-                                    <ShieldCheck className="w-5 h-5" />
-                                </div>
-                                <h3 className="font-semibold text-brand-secondary text-base">
-                                    Strict Security Controls
-                                </h3>
-                                <p className="text-xs text-brand-text-muted leading-normal">
-                                    Zero hardcoded secrets, predictable default admin credentials
-                                    forbidden, and strict environment configuration isolation.
-                                </p>
-                            </div>
-                            <div className="mt-4 pt-4 border-t border-brand-border flex items-center gap-1.5 text-xs text-emerald-600 font-medium">
-                                <CheckCircle2 className="w-3.5 h-3.5" /> Compliant & hardened
-                            </div>
-                        </Card>
+                            <h4 className="font-semibold text-xs text-brand-secondary">Secure Shopping</h4>
+                            <p className="text-[11px] text-brand-text-muted">Protected customer account data</p>
+                        </div>
                     </div>
                 </div>
             </section>
 
-            {/* Design Tokens & Theme Foundations Showcase */}
-            <section id="tokens" className="py-16">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="max-w-3xl mx-auto space-y-8">
+            {/* Featured Categories */}
+            {categories.length > 0 && (
+                <section className="py-12 sm:py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+                    <div className="flex items-center justify-between mb-8">
                         <div>
-                            <Badge variant="accent">Brand Token Foundation</Badge>
-                            <h2 className="text-2xl font-bold text-brand-secondary mt-2">
-                                Themeable Component System
+                            <h2 className="text-2xl font-bold tracking-tight text-brand-secondary">
+                                Shop by Category
                             </h2>
-                            <p className="text-sm text-brand-text-muted mt-1">
-                                Every component references semantic tokens mapped to CSS variables.
-                                Client branding can be altered via environment or admin
-                                configuration without rebuilding code.
+                            <p className="text-xs text-brand-text-muted mt-1">
+                                Browse our curated catalog across popular departments
                             </p>
                         </div>
-
-                        {/* Token Palette Demo */}
-                        <Card>
-                            <h3 className="text-sm font-semibold text-brand-secondary mb-4 uppercase tracking-wider text-xs">
-                                Active Design Tokens
-                            </h3>
-                            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-                                <div className="p-3 rounded-brand bg-brand-surface-muted border border-brand-border">
-                                    <div className="w-full h-8 rounded-brand bg-brand-primary mb-2 shadow-xs"></div>
-                                    <p className="text-xs font-semibold text-brand-text">Primary</p>
-                                    <p className="text-[10px] text-brand-text-muted font-mono">
-                                        var(--brand-primary)
-                                    </p>
-                                </div>
-
-                                <div className="p-3 rounded-brand bg-brand-surface-muted border border-brand-border">
-                                    <div className="w-full h-8 rounded-brand bg-brand-secondary mb-2 shadow-xs"></div>
-                                    <p className="text-xs font-semibold text-brand-text">
-                                        Secondary
-                                    </p>
-                                    <p className="text-[10px] text-brand-text-muted font-mono">
-                                        var(--brand-secondary)
-                                    </p>
-                                </div>
-
-                                <div className="p-3 rounded-brand bg-brand-surface-muted border border-brand-border">
-                                    <div className="w-full h-8 rounded-brand bg-brand-accent mb-2 shadow-xs"></div>
-                                    <p className="text-xs font-semibold text-brand-text">Accent</p>
-                                    <p className="text-[10px] text-brand-text-muted font-mono">
-                                        var(--brand-accent)
-                                    </p>
-                                </div>
-
-                                <div className="p-3 rounded-brand bg-brand-surface-muted border border-brand-border">
-                                    <div className="w-full h-8 rounded-brand bg-brand-surface border border-brand-border mb-2 shadow-xs"></div>
-                                    <p className="text-xs font-semibold text-brand-text">Surface</p>
-                                    <p className="text-[10px] text-brand-text-muted font-mono">
-                                        var(--brand-surface)
-                                    </p>
-                                </div>
-                            </div>
-
-                            <div className="mt-6 pt-4 border-t border-brand-border flex flex-wrap items-center gap-3">
-                                <span className="text-xs text-brand-text-muted">
-                                    Interactive Button Variants:
-                                </span>
-                                <Button variant="primary" size="sm">
-                                    Primary
-                                </Button>
-                                <Button variant="secondary" size="sm">
-                                    Secondary
-                                </Button>
-                                <Button variant="outline" size="sm">
-                                    Outline
-                                </Button>
-                                <Button variant="ghost" size="sm">
-                                    Ghost
-                                </Button>
-                            </div>
-                        </Card>
+                        <Link
+                            href="/products"
+                            className="text-xs font-semibold text-brand-primary hover:underline flex items-center gap-1"
+                        >
+                            <span>View All</span>
+                            <ArrowRight className="w-3.5 h-3.5" />
+                        </Link>
                     </div>
-                </div>
-            </section>
 
-            {/* Stack Verification & Health Status */}
-            <section id="stack" className="py-12 bg-brand-surface border-t border-brand-border">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="bg-brand-surface-muted border border-brand-border rounded-brand p-6 sm:p-8 flex flex-col md:flex-row items-center justify-between gap-6">
-                        <div className="space-y-1">
-                            <div className="flex items-center gap-2">
-                                <Cpu className="w-5 h-5 text-brand-primary" />
-                                <span className="text-base font-bold text-brand-secondary">
-                                    Runtime & Environment Diagnostics
-                                </span>
-                            </div>
-                            <p className="text-xs text-brand-text-muted">
-                                Verified compatible with required baseline specifications.
-                            </p>
-                        </div>
-
-                        <div className="flex flex-wrap items-center gap-3 text-xs">
-                            <span className="px-3 py-1.5 rounded-brand bg-brand-surface border border-brand-border font-mono">
-                                Laravel: <strong>{laravelVersion}</strong>
-                            </span>
-                            <span className="px-3 py-1.5 rounded-brand bg-brand-surface border border-brand-border font-mono">
-                                PHP: <strong>{phpVersion}</strong>
-                            </span>
-                            <span className="px-3 py-1.5 rounded-brand bg-brand-surface border border-brand-border font-mono">
-                                Frontend: <strong>React 19 + Inertia v3</strong>
-                            </span>
-                            <span className="px-3 py-1.5 rounded-brand bg-brand-surface border border-brand-border font-mono">
-                                CSS: <strong>Tailwind v4</strong>
-                            </span>
-                            <a
-                                href="/up"
-                                target="_blank"
-                                rel="noreferrer"
-                                className="px-3 py-1.5 rounded-brand bg-emerald-50 text-emerald-700 border border-emerald-200 font-semibold hover:bg-emerald-100 transition-colors"
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                        {categories.slice(0, 4).map((cat) => (
+                            <Link
+                                key={cat.id}
+                                href={`/categories/${cat.slug}`}
+                                className="group relative p-6 bg-brand-surface border border-brand-border rounded-brand hover:border-brand-primary transition-colors text-center"
                             >
-                                Health Check (/up) →
-                            </a>
-                        </div>
+                                <div className="w-12 h-12 rounded-full bg-brand-surface-muted group-hover:bg-brand-primary/10 text-brand-primary flex items-center justify-center mx-auto mb-3 transition-colors">
+                                    <ShoppingBag className="w-6 h-6" />
+                                </div>
+                                <h3 className="font-semibold text-sm text-brand-secondary group-hover:text-brand-primary transition-colors">
+                                    {cat.name}
+                                </h3>
+                                {cat.products_count !== undefined && (
+                                    <p className="text-xs text-brand-text-muted mt-1">
+                                        {cat.products_count} {cat.products_count === 1 ? 'item' : 'items'}
+                                    </p>
+                                )}
+                            </Link>
+                        ))}
                     </div>
+                </section>
+            )}
+
+            {/* Featured Products Section */}
+            <section className="py-12 sm:py-16 bg-brand-surface border-y border-brand-border w-full">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div className="flex items-center justify-between mb-8">
+                        <div>
+                            <h2 className="text-2xl font-bold tracking-tight text-brand-secondary">
+                                Featured Products
+                            </h2>
+                            <p className="text-xs text-brand-text-muted mt-1">
+                                Handpicked favorites chosen for design and craftsmanship
+                            </p>
+                        </div>
+                        <Link
+                            href="/products"
+                            className="text-xs font-semibold text-brand-primary hover:underline flex items-center gap-1"
+                        >
+                            <span>Browse Catalog</span>
+                            <ArrowRight className="w-3.5 h-3.5" />
+                        </Link>
+                    </div>
+
+                    {featuredProducts.length > 0 ? (
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                            {featuredProducts.map((product) => (
+                                <ProductCard key={product.id} product={product} />
+                            ))}
+                        </div>
+                    ) : (
+                        <div className="text-center py-12 bg-brand-surface-muted border border-brand-border rounded-brand p-8">
+                            <ShoppingBag className="w-12 h-12 text-brand-text-muted mx-auto mb-3 opacity-40" />
+                            <h3 className="text-base font-semibold text-brand-secondary mb-1">
+                                Catalog Initializing
+                            </h3>
+                            <p className="text-xs text-brand-text-muted max-w-sm mx-auto mb-4 leading-relaxed">
+                                Our store catalog is being prepared. Sign in or check back soon for our new collection.
+                            </p>
+                            <Link href="/products">
+                                <Button size="sm" variant="outline">
+                                    Browse All Products
+                                </Button>
+                            </Link>
+                        </div>
+                    )}
                 </div>
             </section>
+
+            {/* New Arrivals Section (if available) */}
+            {newArrivals.length > 0 && (
+                <section className="py-12 sm:py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+                    <div className="flex items-center justify-between mb-8">
+                        <div>
+                            <h2 className="text-2xl font-bold tracking-tight text-brand-secondary">
+                                New Arrivals
+                            </h2>
+                            <p className="text-xs text-brand-text-muted mt-1">
+                                The latest additions to our store collection
+                            </p>
+                        </div>
+                        <Link
+                            href="/products?sort=newest"
+                            className="text-xs font-semibold text-brand-primary hover:underline flex items-center gap-1"
+                        >
+                            <span>See All New</span>
+                            <ArrowRight className="w-3.5 h-3.5" />
+                        </Link>
+                    </div>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                        {newArrivals.map((product) => (
+                            <ProductCard key={product.id} product={product} />
+                        ))}
+                    </div>
+                </section>
+            )}
         </StorefrontLayout>
     );
 }

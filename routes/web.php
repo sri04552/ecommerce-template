@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
+use App\Http\Controllers\Admin\InventoryController as AdminInventoryController;
+use App\Http\Controllers\Admin\ProductController as AdminProductController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\EmailVerificationNotificationController;
 use App\Http\Controllers\Auth\EmailVerificationPromptController;
@@ -11,20 +14,28 @@ use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\VerifyEmailController;
 use App\Http\Controllers\Customer\AddressController;
 use App\Http\Controllers\Customer\ProfileController;
+use App\Http\Controllers\Storefront\CatalogController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
-// Storefront Home
-Route::get('/', function () {
-    return Inertia::render('Welcome', [
-        'laravelVersion' => app()->version(),
-        'phpVersion' => PHP_VERSION,
-        'storeName' => config('ecommerce.store_name', 'Ecommerce Store'),
-        'themeConfig' => config('ecommerce.theme', []),
-    ]);
-})->name('home');
+/*
+|--------------------------------------------------------------------------
+| Public Storefront Catalog Routes
+|--------------------------------------------------------------------------
+*/
+Route::get('/', [CatalogController::class, 'home'])->name('home');
+Route::get('/products', [CatalogController::class, 'index'])->name('products.index');
+Route::get('/products/{slug}', [CatalogController::class, 'show'])->name('products.show');
+Route::get('/categories/{slug}', [CatalogController::class, 'category'])->name('categories.show');
+Route::get('/cart', function () {
+    return Inertia::render('Cart/Index');
+})->name('cart.index');
 
-// Guest Authentication Routes
+/*
+|--------------------------------------------------------------------------
+| Guest Authentication Routes
+|--------------------------------------------------------------------------
+*/
 Route::middleware('guest')->group(function () {
     // Registration
     Route::get('register', [RegisteredUserController::class, 'create'])->name('register');
@@ -50,7 +61,11 @@ Route::middleware('guest')->group(function () {
     Route::post('reset-password', [NewPasswordController::class, 'store'])->name('password.update');
 });
 
-// Authenticated Customer Routes
+/*
+|--------------------------------------------------------------------------
+| Authenticated Customer Routes
+|--------------------------------------------------------------------------
+*/
 Route::middleware('auth')->group(function () {
     // Logout
     Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
@@ -82,4 +97,30 @@ Route::middleware('auth')->group(function () {
         Route::delete('/addresses/{address}', [AddressController::class, 'destroy'])->name('addresses.destroy');
         Route::post('/addresses/{address}/default', [AddressController::class, 'setDefault'])->name('addresses.default');
     });
+});
+
+/*
+|--------------------------------------------------------------------------
+| Authenticated Administrator Routes
+|--------------------------------------------------------------------------
+*/
+Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(function () {
+    // Products Management
+    Route::get('/products', [AdminProductController::class, 'index'])->name('products.index');
+    Route::get('/products/create', [AdminProductController::class, 'create'])->name('products.create');
+    Route::post('/products', [AdminProductController::class, 'store'])->name('products.store');
+    Route::get('/products/{product}/edit', [AdminProductController::class, 'edit'])->name('products.edit');
+    Route::put('/products/{product}', [AdminProductController::class, 'update'])->name('products.update');
+    Route::delete('/products/{product}', [AdminProductController::class, 'destroy'])->name('products.destroy');
+    Route::post('/products/{product}/toggle-status', [AdminProductController::class, 'toggleStatus'])->name('products.toggle-status');
+
+    // Category Management
+    Route::get('/categories', [AdminCategoryController::class, 'index'])->name('categories.index');
+    Route::post('/categories', [AdminCategoryController::class, 'store'])->name('categories.store');
+    Route::put('/categories/{category}', [AdminCategoryController::class, 'update'])->name('categories.update');
+    Route::delete('/categories/{category}', [AdminCategoryController::class, 'destroy'])->name('categories.destroy');
+
+    // Inventory & Stock Management
+    Route::get('/inventory', [AdminInventoryController::class, 'index'])->name('inventory.index');
+    Route::post('/inventory/{variant}/adjust', [AdminInventoryController::class, 'adjust'])->name('inventory.adjust');
 });

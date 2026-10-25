@@ -1,0 +1,89 @@
+import { Link } from '@inertiajs/react';
+import Badge from '../ui/Badge';
+import { ShoppingBag } from 'lucide-react';
+
+export default function ProductCard({ product }) {
+    const primaryImage = product.primary_image?.image_path || product.images?.[0]?.image_path;
+    const hasDiscount = product.sale_price && parseFloat(product.sale_price) < parseFloat(product.base_price);
+    const displayPrice = hasDiscount ? product.sale_price : product.base_price;
+    const originalPrice = product.base_price;
+
+    return (
+        <div className="group relative bg-brand-surface border border-brand-border rounded-brand overflow-hidden flex flex-col justify-between hover:shadow-md transition-shadow">
+            {/* Product Image Area */}
+            <div className="relative aspect-square bg-brand-surface-muted overflow-hidden flex items-center justify-center">
+                {primaryImage ? (
+                    <img
+                        src={primaryImage}
+                        alt={product.name}
+                        className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-300"
+                        loading="lazy"
+                    />
+                ) : (
+                    <div className="flex flex-col items-center justify-center text-brand-text-muted p-4 text-center">
+                        <ShoppingBag className="w-10 h-10 opacity-30 mb-2" />
+                        <span className="text-[11px] font-medium uppercase tracking-wider opacity-60">No Image</span>
+                    </div>
+                )}
+
+                {/* Badges */}
+                <div className="absolute top-2.5 left-2.5 flex flex-col gap-1.5 z-10">
+                    {hasDiscount && (
+                        <Badge variant="danger" className="text-[10px] font-bold shadow-xs">
+                            SALE
+                        </Badge>
+                    )}
+                    {product.is_featured && (
+                        <Badge variant="primary" className="text-[10px] shadow-xs">
+                            Featured
+                        </Badge>
+                    )}
+                </div>
+            </div>
+
+            {/* Product Content Details */}
+            <div className="p-4 flex-1 flex flex-col justify-between">
+                <div>
+                    {product.category && (
+                        <p className="text-[11px] font-semibold uppercase tracking-wider text-brand-primary mb-1">
+                            {product.category.name}
+                        </p>
+                    )}
+
+                    <h3 className="font-semibold text-sm text-brand-secondary line-clamp-2 group-hover:text-brand-primary transition-colors">
+                        <Link href={`/products/${product.slug}`}>
+                            <span aria-hidden="true" className="absolute inset-0 z-0"></span>
+                            {product.name}
+                        </Link>
+                    </h3>
+
+                    {product.short_description && (
+                        <p className="mt-1 text-xs text-brand-text-muted line-clamp-2 leading-relaxed">
+                            {product.short_description}
+                        </p>
+                    )}
+                </div>
+
+                <div className="mt-4 pt-3 border-t border-brand-border flex items-center justify-between z-10 relative">
+                    <div className="flex items-baseline gap-2">
+                        <span className="text-base font-bold text-brand-secondary">
+                            ${parseFloat(displayPrice).toFixed(2)}
+                        </span>
+                        {hasDiscount && (
+                            <span className="text-xs text-brand-text-muted line-through">
+                                ${parseFloat(originalPrice).toFixed(2)}
+                            </span>
+                        )}
+                    </div>
+
+                    <Link
+                        href={`/products/${product.slug}`}
+                        className="text-xs font-semibold text-brand-primary hover:text-brand-primary-hover transition-colors"
+                    >
+                        View &rarr;
+                    </Link>
+                </div>
+            </div>
+        </div>
+    );
+}
