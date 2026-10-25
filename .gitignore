@@ -26,3 +26,4 @@ yarn-error.log
 
 .vercel
 .env.local
+/public/assets/images/hero/originals/

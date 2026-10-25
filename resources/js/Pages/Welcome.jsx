@@ -2,6 +2,7 @@ import { Head, Link } from '@inertiajs/react';
 import StorefrontLayout from '../Layouts/StorefrontLayout';
 import ProductCard from '../Components/catalog/ProductCard';
 import Button from '../Components/ui/Button';
+import HeroCarousel from '../Components/storefront/HeroCarousel';
 import { ArrowRight, Truck, ShieldCheck, RefreshCw, ShoppingBag } from 'lucide-react';
 
 export default function Welcome({
@@ -22,38 +23,8 @@ export default function Welcome({
         <StorefrontLayout categories={categories}>
             <Head title={`${storeName} — Modern Lifestyle Essentials`} />
 
-            {/* Hero Section */}
-            <section className="relative bg-gradient-to-b from-brand-surface to-brand-surface-muted border-b border-brand-border py-16 sm:py-24">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="text-center max-w-3xl mx-auto space-y-6">
-                        <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-brand-primary/10 text-brand-primary">
-                            New Season Collection
-                        </span>
-
-                        <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-brand-secondary">
-                            {banner.title}
-                        </h1>
-
-                        <p className="text-base sm:text-lg text-brand-text-muted leading-relaxed max-w-2xl mx-auto">
-                            {banner.subtitle}
-                        </p>
-
-                        <div className="pt-2 flex flex-wrap justify-center gap-4">
-                            <Link href={banner.cta_url || '/products'}>
-                                <Button variant="primary" size="lg" className="gap-2">
-                                    <span>{banner.cta_text || 'Shop Catalog'}</span>
-                                    <ArrowRight className="w-4 h-4" />
-                                </Button>
-                            </Link>
-                            <Link href="/products?featured=1">
-                                <Button variant="outline" size="lg">
-                                    Featured Items
-                                </Button>
-                            </Link>
-                        </div>
-                    </div>
-                </div>
-            </section>
+            {/* Auto-sliding 100dvh Hero Showcase */}
+            <HeroCarousel />
 
             {/* Value Propositions */}
             <section className="py-8 bg-brand-surface border-b border-brand-border">
