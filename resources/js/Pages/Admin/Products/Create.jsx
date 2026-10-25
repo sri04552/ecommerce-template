@@ -1,13 +1,18 @@
 import { useForm, Link } from '@inertiajs/react';
 import AdminLayout from '@/Layouts/AdminLayout';
-import { ArrowLeft, Save, Sparkles, Image as ImageIcon } from 'lucide-react';
+import { ArrowLeft, Save, Sparkles, Image as ImageIcon, Plus } from 'lucide-react';
 
-export default function ProductCreate({ categories, brands }) {
+export default function ProductCreate({ categories, brands, selectedCategoryId }) {
+    const searchParamCategory = typeof window !== 'undefined'
+        ? new URLSearchParams(window.location.search).get('category_id')
+        : '';
+    const initialCategory = selectedCategoryId ? String(selectedCategoryId) : (searchParamCategory || '');
+
     const { data, setData, post, processing, errors } = useForm({
         name: '',
         slug: '',
         sku: '',
-        category_id: '',
+        category_id: initialCategory,
         brand_id: '',
         base_price: '',
         sale_price: '',
@@ -96,9 +101,19 @@ export default function ProductCreate({ categories, brands }) {
 
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             <div>
-                                <label className="block text-sm font-medium text-slate-700 mb-1">
-                                    Category
-                                </label>
+                                <div className="flex items-center justify-between mb-1">
+                                    <label className="block text-sm font-medium text-slate-700">
+                                        Category
+                                    </label>
+                                    <Link
+                                        href="/admin/categories"
+                                        target="_blank"
+                                        className="text-xs text-indigo-600 hover:text-indigo-800 font-semibold flex items-center gap-1"
+                                    >
+                                        <Plus className="w-3 h-3" />
+                                        <span>Create Category</span>
+                                    </Link>
+                                </div>
                                 <select
                                     value={data.category_id}
                                     onChange={(e) => setData('category_id', e.target.value)}

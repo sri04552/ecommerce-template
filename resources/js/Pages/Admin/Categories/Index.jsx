@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useForm, router } from '@inertiajs/react';
+import { useForm, router, Link } from '@inertiajs/react';
 import AdminLayout from '@/Layouts/AdminLayout';
 import {
     Plus,
@@ -11,6 +11,8 @@ import {
     ChevronRight,
     Save,
     X,
+    PackagePlus,
+    Package,
 } from 'lucide-react';
 
 export default function CategoriesIndex({ categories, flatCategories }) {
@@ -108,10 +110,25 @@ export default function CategoriesIndex({ categories, flatCategories }) {
                         </div>
                     </div>
 
-                    <div className="flex items-center gap-4 shrink-0">
-                        <span className="text-xs px-2.5 py-1 bg-slate-100 rounded-md text-slate-700 font-medium">
+                    <div className="flex items-center gap-3 shrink-0">
+                        {/* Quick link to view all products in this category */}
+                        <Link
+                            href={`/admin/products?category=${cat.id}`}
+                            className="text-xs px-2.5 py-1 bg-slate-100 hover:bg-slate-200 rounded-md text-slate-700 font-medium transition-colors"
+                            title={`View all products in ${cat.name}`}
+                        >
                             {cat.products_count || 0} products
-                        </span>
+                        </Link>
+
+                        {/* Direct "+ Add Product" to this Category button */}
+                        <Link
+                            href={`/admin/products/create?category_id=${cat.id}`}
+                            className="inline-flex items-center gap-1 px-2.5 py-1 text-xs font-semibold rounded-md bg-indigo-50 hover:bg-indigo-100 text-indigo-700 border border-indigo-200 transition-colors"
+                            title={`Add a new product directly into ${cat.name}`}
+                        >
+                            <PackagePlus className="w-3.5 h-3.5" />
+                            <span>+ Product</span>
+                        </Link>
 
                         {cat.is_active ? (
                             <span className="inline-flex items-center gap-1 text-xs text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full font-medium">

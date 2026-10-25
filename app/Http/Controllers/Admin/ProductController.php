@@ -72,11 +72,12 @@ class ProductController extends Controller
     /**
      * Show the form for creating a new product.
      */
-    public function create(): Response
+    public function create(Request $request): Response
     {
         return Inertia::render('Admin/Products/Create', [
             'categories' => Category::where('is_active', true)->orderBy('name')->get(),
             'brands' => Brand::where('is_active', true)->orderBy('name')->get(),
+            'selectedCategoryId' => $request->query('category_id') ? (int) $request->query('category_id') : null,
         ]);
     }
 
