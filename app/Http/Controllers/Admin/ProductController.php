@@ -10,6 +10,7 @@ use App\Models\ProductImage;
 use App\Models\ProductVariant;
 use App\Services\CatalogService;
 use App\Services\InventoryService;
+use App\Services\ImageOptimizationService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -21,7 +22,8 @@ class ProductController extends Controller
 {
     public function __construct(
         protected CatalogService $catalogService,
-        protected InventoryService $inventoryService
+        protected InventoryService $inventoryService,
+        protected ImageOptimizationService $imageService
     ) {}
 
     /**
@@ -92,7 +94,9 @@ class ProductController extends Controller
             'category_id' => ['nullable', 'exists:categories,id'],
             'brand_id' => ['nullable', 'exists:brands,id'],
             'base_price' => ['required', 'numeric', 'min:0'],
-            'sale_price' => ['nullable', 'numeric', 'min:0', 'lt:base_price'],
+            'sale_price' => ['nullable', 'numeric', 'min:0'],
+            'discount_percentage' => ['nullable', 'numeric', 'min:0', 'max:100'],
+            'offer_tag' => ['nullable', 'string', 'max:60'],
             'cost_price' => ['nullable', 'numeric', 'min:0'],
             'short_description' => ['nullable', 'string', 'max:500'],
             'description' => ['nullable', 'string'],
@@ -100,13 +104,26 @@ class ProductController extends Controller
             'allow_backorder' => ['nullable', 'boolean'],
             'is_featured' => ['nullable', 'boolean'],
             'is_active' => ['nullable', 'boolean'],
+            'images' => ['nullable', 'array'],
+            'images.*' => ['nullable', 'image', 'mimes:jpeg,jpg,png,webp', 'max:10240'],
             'image_url' => ['nullable', 'string', 'max:1000'],
             'primary_image_url' => ['nullable', 'string', 'max:1000'],
             'meta_title' => ['nullable', 'string', 'max:255'],
             'meta_description' => ['nullable', 'string', 'max:500'],
         ]);
 
-        DB::transaction(function () use ($validated, $request) {
+        $basePrice = (float) $validated['base_price'];
+        $salePrice = isset($validated['sale_price']) && $validated['sale_price'] !== '' ? (float) $validated['sale_price'] : null;
+        $discountPercent = isset($validated['discount_percentage']) && $validated['discount_percentage'] !== '' ? (float) $validated['discount_percentage'] : null;
+
+        // Auto calculate discount percentage or sale price
+        if ($discountPercent && ! $salePrice && $discountPercent > 0) {
+            $salePrice = round($basePrice * (1 - ($discountPercent / 100)), 2);
+        } elseif ($salePrice && $salePrice < $basePrice && ! $discountPercent) {
+            $discountPercent = round((($basePrice - $salePrice) / $basePrice) * 100, 2);
+        }
+
+        DB::transaction(function () use ($validated, $request, $basePrice, $salePrice, $discountPercent) {
             $slug = $this->catalogService->generateUniqueSlug($validated['name']);
 
             $product = Product::create([
@@ -117,8 +134,10 @@ class ProductController extends Controller
                 'sku' => strtoupper($validated['sku']),
                 'short_description' => $validated['short_description'] ?? null,
                 'description' => $validated['description'] ?? null,
-                'base_price' => $validated['base_price'],
-                'sale_price' => $validated['sale_price'] ?? null,
+                'base_price' => $basePrice,
+                'sale_price' => $salePrice,
+                'offer_tag' => $validated['offer_tag'] ?? null,
+                'discount_percentage' => $discountPercent,
                 'cost_price' => $validated['cost_price'] ?? null,
                 'has_variants' => false,
                 'is_featured' => ! empty($validated['is_featured']),
@@ -153,21 +172,38 @@ class ProductController extends Controller
                 );
             }
 
-            // Optional primary product image
-            $imageUrl = $validated['primary_image_url'] ?? $validated['image_url'] ?? null;
-            if (! empty($imageUrl)) {
-                ProductImage::create([
-                    'product_id' => $product->id,
-                    'image_path' => $imageUrl,
-                    'alt_text' => $product->name,
-                    'is_primary' => true,
-                    'sort_order' => 0,
-                ]);
+            // Process manual multi-image uploads (strictly sub-100kb WebP, 1:1 square ratio)
+            if ($request->hasFile('images')) {
+                $uploadedFiles = $request->file('images');
+                foreach ($uploadedFiles as $idx => $file) {
+                    if ($file && $file->isValid()) {
+                        $processed = $this->imageService->processProductImage($file, $product->slug, $idx);
+                        ProductImage::create([
+                            'product_id' => $product->id,
+                            'image_path' => $processed['image_path'],
+                            'alt_text' => $product->name,
+                            'is_primary' => ($idx === 0),
+                            'sort_order' => $idx,
+                        ]);
+                    }
+                }
+            } else {
+                // Fallback to URL if manual file was not attached
+                $imageUrl = $validated['primary_image_url'] ?? $validated['image_url'] ?? null;
+                if (! empty($imageUrl)) {
+                    ProductImage::create([
+                        'product_id' => $product->id,
+                        'image_path' => $imageUrl,
+                        'alt_text' => $product->name,
+                        'is_primary' => true,
+                        'sort_order' => 0,
+                    ]);
+                }
             }
         });
 
         return redirect()->route('admin.products.index')
-            ->with('success', 'Product created successfully.');
+            ->with('success', 'Product created successfully with optimized 1:1 images.');
     }
 
     /**
@@ -179,6 +215,7 @@ class ProductController extends Controller
 
         return Inertia::render('Admin/Products/Edit', [
             'product' => $product,
+            'hasOrders' => $product->hasOrders(),
             'categories' => Category::where('is_active', true)->orderBy('name')->get(),
             'brands' => Brand::where('is_active', true)->orderBy('name')->get(),
         ]);
@@ -189,6 +226,13 @@ class ProductController extends Controller
      */
     public function update(Request $request, Product $product): RedirectResponse
     {
+        // Anti-tampering check: Prevent editing products that have already been ordered
+        if ($product->hasOrders()) {
+            return back()->withErrors([
+                'error' => 'This product cannot be edited because customers have already placed orders for it. Product details and prices are strictly locked to protect order history and prevent tampering.',
+            ]);
+        }
+
         $validated = $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'sku' => ['required', 'string', 'max:64', Rule::unique('products')->ignore($product->id)],
@@ -196,18 +240,32 @@ class ProductController extends Controller
             'brand_id' => ['nullable', 'exists:brands,id'],
             'base_price' => ['required', 'numeric', 'min:0'],
             'sale_price' => ['nullable', 'numeric', 'min:0'],
+            'discount_percentage' => ['nullable', 'numeric', 'min:0', 'max:100'],
+            'offer_tag' => ['nullable', 'string', 'max:60'],
             'cost_price' => ['nullable', 'numeric', 'min:0'],
             'short_description' => ['nullable', 'string', 'max:500'],
             'description' => ['nullable', 'string'],
             'is_featured' => ['nullable', 'boolean'],
             'is_active' => ['nullable', 'boolean'],
+            'images' => ['nullable', 'array'],
+            'images.*' => ['nullable', 'image', 'mimes:jpeg,jpg,png,webp', 'max:10240'],
             'image_url' => ['nullable', 'string', 'max:1000'],
             'primary_image_url' => ['nullable', 'string', 'max:1000'],
             'meta_title' => ['nullable', 'string', 'max:255'],
             'meta_description' => ['nullable', 'string', 'max:500'],
         ]);
 
-        DB::transaction(function () use ($product, $validated) {
+        $basePrice = (float) $validated['base_price'];
+        $salePrice = isset($validated['sale_price']) && $validated['sale_price'] !== '' ? (float) $validated['sale_price'] : null;
+        $discountPercent = isset($validated['discount_percentage']) && $validated['discount_percentage'] !== '' ? (float) $validated['discount_percentage'] : null;
+
+        if ($discountPercent && ! $salePrice && $discountPercent > 0) {
+            $salePrice = round($basePrice * (1 - ($discountPercent / 100)), 2);
+        } elseif ($salePrice && $salePrice < $basePrice && ! $discountPercent) {
+            $discountPercent = round((($basePrice - $salePrice) / $basePrice) * 100, 2);
+        }
+
+        DB::transaction(function () use ($product, $validated, $request, $basePrice, $salePrice, $discountPercent) {
             $product->update([
                 'category_id' => $validated['category_id'] ?? null,
                 'brand_id' => $validated['brand_id'] ?? null,
@@ -215,8 +273,10 @@ class ProductController extends Controller
                 'sku' => strtoupper($validated['sku']),
                 'short_description' => $validated['short_description'] ?? null,
                 'description' => $validated['description'] ?? null,
-                'base_price' => $validated['base_price'],
-                'sale_price' => $validated['sale_price'] ?? null,
+                'base_price' => $basePrice,
+                'sale_price' => $salePrice,
+                'offer_tag' => $validated['offer_tag'] ?? null,
+                'discount_percentage' => $discountPercent,
                 'cost_price' => $validated['cost_price'] ?? null,
                 'is_featured' => ! empty($validated['is_featured']),
                 'is_active' => isset($validated['is_active']) ? (bool) $validated['is_active'] : true,
@@ -234,15 +294,29 @@ class ProductController extends Controller
                 ]);
             }
 
-            // Add or update primary image if provided
-            $imageUrl = $validated['primary_image_url'] ?? $validated['image_url'] ?? null;
-            if (! empty($imageUrl)) {
+            // Process newly uploaded manual images
+            if ($request->hasFile('images')) {
+                $existingCount = $product->images()->count();
+                $uploadedFiles = $request->file('images');
+                foreach ($uploadedFiles as $idx => $file) {
+                    if ($file && $file->isValid()) {
+                        $processed = $this->imageService->processProductImage($file, $product->slug, $existingCount + $idx);
+                        ProductImage::create([
+                            'product_id' => $product->id,
+                            'image_path' => $processed['image_path'],
+                            'alt_text' => $product->name,
+                            'is_primary' => ($existingCount === 0 && $idx === 0),
+                            'sort_order' => $existingCount + $idx,
+                        ]);
+                    }
+                }
+            } elseif (! empty($validated['primary_image_url'])) {
                 $primaryImg = $product->images()->where('is_primary', true)->first();
                 if ($primaryImg) {
-                    $primaryImg->update(['image_path' => $imageUrl]);
+                    $primaryImg->update(['image_path' => $validated['primary_image_url']]);
                 } else {
                     $product->images()->create([
-                        'image_path' => $imageUrl,
+                        'image_path' => $validated['primary_image_url'],
                         'is_primary' => true,
                         'alt_text' => $product->name,
                         'sort_order' => 0,

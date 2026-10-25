@@ -71,7 +71,7 @@ export default function AdminLayout({ title, subtitle, actions, children }) {
             <div className="flex flex-1">
                 {/* Desktop & Mobile Sidebar */}
                 <aside
-                    className={`fixed inset-y-0 left-0 z-40 w-64 bg-slate-900 text-slate-300 transform transition-transform duration-200 ease-in-out lg:static lg:translate-x-0 flex flex-col justify-between ${
+                    className={`fixed inset-y-0 left-0 z-40 w-64 bg-slate-900 text-slate-300 transform transition-transform duration-200 ease-in-out lg:sticky lg:top-0 lg:h-screen lg:translate-x-0 overflow-y-auto shrink-0 flex flex-col justify-between ${
                         mobileOpen ? 'translate-x-0' : '-translate-x-full'
                     }`}
                 >

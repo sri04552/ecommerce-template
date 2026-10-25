@@ -1,20 +1,59 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Head, Link, usePage } from '@inertiajs/react';
 import StorefrontLayout from '../../Layouts/StorefrontLayout';
 import ProductCard from '../../Components/catalog/ProductCard';
 import Button from '../../Components/ui/Button';
 import Badge from '../../Components/ui/Badge';
-import { ShoppingBag, CheckCircle2, AlertCircle, ArrowLeft, Truck, ShieldCheck, RefreshCw, AlertTriangle, ArrowRight } from 'lucide-react';
+import {
+    ShoppingBag,
+    CheckCircle2,
+    AlertCircle,
+    ArrowLeft,
+    Truck,
+    ShieldCheck,
+    RefreshCw,
+    AlertTriangle,
+    ArrowRight,
+    ChevronLeft,
+    ChevronRight,
+    Sparkles,
+    Tag,
+} from 'lucide-react';
 import { addToCart, MAX_CART_LIMIT } from '../../utils/cart';
 
 export default function Show({ product, relatedProducts = [], categories = [] }) {
     const { storeSettings } = usePage().props;
     const currency = storeSettings?.currency_symbol || '₹';
 
-    const images = product.images || [];
-    const [selectedImage, setSelectedImage] = useState(
-        product.primary_image?.image_path || images[0]?.image_path || null
-    );
+    const rawImages = product.images || [];
+    // Ensure primary image is first if designated
+    const images = [...rawImages].sort((a, b) => (b.is_primary ? 1 : 0) - (a.is_primary ? 1 : 0));
+
+    const [activeImageIndex, setActiveImageIndex] = useState(0);
+    const [isHovered, setIsHovered] = useState(false);
+
+    // Auto-sliding carousel when there are multiple images (> 1)
+    useEffect(() => {
+        if (images.length <= 1 || isHovered) return;
+
+        const timer = setInterval(() => {
+            setActiveImageIndex((prev) => (prev + 1) % images.length);
+        }, 3000);
+
+        return () => clearInterval(timer);
+    }, [images.length, isHovered]);
+
+    const handlePrevImage = () => {
+        setActiveImageIndex((prev) => (prev === 0 ? images.length - 1 : prev - 1));
+    };
+
+    const handleNextImage = () => {
+        setActiveImageIndex((prev) => (prev + 1) % images.length);
+    };
+
+    const currentImagePath = images.length > 0
+        ? images[activeImageIndex]?.image_path
+        : product.primary_image?.image_path;
 
     const variants = product.variants || [];
     const [selectedVariant, setSelectedVariant] = useState(variants[0] || null);
@@ -26,6 +65,12 @@ export default function Show({ product, relatedProducts = [], categories = [] })
     const activeSalePrice = selectedVariant?.sale_price || product.sale_price;
     const hasDiscount = activeSalePrice && parseFloat(activeSalePrice) < parseFloat(activePrice);
     const displayPrice = hasDiscount ? activeSalePrice : activePrice;
+
+    const discountPercentage = product.discount_percentage
+        ? Math.round(product.discount_percentage)
+        : (hasDiscount && activePrice > 0
+            ? Math.round(((parseFloat(activePrice) - parseFloat(activeSalePrice)) / parseFloat(activePrice)) * 100)
+            : null);
 
     // Inventory status for selected variant
     const inventoryLevel = selectedVariant?.inventory_level;
@@ -76,14 +121,19 @@ export default function Show({ product, relatedProducts = [], categories = [] })
 
                 {/* Product Main Container */}
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 bg-brand-surface border border-brand-border rounded-brand p-6 sm:p-8">
-                    {/* Column 1: Image Gallery */}
+                    {/* Column 1: Image Gallery & Carousel */}
                     <div className="space-y-4">
-                        <div className="aspect-square bg-brand-surface-muted rounded-brand overflow-hidden border border-brand-border flex items-center justify-center">
-                            {selectedImage ? (
+                        {/* 1:1 Aspect Ratio Image Frame */}
+                        <div
+                            className="group relative aspect-square bg-brand-surface-muted rounded-brand overflow-hidden border border-brand-border flex items-center justify-center select-none"
+                            onMouseEnter={() => setIsHovered(true)}
+                            onMouseLeave={() => setIsHovered(false)}
+                        >
+                            {currentImagePath ? (
                                 <img
-                                    src={selectedImage}
+                                    src={currentImagePath}
                                     alt={product.name}
-                                    className="w-full h-full object-cover object-center"
+                                    className="w-full h-full object-cover object-center transition-opacity duration-300"
                                 />
                             ) : (
                                 <div className="text-center p-8 text-brand-text-muted">
@@ -91,19 +141,62 @@ export default function Show({ product, relatedProducts = [], categories = [] })
                                     <span className="text-xs uppercase font-medium tracking-wider">No Image Available</span>
                                 </div>
                             )}
+
+                            {/* Floating Deal & Discount Badges */}
+                            <div className="absolute top-3 left-3 flex flex-col gap-1.5 z-10 pointer-events-none">
+                                {product.offer_tag && (
+                                    <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-md text-[11px] font-extrabold bg-gradient-to-r from-amber-500 to-orange-500 text-white shadow-md tracking-wide uppercase">
+                                        <Sparkles className="w-3 h-3" />
+                                        <span>{product.offer_tag}</span>
+                                    </span>
+                                )}
+                                {discountPercentage && discountPercentage > 0 && (
+                                    <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-md text-[11px] font-bold bg-emerald-600 text-white shadow-xs tracking-wide">
+                                        <span>{discountPercentage}% OFF</span>
+                                    </span>
+                                )}
+                            </div>
+
+                            {/* Carousel Navigation Arrows - ONLY rendered when images.length > 1 */}
+                            {images.length > 1 && (
+                                <>
+                                    <button
+                                        type="button"
+                                        onClick={handlePrevImage}
+                                        aria-label="Previous image"
+                                        className="absolute left-2.5 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-white/90 hover:bg-white text-slate-800 shadow-md flex items-center justify-center transition-all opacity-80 hover:opacity-100 hover:scale-110 z-10"
+                                    >
+                                        <ChevronLeft className="w-4 h-4" />
+                                    </button>
+
+                                    <button
+                                        type="button"
+                                        onClick={handleNextImage}
+                                        aria-label="Next image"
+                                        className="absolute right-2.5 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-white/90 hover:bg-white text-slate-800 shadow-md flex items-center justify-center transition-all opacity-80 hover:opacity-100 hover:scale-110 z-10"
+                                    >
+                                        <ChevronRight className="w-4 h-4" />
+                                    </button>
+
+                                    {/* Slide Counter Indicator */}
+                                    <div className="absolute bottom-3 right-3 bg-slate-900/70 text-white text-[11px] font-medium px-2 py-0.5 rounded-full pointer-events-none z-10">
+                                        {activeImageIndex + 1} / {images.length}
+                                    </div>
+                                </>
+                            )}
                         </div>
 
-                        {/* Thumbnails */}
+                        {/* Thumbnails Strip - ONLY rendered when images.length > 1 */}
                         {images.length > 1 && (
                             <div className="flex gap-3 overflow-x-auto pb-2">
-                                {images.map((img) => (
+                                {images.map((img, idx) => (
                                     <button
-                                        key={img.id}
+                                        key={img.id || idx}
                                         type="button"
-                                        onClick={() => setSelectedImage(img.image_path)}
-                                        className={`w-16 h-16 rounded-brand overflow-hidden border-2 shrink-0 transition-all ${
-                                            selectedImage === img.image_path
-                                                ? 'border-brand-primary ring-2 ring-brand-primary/20'
+                                        onClick={() => setActiveImageIndex(idx)}
+                                        className={`w-16 h-16 rounded-brand overflow-hidden border-2 shrink-0 transition-all aspect-square ${
+                                            activeImageIndex === idx
+                                                ? 'border-brand-primary ring-2 ring-brand-primary/20 scale-105'
                                                 : 'border-brand-border opacity-70 hover:opacity-100'
                                         }`}
                                     >
@@ -117,8 +210,8 @@ export default function Show({ product, relatedProducts = [], categories = [] })
                     {/* Column 2: Product Information & Purchase Controls */}
                     <div className="space-y-6 flex flex-col justify-between">
                         <div className="space-y-4">
-                            {/* Brand & Category */}
-                            <div className="flex items-center gap-2">
+                            {/* Brand & Badges */}
+                            <div className="flex items-center gap-2 flex-wrap">
                                 {product.brand && (
                                     <span className="text-xs font-bold uppercase tracking-wider text-brand-primary">
                                         {product.brand.name}
@@ -128,6 +221,12 @@ export default function Show({ product, relatedProducts = [], categories = [] })
                                     <Badge variant="primary" className="text-[10px]">
                                         Featured Item
                                     </Badge>
+                                )}
+                                {product.offer_tag && (
+                                    <span className="inline-flex items-center gap-1 text-[11px] font-bold text-amber-700 bg-amber-50 border border-amber-200 px-2 py-0.5 rounded-full">
+                                        <Tag className="w-3 h-3 text-amber-600" />
+                                        <span>{product.offer_tag}</span>
+                                    </span>
                                 )}
                             </div>
 
@@ -151,15 +250,29 @@ export default function Show({ product, relatedProducts = [], categories = [] })
                                 </div>
                             </div>
 
-                            {/* Price Block */}
-                            <div className="flex items-baseline gap-3 pt-2">
-                                <span className="text-3xl font-extrabold text-brand-secondary">
-                                    {formatPrice(displayPrice)}
-                                </span>
-                                {hasDiscount && (
-                                    <span className="text-base text-brand-text-muted line-through">
-                                        {formatPrice(activePrice)}
+                            {/* Price Block with Flipkart/Amazon Style Savings */}
+                            <div className="pt-2">
+                                <div className="flex items-baseline gap-3">
+                                    <span className="text-3xl font-extrabold text-brand-secondary">
+                                        {formatPrice(displayPrice)}
                                     </span>
+                                    {hasDiscount && (
+                                        <>
+                                            <span className="text-base text-brand-text-muted line-through">
+                                                {formatPrice(activePrice)}
+                                            </span>
+                                            {discountPercentage && (
+                                                <span className="text-sm font-bold text-emerald-600">
+                                                    {discountPercentage}% off
+                                                </span>
+                                            )}
+                                        </>
+                                    )}
+                                </div>
+                                {hasDiscount && (
+                                    <p className="text-xs text-emerald-700 font-semibold mt-1">
+                                        You save {formatPrice(parseFloat(activePrice) - parseFloat(activeSalePrice))} on this order
+                                    </p>
                                 )}
                             </div>
 

@@ -22,6 +22,8 @@ class Product extends Model
         'description',
         'base_price',
         'sale_price',
+        'offer_tag',
+        'discount_percentage',
         'cost_price',
         'has_variants',
         'is_featured',
@@ -35,6 +37,7 @@ class Product extends Model
         return [
             'base_price' => 'decimal:2',
             'sale_price' => 'decimal:2',
+            'discount_percentage' => 'decimal:2',
             'cost_price' => 'decimal:2',
             'has_variants' => 'boolean',
             'is_featured' => 'boolean',
@@ -65,5 +68,14 @@ class Product extends Model
     public function primaryImage(): HasOne
     {
         return $this->hasOne(ProductImage::class)->where('is_primary', true);
+    }
+
+    /**
+     * Check if customers have already placed orders containing this product.
+     * Used to prevent fraudulent price and spec modifications on ordered goods.
+     */
+    public function hasOrders(): bool
+    {
+        return $this->variants()->whereHas('orderItems')->exists();
     }
 }

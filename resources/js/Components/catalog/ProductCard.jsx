@@ -1,6 +1,6 @@
 import { Link, usePage } from '@inertiajs/react';
 import Badge from '../ui/Badge';
-import { ShoppingBag } from 'lucide-react';
+import { ShoppingBag, Sparkles } from 'lucide-react';
 
 export default function ProductCard({ product }) {
     const { storeSettings } = usePage().props;
@@ -10,6 +10,12 @@ export default function ProductCard({ product }) {
     const hasDiscount = product.sale_price && parseFloat(product.sale_price) < parseFloat(product.base_price);
     const displayPrice = hasDiscount ? product.sale_price : product.base_price;
     const originalPrice = product.base_price;
+
+    const discountPercent = product.discount_percentage
+        ? Math.round(product.discount_percentage)
+        : (hasDiscount && originalPrice > 0
+            ? Math.round(((parseFloat(originalPrice) - parseFloat(displayPrice)) / parseFloat(originalPrice)) * 100)
+            : null);
 
     const formatPrice = (amount) => {
         const num = parseFloat(amount);
@@ -38,11 +44,17 @@ export default function ProductCard({ product }) {
                     </div>
                 )}
 
-                {/* Badges */}
-                <div className="absolute top-2.5 left-2.5 flex flex-col gap-1.5 z-10">
+                {/* Floating Badges (Offers, Discounts, Featured) */}
+                <div className="absolute top-2.5 left-2.5 flex flex-col gap-1 z-10 pointer-events-none">
+                    {product.offer_tag && (
+                        <span className="inline-flex items-center gap-1 bg-amber-500 text-white text-[9px] font-extrabold uppercase px-2 py-0.5 rounded shadow-xs tracking-wide">
+                            <Sparkles className="w-2.5 h-2.5" />
+                            <span>{product.offer_tag}</span>
+                        </span>
+                    )}
                     {hasDiscount && (
                         <Badge variant="danger" className="text-[10px] font-bold shadow-xs">
-                            SALE
+                            {discountPercent ? `${discountPercent}% OFF` : 'SALE'}
                         </Badge>
                     )}
                     {product.is_featured && (
@@ -77,14 +89,21 @@ export default function ProductCard({ product }) {
                 </div>
 
                 <div className="mt-4 pt-3 border-t border-brand-border flex items-center justify-between z-10 relative">
-                    <div className="flex items-baseline gap-2">
+                    <div className="flex items-baseline gap-1.5 flex-wrap">
                         <span className="text-base font-bold text-brand-secondary">
                             {formatPrice(displayPrice)}
                         </span>
                         {hasDiscount && (
-                            <span className="text-xs text-brand-text-muted line-through">
-                                {formatPrice(originalPrice)}
-                            </span>
+                            <>
+                                <span className="text-xs text-brand-text-muted line-through">
+                                    {formatPrice(originalPrice)}
+                                </span>
+                                {discountPercent && (
+                                    <span className="text-[11px] font-bold text-emerald-600">
+                                        {discountPercent}% off
+                                    </span>
+                                )}
+                            </>
                         )}
                     </div>
 
