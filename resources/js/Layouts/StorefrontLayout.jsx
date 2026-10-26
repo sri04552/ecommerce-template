@@ -66,9 +66,9 @@ export default function StorefrontLayout({ children, categories = [] }) {
 
     return (
         <div className="min-h-screen flex flex-col bg-brand-surface-muted text-brand-text">
-            {/* Store Announcement Bar */}
+            {/* Store Announcement Bar (Desktop Only) */}
             {announcement && (
-                <div className="bg-slate-950 text-slate-200 border-b border-slate-800 text-xs py-2 px-4 text-center font-medium flex items-center justify-center gap-2">
+                <div className="hidden lg:flex bg-slate-950 text-slate-200 border-b border-slate-800 text-xs py-2 px-4 text-center font-medium items-center justify-center gap-2">
                     <span className="inline-flex items-center gap-1 text-amber-400 font-bold uppercase tracking-wider text-[10px] bg-amber-400/10 px-2 py-0.5 rounded-full border border-amber-400/20">
                         Special
                     </span>

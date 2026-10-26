@@ -117,7 +117,7 @@ export default function About({ storeName = 'Aura Store', categories = [] }) {
                 <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-5">
                     <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-amber-500/10 text-amber-800 border border-amber-300">
                         <Sparkles className="w-3.5 h-3.5 text-amber-600" />
-                        <span>Crafted For India · Built For Everyday Living</span>
+                        <span>Crafted For India</span>
                     </div>
 
                     <h1 className="text-3xl sm:text-5xl font-black tracking-tight leading-tight text-brand-secondary">
