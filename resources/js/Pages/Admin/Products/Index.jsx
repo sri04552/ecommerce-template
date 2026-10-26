@@ -115,7 +115,7 @@ export default function ProductsIndex({ products, categories, filters }) {
                     </button>
                     <Link
                         href={`/${adminPrefix}/products/create`}
-                        className="inline-flex items-center gap-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-medium text-xs rounded-lg shadow-xs transition-colors"
+                        className="inline-flex items-center gap-2 px-4 py-2 bg-brand-primary hover:bg-brand-primary-hover text-white font-medium text-xs rounded-lg shadow-xs transition-colors"
                     >
                         <Plus className="w-4 h-4" />
                         <span>Add Product</span>
@@ -133,7 +133,7 @@ export default function ProductsIndex({ products, categories, filters }) {
                             placeholder="Search by product title or SKU..."
                             value={search}
                             onChange={(e) => setSearch(e.target.value)}
-                            className="w-full pl-9 pr-3 py-2 text-sm bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white"
+                            className="w-full pl-9 pr-3 py-2 text-sm bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-primary focus:bg-white"
                         />
                     </div>
 
@@ -141,7 +141,7 @@ export default function ProductsIndex({ products, categories, filters }) {
                         <select
                             value={category}
                             onChange={(e) => setCategory(e.target.value)}
-                            className="w-full py-2 px-3 text-sm bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white text-slate-700"
+                            className="w-full py-2 px-3 text-sm bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-primary focus:bg-white text-slate-700"
                         >
                             <option value="">All Categories</option>
                             {categories?.map((cat) => (
@@ -156,7 +156,7 @@ export default function ProductsIndex({ products, categories, filters }) {
                         <select
                             value={status}
                             onChange={(e) => setStatus(e.target.value)}
-                            className="w-full py-2 px-3 text-sm bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white text-slate-700"
+                            className="w-full py-2 px-3 text-sm bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-primary focus:bg-white text-slate-700"
                         >
                             <option value="">All Statuses</option>
                             <option value="active">Active</option>
@@ -241,7 +241,7 @@ export default function ProductsIndex({ products, categories, filters }) {
                                                     <div className="min-w-0">
                                                         <Link
                                                             href={`/admin/products/${product.id}/edit`}
-                                                            className="font-medium text-slate-900 hover:text-indigo-600 truncate block max-w-xs"
+                                                            className="font-medium text-slate-900 hover:text-brand-primary truncate block max-w-xs"
                                                         >
                                                             {product.name}
                                                         </Link>
@@ -330,7 +330,7 @@ export default function ProductsIndex({ products, categories, filters }) {
                                                     </Link>
                                                     <Link
                                                         href={`/${adminPrefix}/products/${product.id}/edit`}
-                                                        className="p-1.5 rounded-lg text-indigo-600 hover:text-indigo-700 hover:bg-indigo-50"
+                                                        className="p-1.5 rounded-lg text-brand-primary hover:text-brand-secondary hover:bg-brand-surface-accent"
                                                         title="Edit product"
                                                     >
                                                         <Edit3 className="w-4 h-4" />
@@ -362,7 +362,7 @@ export default function ProductsIndex({ products, categories, filters }) {
                         <div className="mt-5">
                             <Link
                                 href={`/${adminPrefix}/products/create`}
-                                className="inline-flex items-center gap-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-medium text-sm rounded-lg shadow-xs transition-colors"
+                                className="inline-flex items-center gap-2 px-4 py-2 bg-brand-primary hover:bg-brand-primary-hover text-white font-medium text-sm rounded-lg shadow-xs transition-colors"
                             >
                                 <Plus className="w-4 h-4" />
                                 <span>Create Product</span>
@@ -385,7 +385,7 @@ export default function ProductsIndex({ products, categories, filters }) {
                                     preserveScroll
                                     className={`px-3 py-1.5 text-xs rounded-md transition-colors ${
                                         link.active
-                                            ? 'bg-indigo-600 text-white font-semibold'
+                                            ? 'bg-brand-primary text-white font-semibold'
                                             : !link.url
                                             ? 'text-slate-300 cursor-not-allowed'
                                             : 'text-slate-600 hover:bg-slate-200'
@@ -404,7 +404,7 @@ export default function ProductsIndex({ products, categories, filters }) {
                     <div className="bg-white rounded-2xl max-w-md w-full border border-slate-200 shadow-2xl p-6">
                         <div className="flex items-center justify-between pb-4 border-b border-slate-200 mb-5">
                             <div className="flex items-center gap-2.5">
-                                <FileSpreadsheet className="w-5 h-5 text-indigo-600" />
+                                <FileSpreadsheet className="w-5 h-5 text-brand-primary" />
                                 <div>
                                     <h2 className="text-base font-bold text-slate-900">Bulk Product Import</h2>
                                     <p className="text-xs text-slate-500">Upload CSV to create or update catalog</p>
@@ -418,14 +418,14 @@ export default function ProductsIndex({ products, categories, filters }) {
                             </button>
                         </div>
 
-                        <div className="mb-5 p-3.5 bg-indigo-50 border border-indigo-100 rounded-xl flex items-center justify-between">
-                            <div className="text-xs text-indigo-900">
+                        <div className="mb-5 p-3.5 bg-brand-surface-accent border border-brand-border rounded-xl flex items-center justify-between">
+                            <div className="text-xs text-brand-secondary">
                                 <span className="font-semibold block">Need a starting template?</span>
-                                <span className="text-[11px] text-indigo-700">Download formatted sample file</span>
+                                <span className="text-[11px] text-brand-text-muted">Download formatted sample file</span>
                             </div>
                             <a
                                 href={`/${adminPrefix}/products/import-template`}
-                                className="px-3 py-1.5 bg-white border border-indigo-200 text-indigo-700 font-bold text-xs rounded-lg hover:bg-indigo-100/50 shadow-2xs"
+                                className="px-3 py-1.5 bg-white border border-brand-border text-brand-secondary font-bold text-xs rounded-lg hover:bg-brand-surface-muted shadow-2xs"
                             >
                                 Download Template
                             </a>
@@ -440,7 +440,7 @@ export default function ProductsIndex({ products, categories, filters }) {
                                     type="file"
                                     accept=".csv,text/csv"
                                     onChange={(e) => setCsvFile(e.target.files[0])}
-                                    className="w-full text-xs text-slate-600 file:mr-3 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100 border border-slate-300 rounded-lg p-1.5 focus:outline-none"
+                                    className="w-full text-xs text-slate-600 file:mr-3 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-brand-surface-accent file:text-brand-secondary hover:file:bg-brand-surface-muted border border-slate-300 rounded-lg p-1.5 focus:outline-none"
                                     required
                                 />
                                 <span className="text-[11px] text-slate-400 block mt-1.5">
@@ -459,7 +459,7 @@ export default function ProductsIndex({ products, categories, filters }) {
                                 <button
                                     type="submit"
                                     disabled={importing || !csvFile}
-                                    className="px-5 py-2 text-xs font-bold bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg disabled:opacity-50 shadow-xs"
+                                    className="px-5 py-2 text-xs font-bold bg-brand-primary hover:bg-brand-primary-hover text-white rounded-lg disabled:opacity-50 shadow-xs"
                                 >
                                     {importing ? 'Processing...' : 'Upload & Import'}
                                 </button>

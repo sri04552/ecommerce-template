@@ -39,8 +39,8 @@ export default function OrderIndex({ orders, stats, filters }) {
     const getStatusBadge = (status) => {
         const styles = {
             pending: 'bg-amber-50 text-amber-700 border-amber-200',
-            confirmed: 'bg-blue-50 text-blue-700 border-blue-200',
-            processing: 'bg-indigo-50 text-indigo-700 border-indigo-200',
+            confirmed: 'bg-sky-50 text-sky-700 border-sky-200',
+            processing: 'bg-brand-surface-accent text-brand-secondary border-brand-border',
             shipped: 'bg-purple-50 text-purple-700 border-purple-200',
             delivered: 'bg-emerald-50 text-emerald-700 border-emerald-200',
             cancelled: 'bg-red-50 text-red-700 border-red-200',
@@ -77,7 +77,7 @@ export default function OrderIndex({ orders, stats, filters }) {
                     <div
                         onClick={() => handleStatusChange('')}
                         className={`p-4 rounded-xl border cursor-pointer transition-all ${
-                            !statusFilter ? 'bg-indigo-50 border-indigo-300 ring-2 ring-indigo-500/20' : 'bg-white border-slate-200 hover:border-slate-300'
+                            !statusFilter ? 'bg-brand-surface-accent border-brand-primary ring-2 ring-brand-primary/20' : 'bg-white border-slate-200 hover:border-slate-300'
                         }`}
                     >
                         <p className="text-xs font-medium text-slate-500">Total Orders</p>
@@ -97,11 +97,11 @@ export default function OrderIndex({ orders, stats, filters }) {
                     <div
                         onClick={() => handleStatusChange('confirmed')}
                         className={`p-4 rounded-xl border cursor-pointer transition-all ${
-                            statusFilter === 'confirmed' ? 'bg-blue-50 border-blue-300 ring-2 ring-blue-500/20' : 'bg-white border-slate-200 hover:border-slate-300'
+                            statusFilter === 'confirmed' ? 'bg-sky-50 border-sky-300 ring-2 ring-sky-500/20' : 'bg-white border-slate-200 hover:border-slate-300'
                         }`}
                     >
-                        <p className="text-xs font-medium text-blue-600">Confirmed</p>
-                        <p className="text-2xl font-bold text-blue-700 mt-1">{stats?.confirmed || 0}</p>
+                        <p className="text-xs font-medium text-sky-600">Confirmed</p>
+                        <p className="text-2xl font-bold text-sky-700 mt-1">{stats?.confirmed || 0}</p>
                     </div>
 
                     <div
@@ -133,7 +133,7 @@ export default function OrderIndex({ orders, stats, filters }) {
                             value={search}
                             onChange={(e) => setSearch(e.target.value)}
                             placeholder="Search by order #, email, phone..."
-                            className="w-full pl-10 pr-4 py-2 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                            className="w-full pl-10 pr-4 py-2 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-brand-primary"
                         />
                         <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-3" />
                     </form>
@@ -176,7 +176,7 @@ export default function OrderIndex({ orders, stats, filters }) {
                                 {orders?.data?.length > 0 ? (
                                     orders.data.map((order) => (
                                         <tr key={order.id} className="hover:bg-slate-50/80 transition-colors">
-                                            <td className="py-3.5 px-4 font-mono font-medium text-indigo-600">
+                                            <td className="py-3.5 px-4 font-mono font-medium text-brand-primary">
                                                 <Link
                                                     href={`/admin/orders/${order.id}`}
                                                     className="hover:underline flex items-center gap-1.5"
@@ -221,7 +221,7 @@ export default function OrderIndex({ orders, stats, filters }) {
                                             <td className="py-3.5 px-4 text-center">
                                                 <Link
                                                     href={`/admin/orders/${order.id}`}
-                                                    className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-semibold bg-indigo-50 text-indigo-700 hover:bg-indigo-100 transition-colors"
+                                                    className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-semibold bg-brand-surface-accent text-brand-secondary hover:bg-brand-surface-muted transition-colors"
                                                 >
                                                     <Eye className="w-3.5 h-3.5" />
                                                     <span>View</span>
@@ -259,7 +259,7 @@ export default function OrderIndex({ orders, stats, filters }) {
                                         dangerouslySetInnerHTML={{ __html: link.label }}
                                         className={`px-3 py-1.5 text-xs rounded-lg font-medium transition-colors ${
                                             link.active
-                                                ? 'bg-indigo-600 text-white'
+                                                ? 'bg-brand-primary text-white'
                                                 : link.url
                                                 ? 'bg-slate-100 text-slate-700 hover:bg-slate-200'
                                                 : 'text-slate-300 cursor-not-allowed'

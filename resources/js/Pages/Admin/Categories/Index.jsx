@@ -96,7 +96,7 @@ export default function CategoriesIndex({ categories, flatCategories }) {
                         {depth > 0 && <ChevronRight className="w-4 h-4 text-slate-400 shrink-0" />}
                         <FolderTree
                             className={`w-4 h-4 shrink-0 ${
-                                depth === 0 ? 'text-indigo-600' : 'text-slate-400'
+                                depth === 0 ? 'text-brand-primary' : 'text-slate-400'
                             }`}
                         />
                         <div className="min-w-0">
@@ -123,7 +123,7 @@ export default function CategoriesIndex({ categories, flatCategories }) {
                         {/* Direct "+ Add Product" to this Category button */}
                         <Link
                             href={`/admin/products/create?category_id=${cat.id}`}
-                            className="inline-flex items-center gap-1 px-2.5 py-1 text-xs font-semibold rounded-md bg-indigo-50 hover:bg-indigo-100 text-indigo-700 border border-indigo-200 transition-colors"
+                            className="inline-flex items-center gap-1 px-2.5 py-1 text-xs font-semibold rounded-md bg-brand-surface-accent hover:bg-brand-surface-muted text-brand-primary border border-brand-primary/25 transition-colors"
                             title={`Add a new product directly into ${cat.name}`}
                         >
                             <PackagePlus className="w-3.5 h-3.5" />
@@ -152,7 +152,7 @@ export default function CategoriesIndex({ categories, flatCategories }) {
                             </button>
                             <button
                                 onClick={() => openEditModal(cat)}
-                                className="p-1 rounded hover:bg-slate-200 text-indigo-600 hover:text-indigo-800"
+                                className="p-1 rounded hover:bg-slate-200 text-brand-primary hover:text-brand-primary-hover"
                                 title="Edit Category"
                             >
                                 <Edit3 className="w-3.5 h-3.5" />
@@ -169,7 +169,7 @@ export default function CategoriesIndex({ categories, flatCategories }) {
                 </div>
 
                 {cat.children && cat.children.length > 0 && (
-                    <div className="border-l-2 border-indigo-100 ml-6">
+                    <div className="border-l-2 border-brand-primary/20 ml-6">
                         {cat.children.map((child) => renderCategoryRow(child, depth + 1))}
                     </div>
                 )}
@@ -184,7 +184,7 @@ export default function CategoriesIndex({ categories, flatCategories }) {
             actions={
                 <button
                     onClick={() => openCreateModal()}
-                    className="inline-flex items-center gap-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-medium text-sm rounded-lg shadow-xs transition-colors"
+                    className="inline-flex items-center gap-2 px-4 py-2 bg-brand-primary hover:bg-brand-primary-hover text-white font-medium text-sm rounded-lg shadow-xs transition-colors"
                 >
                     <Plus className="w-4 h-4" />
                     <span>Add Root Category</span>
@@ -215,7 +215,7 @@ export default function CategoriesIndex({ categories, flatCategories }) {
                         <div className="mt-5">
                             <button
                                 onClick={() => openCreateModal()}
-                                className="inline-flex items-center gap-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-medium text-sm rounded-lg shadow-xs transition-colors"
+                                className="inline-flex items-center gap-2 px-4 py-2 bg-brand-primary hover:bg-brand-primary-hover text-white font-medium text-sm rounded-lg shadow-xs transition-colors"
                             >
                                 <Plus className="w-4 h-4" />
                                 <span>Add Category</span>
@@ -251,7 +251,7 @@ export default function CategoriesIndex({ categories, flatCategories }) {
                                     value={form.data.name}
                                     onChange={(e) => form.setData('name', e.target.value)}
                                     placeholder="e.g. Footwear"
-                                    className="w-full px-3.5 py-2 text-sm bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white"
+                                    className="w-full px-3.5 py-2 text-sm bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-primary focus:bg-white"
                                     required
                                 />
                                 {form.errors.name && (
@@ -269,7 +269,7 @@ export default function CategoriesIndex({ categories, flatCategories }) {
                                         value={form.data.slug}
                                         onChange={(e) => form.setData('slug', e.target.value)}
                                         placeholder="auto-generated if empty"
-                                        className="w-full px-3 py-2 text-sm bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white"
+                                        className="w-full px-3 py-2 text-sm bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-primary focus:bg-white"
                                     />
                                     {form.errors.slug && (
                                         <p className="text-xs text-rose-500 mt-1">{form.errors.slug}</p>
@@ -283,7 +283,7 @@ export default function CategoriesIndex({ categories, flatCategories }) {
                                     <select
                                         value={form.data.parent_id}
                                         onChange={(e) => form.setData('parent_id', e.target.value)}
-                                        className="w-full px-3 py-2 text-sm bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white text-slate-700"
+                                        className="w-full px-3 py-2 text-sm bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-primary focus:bg-white text-slate-700"
                                     >
                                         <option value="">None (Top Level Root)</option>
                                         {flatCategories
@@ -309,7 +309,7 @@ export default function CategoriesIndex({ categories, flatCategories }) {
                                     value={form.data.description}
                                     onChange={(e) => form.setData('description', e.target.value)}
                                     placeholder="Brief category summary"
-                                    className="w-full px-3 py-2 text-sm bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white"
+                                    className="w-full px-3 py-2 text-sm bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-primary focus:bg-white"
                                 />
                             </div>
 
@@ -319,7 +319,7 @@ export default function CategoriesIndex({ categories, flatCategories }) {
                                         type="checkbox"
                                         checked={form.data.is_active}
                                         onChange={(e) => form.setData('is_active', e.target.checked)}
-                                        className="h-4 w-4 rounded text-indigo-600 focus:ring-indigo-500 border-slate-300"
+                                        className="h-4 w-4 rounded text-brand-primary focus:ring-brand-primary border-slate-300"
                                     />
                                     <span className="text-sm font-medium text-slate-700">Active</span>
                                 </label>
@@ -346,7 +346,7 @@ export default function CategoriesIndex({ categories, flatCategories }) {
                                 <button
                                     type="submit"
                                     disabled={form.processing}
-                                    className="inline-flex items-center gap-2 px-5 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-medium text-sm rounded-lg shadow-xs transition-colors disabled:opacity-50"
+                                    className="inline-flex items-center gap-2 px-5 py-2 bg-brand-primary hover:bg-brand-primary-hover text-white font-medium text-sm rounded-lg shadow-xs transition-colors disabled:opacity-50"
                                 >
                                     <Save className="w-4 h-4" />
                                     <span>{form.processing ? 'Saving...' : 'Save Category'}</span>

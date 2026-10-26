@@ -31,7 +31,7 @@ export default function TwoFactorChallenge({ adminEmail }) {
             <Head title="Two-Factor Security Verification" />
 
             <div className="max-w-md w-full bg-slate-900 border border-slate-800 rounded-2xl p-7 sm:p-8 shadow-2xl">
-                <div className="flex items-center justify-center w-14 h-14 bg-blue-600/20 text-blue-400 border border-blue-500/30 rounded-2xl mx-auto mb-5">
+                <div className="flex items-center justify-center w-14 h-14 bg-brand-primary/20 text-pink-400 border border-brand-primary/30 rounded-2xl mx-auto mb-5">
                     <ShieldCheck className="w-8 h-8" />
                 </div>
 
@@ -39,7 +39,7 @@ export default function TwoFactorChallenge({ adminEmail }) {
                 <p className="text-xs text-center text-slate-400 mt-2">
                     Enter the 6-digit verification code dispatched to your registered admin email:
                 </p>
-                <div className="text-xs text-center font-mono font-medium text-blue-300 bg-slate-950 py-1.5 px-3 rounded-lg mt-2 mx-auto max-w-xs truncate border border-slate-800">
+                <div className="text-xs text-center font-mono font-medium text-pink-300 bg-slate-950 py-1.5 px-3 rounded-lg mt-2 mx-auto max-w-xs truncate border border-slate-800">
                     {adminEmail}
                 </div>
 
@@ -55,7 +55,7 @@ export default function TwoFactorChallenge({ adminEmail }) {
                             onChange={(e) => setData('code', e.target.value.replace(/\D/g, ''))}
                             placeholder="······"
                             autoFocus
-                            className="w-full text-center text-3xl font-mono tracking-[12px] bg-slate-950 border border-slate-700 text-white rounded-xl py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                            className="w-full text-center text-3xl font-mono tracking-[12px] bg-slate-950 border border-slate-700 text-white rounded-xl py-3 focus:outline-none focus:ring-2 focus:ring-brand-primary focus:border-brand-primary"
                         />
                         {errors.code && (
                             <div className="flex items-center gap-1.5 text-rose-400 text-xs mt-2 justify-center">
@@ -72,7 +72,7 @@ export default function TwoFactorChallenge({ adminEmail }) {
                                 type="checkbox"
                                 checked={data.remember_device}
                                 onChange={(e) => setData('remember_device', e.target.checked)}
-                                className="mt-0.5 rounded border-slate-700 text-blue-600 focus:ring-blue-500 bg-slate-900"
+                                className="mt-0.5 rounded border-slate-700 text-brand-primary focus:ring-brand-primary bg-slate-900"
                             />
                             <div className="text-xs">
                                 <span className="font-semibold text-slate-200 block">Trust this device for 30 days</span>
@@ -86,7 +86,7 @@ export default function TwoFactorChallenge({ adminEmail }) {
                     <Button
                         type="submit"
                         disabled={processing || data.code.length !== 6}
-                        className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-xl flex items-center justify-center gap-2 shadow-sm transition-colors"
+                        className="w-full bg-brand-primary hover:bg-brand-primary-hover text-white font-bold py-3 rounded-xl flex items-center justify-center gap-2 shadow-sm transition-colors"
                     >
                         <span>{processing ? 'Verifying...' : 'Authorize Device & Continue'}</span>
                         <ArrowRight className="w-4 h-4" />
@@ -99,7 +99,7 @@ export default function TwoFactorChallenge({ adminEmail }) {
                         type="button"
                         onClick={handleResend}
                         disabled={resending}
-                        className="inline-flex items-center gap-1.5 text-blue-400 hover:text-blue-300 font-medium disabled:opacity-50"
+                        className="inline-flex items-center gap-1.5 text-brand-accent hover:text-pink-300 font-medium disabled:opacity-50"
                     >
                         <RotateCw className={`w-3.5 h-3.5 ${resending ? 'animate-spin' : ''}`} />
                         <span>Resend Code</span>

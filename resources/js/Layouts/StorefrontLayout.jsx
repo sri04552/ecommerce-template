@@ -65,11 +65,11 @@ export default function StorefrontLayout({ children, categories = [] }) {
     };
 
     return (
-        <div className="min-h-screen flex flex-col bg-brand-surface-muted text-brand-text">
+        <div className="min-h-screen flex flex-col bg-brand-surface text-brand-text">
             {/* Store Announcement Bar (Desktop Only) */}
             {announcement && (
-                <div className="hidden lg:flex bg-[#880E4F] text-[#FFF1F6] border-b border-[#C2185B]/30 text-xs py-2 px-4 text-center font-medium items-center justify-center gap-2">
-                    <span className="inline-flex items-center gap-1 text-[#C2185B] bg-white font-bold uppercase tracking-wider text-[10px] px-2 py-0.5 rounded-full shadow-2xs">
+                <div className="hidden lg:flex bg-brand-secondary text-brand-surface-muted border-b border-brand-primary/30 text-xs py-2 px-4 text-center font-medium items-center justify-center gap-2">
+                    <span className="inline-flex items-center gap-1 text-brand-primary bg-brand-surface font-bold uppercase tracking-wider text-[10px] px-2 py-0.5 rounded-full shadow-2xs">
                         Special
                     </span>
                     <span>{announcement}</span>
@@ -182,7 +182,7 @@ export default function StorefrontLayout({ children, categories = [] }) {
                                                     onClick={() => setUserDropdownOpen(false)}
                                                     className="flex items-center gap-2.5 px-3.5 py-2 text-brand-text hover:bg-brand-surface-muted transition-colors"
                                                 >
-                                                    <Heart className="w-4 h-4 text-rose-500" />
+                                                    <Heart className="w-4 h-4 text-brand-primary" />
                                                     <span>My Wishlist</span>
                                                 </Link>
 
@@ -226,17 +226,17 @@ export default function StorefrontLayout({ children, categories = [] }) {
                             {/* Wishlist Button (Desktop Only) */}
                             <Link
                                 href="/wishlist"
-                                className="hidden lg:flex relative p-2 rounded-brand text-brand-text hover:text-rose-500 hover:bg-brand-surface-muted transition-colors"
+                                className="hidden lg:flex relative p-2 rounded-brand text-brand-text hover:text-brand-primary hover:bg-brand-surface-muted transition-colors"
                                 aria-label="Wishlist"
                                 title="My Wishlist"
                             >
                                 <Heart className="w-5 h-5" />
                                 {wishlistCount > 0 ? (
-                                    <span className="absolute -top-1 -right-1 min-w-[18px] h-[18px] px-1 rounded-full bg-rose-500 text-white text-[10px] font-bold flex items-center justify-center shadow-xs">
+                                    <span className="absolute -top-1 -right-1 min-w-[18px] h-[18px] px-1 rounded-full bg-brand-accent text-white text-[10px] font-bold flex items-center justify-center shadow-xs">
                                         {wishlistCount > 20 ? '20+' : wishlistCount}
                                     </span>
                                 ) : (
-                                    <span className="absolute top-1.5 right-1.5 w-1.5 h-1.5 rounded-full bg-slate-300"></span>
+                                    <span className="absolute top-1.5 right-1.5 w-1.5 h-1.5 rounded-full bg-brand-border"></span>
                                 )}
                             </Link>
 
@@ -392,22 +392,22 @@ export default function StorefrontLayout({ children, categories = [] }) {
                                 <Link
                                     href={user ? '/account' : '/login'}
                                     onClick={() => setMobileMenuOpen(false)}
-                                    className="flex items-center justify-between p-2.5 bg-white border border-slate-200 rounded-xl hover:border-slate-400 hover:bg-slate-50 transition-all"
+                                    className="flex items-center justify-between p-2.5 bg-brand-surface border border-brand-border rounded-xl hover:border-brand-primary hover:bg-brand-surface-accent/40 transition-all"
                                 >
                                     <div className="flex items-center gap-3">
-                                        <div className="w-8 h-8 rounded-lg bg-slate-100 text-slate-700 flex items-center justify-center">
+                                        <div className="w-8 h-8 rounded-lg bg-brand-surface-accent text-brand-primary flex items-center justify-center">
                                             <User className="w-4 h-4" />
                                         </div>
                                         <div>
-                                            <span className="text-xs font-bold text-slate-900 block">
+                                            <span className="text-xs font-bold text-brand-text block">
                                                 {user ? 'My Profile & Account' : 'Sign In'}
                                             </span>
-                                            <span className="text-[11px] text-slate-500 block">
+                                            <span className="text-[11px] text-brand-text-muted block">
                                                 {user ? 'Orders & saved addresses' : 'Access your account'}
                                             </span>
                                         </div>
                                     </div>
-                                    <ChevronDown className="w-4 h-4 text-slate-400 -rotate-90" />
+                                    <ChevronDown className="w-4 h-4 text-brand-text-muted -rotate-90" />
                                 </Link>
                             </div>
 
@@ -523,10 +523,10 @@ export default function StorefrontLayout({ children, categories = [] }) {
             <main className="flex-1">{children}</main>
 
             {/* Premium Distinctive Magenta Brand Footer */}
-            <footer className="bg-[#19121B] text-[#F0DCE5] border-t border-[#6B5B66]/30 mt-0">
+            <footer className="bg-brand-text text-brand-border border-t border-brand-text-muted/30 mt-0">
                 {/* Footer Main Links */}
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:flex lg:flex-row lg:justify-between lg:items-start gap-8 lg:gap-12 pb-10 border-b border-[#6B5B66]/25">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:flex lg:flex-row lg:justify-between lg:items-start gap-8 lg:gap-12 pb-10 border-b border-brand-text-muted/25">
                         {/* Column 1: Store Bio */}
                         <div className="w-full lg:max-w-[280px] space-y-4">
                             <div className="flex items-center gap-2.5">
@@ -535,10 +535,10 @@ export default function StorefrontLayout({ children, categories = [] }) {
                                 </div>
                                 <span className="font-bold text-lg text-white tracking-tight">{storeName}</span>
                             </div>
-                            <p className="text-xs text-[#D8CAD3] leading-relaxed">
+                            <p className="text-xs text-brand-border/80 leading-relaxed">
                                 Premium Indian online retail destination. Discover handpicked electronics, lifestyle trends, apparel, and home essentials with guaranteed transparent pricing.
                             </p>
-                            <div className="text-xs text-[#D8CAD3] space-y-1">
+                            <div className="text-xs text-brand-border/80 space-y-1">
                                 <p><span className="text-white font-medium">Customer Support:</span> 10 AM – 7 PM IST</p>
                                 <p><span className="text-white font-medium">Email:</span> support@ecommerce-store.in</p>
                             </div>
@@ -549,7 +549,7 @@ export default function StorefrontLayout({ children, categories = [] }) {
                             <h4 className="font-bold text-xs uppercase tracking-wider text-white">
                                 Shop Categories
                             </h4>
-                            <ul className="space-y-2 text-xs text-[#D8CAD3]">
+                            <ul className="space-y-2 text-xs text-brand-border/80">
                                 <li>
                                     <Link href="/products" className="hover:text-brand-accent transition-colors">
                                         All Products
@@ -588,7 +588,7 @@ export default function StorefrontLayout({ children, categories = [] }) {
                             <h4 className="font-bold text-xs uppercase tracking-wider text-white">
                                 Customer Care
                             </h4>
-                            <ul className="space-y-2 text-xs text-[#D8CAD3]">
+                            <ul className="space-y-2 text-xs text-brand-border/80">
                                 <li>
                                     <Link href="/account" className="hover:text-brand-accent transition-colors">
                                         My Profile & Orders
@@ -617,33 +617,33 @@ export default function StorefrontLayout({ children, categories = [] }) {
                             <h4 className="font-bold text-xs uppercase tracking-wider text-white">
                                 100% Secure Payments
                             </h4>
-                            <p className="text-xs text-[#D8CAD3] leading-relaxed">
+                            <p className="text-xs text-brand-border/80 leading-relaxed">
                                 We accept UPI (Google Pay, PhonePe, Paytm), RuPay, Visa, Mastercard, Net Banking, and Cash on Delivery.
                             </p>
                             <div className="flex flex-wrap gap-2 pt-1">
-                                <span className="px-2 py-1 bg-[#251A27] border border-[#433140] rounded text-[11px] font-semibold text-[#F0DCE5]">
+                                <span className="px-2 py-1 bg-white/5 border border-white/10 rounded text-[11px] font-semibold text-brand-border">
                                     UPI / QR
                                 </span>
-                                <span className="px-2 py-1 bg-[#251A27] border border-[#433140] rounded text-[11px] font-semibold text-[#F0DCE5]">
+                                <span className="px-2 py-1 bg-white/5 border border-white/10 rounded text-[11px] font-semibold text-brand-border">
                                     RuPay
                                 </span>
-                                <span className="px-2 py-1 bg-[#251A27] border border-[#433140] rounded text-[11px] font-semibold text-[#F0DCE5]">
+                                <span className="px-2 py-1 bg-white/5 border border-white/10 rounded text-[11px] font-semibold text-brand-border">
                                     Visa / MC
                                 </span>
-                                <span className="px-2 py-1 bg-[#251A27] border border-[#433140] rounded text-[11px] font-semibold text-emerald-400">
+                                <span className="px-2 py-1 bg-white/5 border border-white/10 rounded text-[11px] font-semibold text-emerald-400">
                                     Cash on Delivery
                                 </span>
                             </div>
-                            <p className="text-[11px] text-[#D8CAD3] flex items-center gap-1.5 pt-2">
+                            <p className="text-[11px] text-brand-border/80 flex items-center gap-1.5 pt-2">
                                 <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
                                 <span>256-Bit SSL Encrypted Checkout</span>
                             </p>
                         </div>
                     </div>
 
-                    <div className="pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-[#A998A4]">
+                    <div className="pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-brand-text-muted">
                         <p>© {new Date().getFullYear()} {storeName}. All rights reserved.</p>
-                        <p className="text-[11px] text-[#A998A4]">
+                        <p className="text-[11px] text-brand-text-muted">
                             Designed for high-performance retail commerce across India.
                         </p>
                     </div>

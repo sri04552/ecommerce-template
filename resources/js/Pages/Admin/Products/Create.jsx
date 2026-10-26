@@ -1,4 +1,4 @@
-import { useState } from 'react';
+﻿import { useState } from 'react';
 import { useForm, Link } from '@inertiajs/react';
 import AdminLayout from '@/Layouts/AdminLayout';
 import {
@@ -227,7 +227,7 @@ export default function ProductCreate({ categories, brands, selectedCategoryId }
                                 value={data.name}
                                 onChange={(e) => setData('name', e.target.value)}
                                 placeholder="e.g. Wireless Noise Cancelling Headphones"
-                                className="w-full px-3.5 py-2 text-sm bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white"
+                                className="w-full px-3.5 py-2 text-sm bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-primary focus:bg-white"
                                 required
                             />
                             {errors.name && <p className="text-xs text-rose-500 mt-1">{errors.name}</p>}
@@ -243,7 +243,7 @@ export default function ProductCreate({ categories, brands, selectedCategoryId }
                                     value={data.slug}
                                     onChange={(e) => setData('slug', e.target.value)}
                                     placeholder="Leave blank to auto-generate"
-                                    className="w-full px-3.5 py-2 text-sm bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white"
+                                    className="w-full px-3.5 py-2 text-sm bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-primary focus:bg-white"
                                 />
                                 {errors.slug && <p className="text-xs text-rose-500 mt-1">{errors.slug}</p>}
                             </div>
@@ -257,7 +257,7 @@ export default function ProductCreate({ categories, brands, selectedCategoryId }
                                     value={data.sku}
                                     onChange={(e) => setData('sku', e.target.value)}
                                     placeholder="e.g. AUDIO-WNC-01"
-                                    className="w-full px-3.5 py-2 text-sm bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white uppercase font-mono"
+                                    className="w-full px-3.5 py-2 text-sm bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-primary focus:bg-white uppercase font-mono"
                                     required
                                 />
                                 {errors.sku && <p className="text-xs text-rose-500 mt-1">{errors.sku}</p>}
@@ -273,7 +273,7 @@ export default function ProductCreate({ categories, brands, selectedCategoryId }
                                     <Link
                                         href="/admin/categories"
                                         target="_blank"
-                                        className="text-xs text-indigo-600 hover:text-indigo-800 font-semibold flex items-center gap-1"
+                                        className="text-xs text-brand-primary hover:text-brand-secondary font-semibold flex items-center gap-1"
                                     >
                                         <Plus className="w-3 h-3" />
                                         <span>Create Category</span>
@@ -282,7 +282,7 @@ export default function ProductCreate({ categories, brands, selectedCategoryId }
                                 <select
                                     value={data.category_id}
                                     onChange={(e) => setData('category_id', e.target.value)}
-                                    className="w-full px-3.5 py-2 text-sm bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white"
+                                    className="w-full px-3.5 py-2 text-sm bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-primary focus:bg-white"
                                 >
                                     <option value="">Select a category</option>
                                     {categories?.map((cat) => (
@@ -301,7 +301,7 @@ export default function ProductCreate({ categories, brands, selectedCategoryId }
                                 <select
                                     value={data.brand_id}
                                     onChange={(e) => setData('brand_id', e.target.value)}
-                                    className="w-full px-3.5 py-2 text-sm bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white"
+                                    className="w-full px-3.5 py-2 text-sm bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-primary focus:bg-white"
                                 >
                                     <option value="">Select a brand</option>
                                     {brands?.map((brand) => (
@@ -323,7 +323,7 @@ export default function ProductCreate({ categories, brands, selectedCategoryId }
                                 value={data.short_description}
                                 onChange={(e) => setData('short_description', e.target.value)}
                                 placeholder="Brief 1-line product summary for card previews"
-                                className="w-full px-3.5 py-2 text-sm bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white"
+                                className="w-full px-3.5 py-2 text-sm bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-primary focus:bg-white"
                             />
                             {errors.short_description && (
                                 <p className="text-xs text-rose-500 mt-1">{errors.short_description}</p>
@@ -339,7 +339,7 @@ export default function ProductCreate({ categories, brands, selectedCategoryId }
                                 value={data.description}
                                 onChange={(e) => setData('description', e.target.value)}
                                 placeholder="Detailed product specifications, materials, and usage details..."
-                                className="w-full px-3.5 py-2 text-sm bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white"
+                                className="w-full px-3.5 py-2 text-sm bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-primary focus:bg-white"
                             />
                             {errors.description && <p className="text-xs text-rose-500 mt-1">{errors.description}</p>}
                         </div>
@@ -350,7 +350,7 @@ export default function ProductCreate({ categories, brands, selectedCategoryId }
                 <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-2xs">
                     <div className="flex items-center justify-between mb-4 pb-2 border-b border-slate-100">
                         <div className="flex items-center gap-2">
-                            <Tag className="w-5 h-5 text-indigo-600" />
+                            <Tag className="w-5 h-5 text-brand-primary" />
                             <h2 className="text-base font-semibold text-slate-900">
                                 Pricing, Discounts & Delivery
                             </h2>
@@ -363,7 +363,7 @@ export default function ProductCreate({ categories, brands, selectedCategoryId }
                     <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-4">
                         <div>
                             <label className="block text-sm font-medium text-slate-700 mb-1">
-                                Base / MRP (₹) <span className="text-rose-500">*</span>
+                                Base / MRP (â‚¹) <span className="text-rose-500">*</span>
                             </label>
                             <input
                                 type="number"
@@ -372,7 +372,7 @@ export default function ProductCreate({ categories, brands, selectedCategoryId }
                                 value={data.base_price}
                                 onChange={(e) => handleBasePriceChange(e.target.value)}
                                 placeholder="1999.00"
-                                className="w-full px-3.5 py-2 text-sm bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white font-medium"
+                                className="w-full px-3.5 py-2 text-sm bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-primary focus:bg-white font-medium"
                                 required
                             />
                             {errors.base_price && <p className="text-xs text-rose-500 mt-1">{errors.base_price}</p>}
@@ -395,7 +395,7 @@ export default function ProductCreate({ categories, brands, selectedCategoryId }
                                     value={data.discount_percentage}
                                     onChange={(e) => handleDiscountChange(e.target.value)}
                                     placeholder="e.g. 25"
-                                    className="w-full pl-3.5 pr-8 py-2 text-sm bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white font-medium"
+                                    className="w-full pl-3.5 pr-8 py-2 text-sm bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-primary focus:bg-white font-medium"
                                 />
                             </div>
                             {errors.discount_percentage && <p className="text-xs text-rose-500 mt-1">{errors.discount_percentage}</p>}
@@ -403,7 +403,7 @@ export default function ProductCreate({ categories, brands, selectedCategoryId }
 
                         <div>
                             <label className="block text-sm font-medium text-slate-700 mb-1">
-                                Final Sale Price (₹)
+                                Final Sale Price (â‚¹)
                             </label>
                             <input
                                 type="number"
@@ -412,7 +412,7 @@ export default function ProductCreate({ categories, brands, selectedCategoryId }
                                 value={data.sale_price}
                                 onChange={(e) => handleSalePriceChange(e.target.value)}
                                 placeholder="Auto-calculated or enter"
-                                className="w-full px-3.5 py-2 text-sm bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white font-semibold text-emerald-700"
+                                className="w-full px-3.5 py-2 text-sm bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-primary focus:bg-white font-semibold text-emerald-700"
                             />
                             {errors.sale_price && <p className="text-xs text-rose-500 mt-1">{errors.sale_price}</p>}
                         </div>
@@ -427,7 +427,7 @@ export default function ProductCreate({ categories, brands, selectedCategoryId }
                                     key={pct}
                                     type="button"
                                     onClick={() => applyQuickDiscount(pct)}
-                                    className="px-2.5 py-1 text-xs font-semibold bg-white border border-slate-300 rounded hover:border-indigo-500 hover:text-indigo-600 transition-colors shadow-2xs"
+                                    className="px-2.5 py-1 text-xs font-semibold bg-white border border-slate-300 rounded hover:border-brand-primary hover:text-brand-primary transition-colors shadow-2xs"
                                 >
                                     {pct}% OFF
                                 </button>
@@ -437,7 +437,7 @@ export default function ProductCreate({ categories, brands, selectedCategoryId }
                         {customerSavings > 0 && (
                             <div className="text-xs font-semibold text-emerald-700 bg-emerald-50 px-3 py-1 rounded-full border border-emerald-200 flex items-center gap-1.5">
                                 <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
-                                <span>Customer saves ₹{customerSavings} ({data.discount_percentage}% OFF)</span>
+                                <span>Customer saves â‚¹{customerSavings} ({data.discount_percentage}% OFF)</span>
                             </div>
                         )}
                     </div>
@@ -447,8 +447,8 @@ export default function ProductCreate({ categories, brands, selectedCategoryId }
                         <div>
                             <div className="flex items-center justify-between mb-1">
                                 <label className="block text-sm font-medium text-slate-700 flex items-center gap-1.5">
-                                    <Truck className="w-4 h-4 text-indigo-600" />
-                                    <span>Delivery Fee (₹)</span>
+                                    <Truck className="w-4 h-4 text-brand-primary" />
+                                    <span>Delivery Fee (â‚¹)</span>
                                 </label>
                                 <span className="text-[11px] text-emerald-600 font-semibold">0 = Free Delivery</span>
                             </div>
@@ -459,10 +459,10 @@ export default function ProductCreate({ categories, brands, selectedCategoryId }
                                 value={data.delivery_fee}
                                 onChange={(e) => setData('delivery_fee', e.target.value)}
                                 placeholder="0.00 (Leave blank or 0 for Free Delivery)"
-                                className="w-full px-3.5 py-2 text-sm bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white"
+                                className="w-full px-3.5 py-2 text-sm bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-primary focus:bg-white"
                             />
                             <p className="text-xs text-slate-500 mt-1">
-                                If 0 or blank, checkout charges ₹0 delivery. If entered, this exact fee is applied.
+                                If 0 or blank, checkout charges â‚¹0 delivery. If entered, this exact fee is applied.
                             </p>
                             {errors.delivery_fee && <p className="text-xs text-rose-500 mt-1">{errors.delivery_fee}</p>}
                         </div>
@@ -474,7 +474,7 @@ export default function ProductCreate({ categories, brands, selectedCategoryId }
                             <select
                                 value={offerType}
                                 onChange={(e) => handleOfferPresetChange(e.target.value)}
-                                className="w-full px-3.5 py-2 text-sm bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white"
+                                className="w-full px-3.5 py-2 text-sm bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-primary focus:bg-white"
                             >
                                 <option value="none">No Offer Badge</option>
                                 <option value="Deal of the Day">Deal of the Day</option>
@@ -491,9 +491,9 @@ export default function ProductCreate({ categories, brands, selectedCategoryId }
                                         type="text"
                                         value={customOffer}
                                         onChange={(e) => handleCustomOfferChange(e.target.value)}
-                                        placeholder="e.g. Super Saver, Flat ₹500 Off"
+                                        placeholder="e.g. Super Saver, Flat â‚¹500 Off"
                                         maxLength={40}
-                                        className="w-full px-3.5 py-1.5 text-xs bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white font-medium"
+                                        className="w-full px-3.5 py-1.5 text-xs bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-primary focus:bg-white font-medium"
                                     />
                                 </div>
                             )}
@@ -503,7 +503,7 @@ export default function ProductCreate({ categories, brands, selectedCategoryId }
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-4 mt-4 border-t border-slate-100">
                         <div>
                             <label className="block text-sm font-medium text-slate-700 mb-1">
-                                Cost Price (₹)
+                                Cost Price (â‚¹)
                             </label>
                             <input
                                 type="number"
@@ -512,7 +512,7 @@ export default function ProductCreate({ categories, brands, selectedCategoryId }
                                 value={data.cost_price}
                                 onChange={(e) => setData('cost_price', e.target.value)}
                                 placeholder="Internal cost for profit margins"
-                                className="w-full px-3.5 py-2 text-sm bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white"
+                                className="w-full px-3.5 py-2 text-sm bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-primary focus:bg-white"
                             />
                             {errors.cost_price && <p className="text-xs text-rose-500 mt-1">{errors.cost_price}</p>}
                         </div>
@@ -526,7 +526,7 @@ export default function ProductCreate({ categories, brands, selectedCategoryId }
                                 min="0"
                                 value={data.initial_stock}
                                 onChange={(e) => setData('initial_stock', e.target.value)}
-                                className="w-full px-3.5 py-2 text-sm bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white"
+                                className="w-full px-3.5 py-2 text-sm bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-primary focus:bg-white"
                             />
                             {errors.initial_stock && <p className="text-xs text-rose-500 mt-1">{errors.initial_stock}</p>}
                         </div>
@@ -539,7 +539,7 @@ export default function ProductCreate({ categories, brands, selectedCategoryId }
                                 type="checkbox"
                                 checked={data.allow_backorder}
                                 onChange={(e) => setData('allow_backorder', e.target.checked)}
-                                className="h-4 w-4 rounded text-indigo-600 focus:ring-indigo-500 border-slate-300"
+                                className="h-4 w-4 rounded text-brand-primary focus:ring-brand-primary border-slate-300"
                             />
                             <span className="text-sm text-slate-700 font-medium">
                                 Allow backorders when out of stock
@@ -569,7 +569,7 @@ export default function ProductCreate({ categories, brands, selectedCategoryId }
                                             ]);
                                         }
                                     }}
-                                    className="rounded border-slate-300 text-indigo-600 focus:ring-indigo-500 w-4 h-4"
+                                    className="rounded border-slate-300 text-brand-primary focus:ring-brand-primary w-4 h-4"
                                 />
                                 <span className="text-xs font-bold text-slate-800">Has Variants</span>
                             </label>
@@ -591,7 +591,7 @@ export default function ProductCreate({ categories, brands, selectedCategoryId }
                                             };
                                             setData('variants', [...(data.variants || []), newVariant]);
                                         }}
-                                        className="text-xs font-bold text-indigo-600 hover:text-indigo-800"
+                                        className="text-xs font-bold text-brand-primary hover:text-brand-secondary"
                                     >
                                         + Add Variant Option
                                     </button>
@@ -610,7 +610,7 @@ export default function ProductCreate({ categories, brands, selectedCategoryId }
                                                         next[vIdx].title = e.target.value;
                                                         setData('variants', next);
                                                     }}
-                                                    className="w-full px-2 py-1 text-xs border border-slate-300 rounded focus:ring-1 focus:ring-indigo-500"
+                                                    className="w-full px-2 py-1 text-xs border border-slate-300 rounded focus:ring-1 focus:ring-brand-primary"
                                                     required
                                                 />
                                             </div>
@@ -624,12 +624,12 @@ export default function ProductCreate({ categories, brands, selectedCategoryId }
                                                         next[vIdx].sku = e.target.value.toUpperCase();
                                                         setData('variants', next);
                                                     }}
-                                                    className="w-full px-2 py-1 text-xs uppercase font-mono border border-slate-300 rounded focus:ring-1 focus:ring-indigo-500"
+                                                    className="w-full px-2 py-1 text-xs uppercase font-mono border border-slate-300 rounded focus:ring-1 focus:ring-brand-primary"
                                                     required
                                                 />
                                             </div>
                                             <div className="col-span-2">
-                                                <label className="text-[10px] text-slate-500 font-medium block">Price (₹)</label>
+                                                <label className="text-[10px] text-slate-500 font-medium block">Price (â‚¹)</label>
                                                 <input
                                                     type="number"
                                                     step="0.01"
@@ -639,7 +639,7 @@ export default function ProductCreate({ categories, brands, selectedCategoryId }
                                                         next[vIdx].price = e.target.value;
                                                         setData('variants', next);
                                                     }}
-                                                    className="w-full px-2 py-1 text-xs border border-slate-300 rounded focus:ring-1 focus:ring-indigo-500"
+                                                    className="w-full px-2 py-1 text-xs border border-slate-300 rounded focus:ring-1 focus:ring-brand-primary"
                                                 />
                                             </div>
                                             <div className="col-span-2">
@@ -653,7 +653,7 @@ export default function ProductCreate({ categories, brands, selectedCategoryId }
                                                         next[vIdx].stock = e.target.value;
                                                         setData('variants', next);
                                                     }}
-                                                    className="w-full px-2 py-1 text-xs border border-slate-300 rounded focus:ring-1 focus:ring-indigo-500"
+                                                    className="w-full px-2 py-1 text-xs border border-slate-300 rounded focus:ring-1 focus:ring-brand-primary"
                                                 />
                                             </div>
                                             <div className="col-span-1 text-right pt-3">
@@ -666,7 +666,7 @@ export default function ProductCreate({ categories, brands, selectedCategoryId }
                                                     className="text-rose-500 hover:text-rose-700 font-bold text-sm"
                                                     title="Remove Variant"
                                                 >
-                                                    ×
+                                                    Ã—
                                                 </button>
                                             </div>
                                         </div>
@@ -690,7 +690,7 @@ export default function ProductCreate({ categories, brands, selectedCategoryId }
                                         type="checkbox"
                                         checked={data.has_return_exchange}
                                         onChange={(e) => setData('has_return_exchange', e.target.checked)}
-                                        className="h-4 w-4 rounded text-indigo-600 focus:ring-indigo-500 border-slate-300"
+                                        className="h-4 w-4 rounded text-brand-primary focus:ring-brand-primary border-slate-300"
                                     />
                                     <div>
                                         <span className="text-sm font-semibold text-slate-800 block">
@@ -710,7 +710,7 @@ export default function ProductCreate({ categories, brands, selectedCategoryId }
                                         <select
                                             value={data.return_window_days}
                                             onChange={(e) => setData('return_window_days', parseInt(e.target.value, 10))}
-                                            className="w-full px-2.5 py-1.5 text-xs bg-white border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                                            className="w-full px-2.5 py-1.5 text-xs bg-white border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-primary"
                                         >
                                             <option value={3}>3 Days Return & Exchange (Recommended)</option>
                                             <option value={7}>7 Days Return & Exchange</option>
@@ -727,7 +727,7 @@ export default function ProductCreate({ categories, brands, selectedCategoryId }
                                         type="checkbox"
                                         checked={data.cod_available}
                                         onChange={(e) => setData('cod_available', e.target.checked)}
-                                        className="h-4 w-4 rounded text-indigo-600 focus:ring-indigo-500 border-slate-300"
+                                        className="h-4 w-4 rounded text-brand-primary focus:ring-brand-primary border-slate-300"
                                     />
                                     <div>
                                         <span className="text-sm font-semibold text-slate-800 block">
@@ -747,19 +747,19 @@ export default function ProductCreate({ categories, brands, selectedCategoryId }
                 <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-2xs">
                     <div className="flex items-center justify-between mb-4 pb-2 border-b border-slate-100">
                         <div className="flex items-center gap-2">
-                            <ImageIcon className="w-5 h-5 text-indigo-600" />
+                            <ImageIcon className="w-5 h-5 text-brand-primary" />
                             <h2 className="text-base font-semibold text-slate-900">
                                 Product Images (Manual Upload)
                             </h2>
                         </div>
-                        <span className="text-xs bg-indigo-50 text-indigo-700 font-semibold px-2.5 py-1 rounded-full border border-indigo-200">
+                        <span className="text-xs bg-brand-surface-accent text-brand-secondary font-semibold px-2.5 py-1 rounded-full border border-brand-border">
                             Auto 1:1 Square &bull; Client Optimized &lt;100KB WebP
                         </span>
                     </div>
 
                     {/* Drag-and-drop & File Selection Box */}
                     <div className="space-y-4">
-                        <div className={`border-2 border-dashed ${isOptimizing ? 'border-indigo-400 bg-indigo-50/40' : 'border-slate-300 hover:border-indigo-500 bg-slate-50/60 hover:bg-indigo-50/20'} rounded-xl p-6 text-center transition-all cursor-pointer relative`}>
+                        <div className={`border-2 border-dashed ${isOptimizing ? 'border-brand-primary/60 bg-brand-surface-accent/40' : 'border-slate-300 hover:border-brand-primary bg-slate-50/60 hover:bg-brand-surface-accent/30'} rounded-xl p-6 text-center transition-all cursor-pointer relative`}>
                             <input
                                 type="file"
                                 id="manual-image-input"
@@ -770,7 +770,7 @@ export default function ProductCreate({ categories, brands, selectedCategoryId }
                                 className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10 disabled:cursor-not-allowed"
                             />
                             <div className="flex flex-col items-center justify-center pointer-events-none">
-                                <div className="w-12 h-12 rounded-full bg-indigo-100 text-indigo-600 flex items-center justify-center mb-2">
+                                <div className="w-12 h-12 rounded-full bg-brand-surface-muted text-brand-primary flex items-center justify-center mb-2">
                                     {isOptimizing ? (
                                         <Loader2 className="w-6 h-6 animate-spin" />
                                     ) : (
@@ -814,7 +814,7 @@ export default function ProductCreate({ categories, brands, selectedCategoryId }
                                                 className="w-full h-full object-cover"
                                             />
                                             {idx === 0 && (
-                                                <span className="absolute top-1 left-1 bg-indigo-600 text-white text-[10px] font-bold px-1.5 py-0.5 rounded shadow-xs">
+                                                <span className="absolute top-1 left-1 bg-brand-primary text-white text-[10px] font-bold px-1.5 py-0.5 rounded shadow-xs">
                                                     Cover
                                                 </span>
                                             )}
@@ -846,7 +846,7 @@ export default function ProductCreate({ categories, brands, selectedCategoryId }
                                 value={data.primary_image_url}
                                 onChange={(e) => setData('primary_image_url', e.target.value)}
                                 placeholder="https://..."
-                                className="w-full px-3.5 py-2 text-xs bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white"
+                                className="w-full px-3.5 py-2 text-xs bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-primary focus:bg-white"
                             />
                             {errors.primary_image_url && (
                                 <p className="text-xs text-rose-500 mt-1">{errors.primary_image_url}</p>
@@ -860,7 +860,7 @@ export default function ProductCreate({ categories, brands, selectedCategoryId }
                                     type="checkbox"
                                     checked={data.is_active}
                                     onChange={(e) => setData('is_active', e.target.checked)}
-                                    className="h-4 w-4 rounded text-indigo-600 focus:ring-indigo-500 border-slate-300"
+                                    className="h-4 w-4 rounded text-brand-primary focus:ring-brand-primary border-slate-300"
                                 />
                                 <div>
                                     <span className="text-sm font-medium text-slate-800 block">Published / Active</span>
@@ -873,7 +873,7 @@ export default function ProductCreate({ categories, brands, selectedCategoryId }
                                     type="checkbox"
                                     checked={data.is_featured}
                                     onChange={(e) => setData('is_featured', e.target.checked)}
-                                    className="h-4 w-4 rounded text-indigo-600 focus:ring-indigo-500 border-slate-300"
+                                    className="h-4 w-4 rounded text-brand-primary focus:ring-brand-primary border-slate-300"
                                 />
                                 <div>
                                     <span className="text-sm font-medium text-slate-800 block">Featured Product</span>
@@ -895,7 +895,7 @@ export default function ProductCreate({ categories, brands, selectedCategoryId }
                     <button
                         type="submit"
                         disabled={processing || isOptimizing}
-                        className="inline-flex items-center gap-2 px-6 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-medium text-sm rounded-lg shadow-sm transition-colors disabled:opacity-50"
+                        className="inline-flex items-center gap-2 px-6 py-2.5 bg-brand-primary hover:bg-brand-primary-hover text-white font-medium text-sm rounded-lg shadow-sm transition-colors disabled:opacity-50"
                     >
                         <Save className="w-4 h-4" />
                         <span>{processing ? 'Saving...' : isOptimizing ? 'Optimizing Photos...' : 'Save & Publish Product'}</span>

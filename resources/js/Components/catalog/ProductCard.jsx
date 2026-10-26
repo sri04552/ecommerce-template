@@ -99,10 +99,10 @@ export default function ProductCard({ product }) {
                     type="button"
                     onClick={handleWishlistToggle}
                     disabled={wishlistLoading}
-                    className="absolute top-2.5 right-2.5 z-20 p-2 rounded-full bg-white/90 text-slate-400 hover:text-rose-500 hover:bg-white shadow-xs transition-colors"
+                    className="absolute top-2.5 right-2.5 z-20 p-2 rounded-full bg-white/90 text-brand-text-muted hover:text-brand-primary hover:bg-white shadow-xs transition-colors"
                     title={inWishlist ? 'Remove from Wishlist' : 'Save to Wishlist'}
                 >
-                    <Heart className={`w-4 h-4 ${inWishlist ? 'text-rose-500 fill-rose-500' : ''}`} />
+                    <Heart className={`w-4 h-4 ${inWishlist ? 'text-brand-primary fill-brand-primary' : ''}`} />
                 </button>
             </div>
 

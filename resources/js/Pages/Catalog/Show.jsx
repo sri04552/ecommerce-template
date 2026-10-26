@@ -560,11 +560,11 @@ export default function Show({ product, relatedProducts = [], categories = [] })
                 )}
 
                 {/* Customer Ratings & Photo Reviews Section */}
-                <div className="mt-12 bg-white border border-slate-200 rounded-2xl p-6 sm:p-8 shadow-xs">
-                    <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-6 border-b border-slate-100 gap-4">
+                <div className="mt-12 bg-brand-surface border border-brand-border rounded-brand p-6 sm:p-8 shadow-xs">
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-6 border-b border-brand-border/60 gap-4">
                         <div>
                             <div className="flex items-center gap-2">
-                                <h2 className="text-xl font-bold tracking-tight text-slate-900">
+                                <h2 className="text-xl font-bold tracking-tight text-brand-secondary">
                                     Customer Ratings & Reviews
                                 </h2>
                                 <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-bold bg-amber-50 text-amber-700 border border-amber-200">
@@ -572,7 +572,7 @@ export default function Show({ product, relatedProducts = [], categories = [] })
                                     <span>{avgRating} / 5</span>
                                 </span>
                             </div>
-                            <p className="text-xs text-slate-500 mt-1">
+                            <p className="text-xs text-brand-text-muted mt-1">
                                 Real customer feedback with photo verifications and 5-star ratings.
                             </p>
                         </div>
@@ -580,17 +580,17 @@ export default function Show({ product, relatedProducts = [], categories = [] })
                         <button
                             type="button"
                             onClick={() => setReviewModalOpen(true)}
-                            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs transition-colors shadow-sm self-start sm:self-auto"
+                            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-brand bg-brand-primary hover:bg-brand-primary-hover text-white font-bold text-xs transition-colors shadow-xs self-start sm:self-auto cursor-pointer"
                         >
-                            <Camera className="w-4 h-4 text-amber-400" />
+                            <Camera className="w-4 h-4 text-white" />
                             <span>Rate & Review Product</span>
                         </button>
                     </div>
 
                     {/* Customer Photos Gallery (if any photos uploaded) */}
                     {allPhotos.length > 0 && (
-                        <div className="py-6 border-b border-slate-100">
-                            <h3 className="text-xs font-bold uppercase tracking-wider text-slate-700 mb-3 flex items-center gap-1.5">
+                        <div className="py-6 border-b border-brand-border/60">
+                            <h3 className="text-xs font-bold uppercase tracking-wider text-brand-secondary mb-3 flex items-center gap-1.5">
                                 <ImageIcon className="w-4 h-4 text-brand-primary" />
                                 <span>Customer Photos ({allPhotos.length})</span>
                             </h3>
@@ -599,7 +599,7 @@ export default function Show({ product, relatedProducts = [], categories = [] })
                                     <div
                                         key={idx}
                                         onClick={() => setPreviewPhoto(photoUrl)}
-                                        className="w-20 h-20 rounded-xl overflow-hidden border border-slate-200 shrink-0 cursor-pointer hover:opacity-90 hover:scale-105 transition-all shadow-xs"
+                                        className="w-20 h-20 rounded-brand overflow-hidden border border-brand-border shrink-0 cursor-pointer hover:opacity-90 hover:scale-105 transition-all shadow-xs"
                                     >
                                         <img
                                             src={photoUrl}

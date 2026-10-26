@@ -1,4 +1,4 @@
-import { useState } from 'react';
+﻿import { useState } from 'react';
 import { useForm, Link, router } from '@inertiajs/react';
 import AdminLayout from '@/Layouts/AdminLayout';
 import {
@@ -263,7 +263,7 @@ export default function ProductEdit({ product, categories, brands, hasOrders = f
                                 disabled={hasOrders}
                                 value={data.name}
                                 onChange={(e) => setData('name', e.target.value)}
-                                className="w-full px-3.5 py-2 text-sm bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white disabled:opacity-60 disabled:bg-slate-100"
+                                className="w-full px-3.5 py-2 text-sm bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-primary focus:bg-white disabled:opacity-60 disabled:bg-slate-100"
                                 required
                             />
                             {errors.name && <p className="text-xs text-rose-500 mt-1">{errors.name}</p>}
@@ -279,7 +279,7 @@ export default function ProductEdit({ product, categories, brands, hasOrders = f
                                     disabled={hasOrders}
                                     value={data.slug}
                                     onChange={(e) => setData('slug', e.target.value)}
-                                    className="w-full px-3.5 py-2 text-sm bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white disabled:opacity-60 disabled:bg-slate-100"
+                                    className="w-full px-3.5 py-2 text-sm bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-primary focus:bg-white disabled:opacity-60 disabled:bg-slate-100"
                                     required
                                 />
                                 {errors.slug && <p className="text-xs text-rose-500 mt-1">{errors.slug}</p>}
@@ -294,7 +294,7 @@ export default function ProductEdit({ product, categories, brands, hasOrders = f
                                     disabled={hasOrders}
                                     value={data.sku}
                                     onChange={(e) => setData('sku', e.target.value)}
-                                    className="w-full px-3.5 py-2 text-sm bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white uppercase font-mono disabled:opacity-60 disabled:bg-slate-100"
+                                    className="w-full px-3.5 py-2 text-sm bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-primary focus:bg-white uppercase font-mono disabled:opacity-60 disabled:bg-slate-100"
                                     required
                                 />
                                 {errors.sku && <p className="text-xs text-rose-500 mt-1">{errors.sku}</p>}
@@ -310,7 +310,7 @@ export default function ProductEdit({ product, categories, brands, hasOrders = f
                                     disabled={hasOrders}
                                     value={data.category_id}
                                     onChange={(e) => setData('category_id', e.target.value)}
-                                    className="w-full px-3.5 py-2 text-sm bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white disabled:opacity-60 disabled:bg-slate-100"
+                                    className="w-full px-3.5 py-2 text-sm bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-primary focus:bg-white disabled:opacity-60 disabled:bg-slate-100"
                                 >
                                     <option value="">Select a category</option>
                                     {categories?.map((cat) => (
@@ -330,7 +330,7 @@ export default function ProductEdit({ product, categories, brands, hasOrders = f
                                     disabled={hasOrders}
                                     value={data.brand_id}
                                     onChange={(e) => setData('brand_id', e.target.value)}
-                                    className="w-full px-3.5 py-2 text-sm bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white disabled:opacity-60 disabled:bg-slate-100"
+                                    className="w-full px-3.5 py-2 text-sm bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-primary focus:bg-white disabled:opacity-60 disabled:bg-slate-100"
                                 >
                                     <option value="">Select a brand</option>
                                     {brands?.map((brand) => (
@@ -352,7 +352,7 @@ export default function ProductEdit({ product, categories, brands, hasOrders = f
                                 disabled={hasOrders}
                                 value={data.short_description}
                                 onChange={(e) => setData('short_description', e.target.value)}
-                                className="w-full px-3.5 py-2 text-sm bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white disabled:opacity-60 disabled:bg-slate-100"
+                                className="w-full px-3.5 py-2 text-sm bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-primary focus:bg-white disabled:opacity-60 disabled:bg-slate-100"
                             />
                             {errors.short_description && (
                                 <p className="text-xs text-rose-500 mt-1">{errors.short_description}</p>
@@ -368,7 +368,7 @@ export default function ProductEdit({ product, categories, brands, hasOrders = f
                                 disabled={hasOrders}
                                 value={data.description}
                                 onChange={(e) => setData('description', e.target.value)}
-                                className="w-full px-3.5 py-2 text-sm bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white disabled:opacity-60 disabled:bg-slate-100"
+                                className="w-full px-3.5 py-2 text-sm bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-primary focus:bg-white disabled:opacity-60 disabled:bg-slate-100"
                             />
                             {errors.description && <p className="text-xs text-rose-500 mt-1">{errors.description}</p>}
                         </div>
@@ -379,7 +379,7 @@ export default function ProductEdit({ product, categories, brands, hasOrders = f
                 <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-2xs">
                     <div className="flex items-center justify-between mb-4 pb-2 border-b border-slate-100">
                         <div className="flex items-center gap-2">
-                            <Tag className="w-5 h-5 text-indigo-600" />
+                            <Tag className="w-5 h-5 text-brand-primary" />
                             <h2 className="text-base font-semibold text-slate-900">
                                 Pricing, Discounts & Delivery
                             </h2>
@@ -392,7 +392,7 @@ export default function ProductEdit({ product, categories, brands, hasOrders = f
                     <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-4">
                         <div>
                             <label className="block text-sm font-medium text-slate-700 mb-1">
-                                Base / MRP (₹) <span className="text-rose-500">*</span>
+                                Base / MRP (â‚¹) <span className="text-rose-500">*</span>
                             </label>
                             <input
                                 type="number"
@@ -401,7 +401,7 @@ export default function ProductEdit({ product, categories, brands, hasOrders = f
                                 disabled={hasOrders}
                                 value={data.base_price}
                                 onChange={(e) => handleBasePriceChange(e.target.value)}
-                                className="w-full px-3.5 py-2 text-sm bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white font-medium disabled:opacity-60 disabled:bg-slate-100"
+                                className="w-full px-3.5 py-2 text-sm bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-primary focus:bg-white font-medium disabled:opacity-60 disabled:bg-slate-100"
                                 required
                             />
                             {errors.base_price && <p className="text-xs text-rose-500 mt-1">{errors.base_price}</p>}
@@ -425,7 +425,7 @@ export default function ProductEdit({ product, categories, brands, hasOrders = f
                                     value={data.discount_percentage}
                                     onChange={(e) => handleDiscountChange(e.target.value)}
                                     placeholder="e.g. 25"
-                                    className="w-full pl-3.5 pr-8 py-2 text-sm bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white font-medium disabled:opacity-60 disabled:bg-slate-100"
+                                    className="w-full pl-3.5 pr-8 py-2 text-sm bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-primary focus:bg-white font-medium disabled:opacity-60 disabled:bg-slate-100"
                                 />
                             </div>
                             {errors.discount_percentage && <p className="text-xs text-rose-500 mt-1">{errors.discount_percentage}</p>}
@@ -433,7 +433,7 @@ export default function ProductEdit({ product, categories, brands, hasOrders = f
 
                         <div>
                             <label className="block text-sm font-medium text-slate-700 mb-1">
-                                Final Sale Price (₹)
+                                Final Sale Price (â‚¹)
                             </label>
                             <input
                                 type="number"
@@ -442,7 +442,7 @@ export default function ProductEdit({ product, categories, brands, hasOrders = f
                                 disabled={hasOrders}
                                 value={data.sale_price}
                                 onChange={(e) => handleSalePriceChange(e.target.value)}
-                                className="w-full px-3.5 py-2 text-sm bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white font-semibold text-emerald-700 disabled:opacity-60 disabled:bg-slate-100"
+                                className="w-full px-3.5 py-2 text-sm bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-primary focus:bg-white font-semibold text-emerald-700 disabled:opacity-60 disabled:bg-slate-100"
                             />
                             {errors.sale_price && <p className="text-xs text-rose-500 mt-1">{errors.sale_price}</p>}
                         </div>
@@ -458,7 +458,7 @@ export default function ProductEdit({ product, categories, brands, hasOrders = f
                                         key={pct}
                                         type="button"
                                         onClick={() => applyQuickDiscount(pct)}
-                                        className="px-2.5 py-1 text-xs font-semibold bg-white border border-slate-300 rounded hover:border-indigo-500 hover:text-indigo-600 transition-colors shadow-2xs"
+                                        className="px-2.5 py-1 text-xs font-semibold bg-white border border-slate-300 rounded hover:border-brand-primary hover:text-brand-primary transition-colors shadow-2xs"
                                     >
                                         {pct}% OFF
                                     </button>
@@ -468,7 +468,7 @@ export default function ProductEdit({ product, categories, brands, hasOrders = f
                             {customerSavings > 0 && (
                                 <div className="text-xs font-semibold text-emerald-700 bg-emerald-50 px-3 py-1 rounded-full border border-emerald-200 flex items-center gap-1.5">
                                     <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
-                                    <span>Customer saves ₹{customerSavings} ({data.discount_percentage}% OFF)</span>
+                                    <span>Customer saves â‚¹{customerSavings} ({data.discount_percentage}% OFF)</span>
                                 </div>
                             )}
                         </div>
@@ -479,8 +479,8 @@ export default function ProductEdit({ product, categories, brands, hasOrders = f
                         <div>
                             <div className="flex items-center justify-between mb-1">
                                 <label className="block text-sm font-medium text-slate-700 flex items-center gap-1.5">
-                                    <Truck className="w-4 h-4 text-indigo-600" />
-                                    <span>Delivery Fee (₹)</span>
+                                    <Truck className="w-4 h-4 text-brand-primary" />
+                                    <span>Delivery Fee (â‚¹)</span>
                                 </label>
                                 <span className="text-[11px] text-emerald-600 font-semibold">0 = Free Delivery</span>
                             </div>
@@ -492,7 +492,7 @@ export default function ProductEdit({ product, categories, brands, hasOrders = f
                                 value={data.delivery_fee}
                                 onChange={(e) => setData('delivery_fee', e.target.value)}
                                 placeholder="0.00 (Free Delivery)"
-                                className="w-full px-3.5 py-2 text-sm bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white disabled:opacity-60 disabled:bg-slate-100"
+                                className="w-full px-3.5 py-2 text-sm bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-primary focus:bg-white disabled:opacity-60 disabled:bg-slate-100"
                             />
                             <p className="text-xs text-slate-500 mt-1">
                                 Enter 0 or leave empty for Free Delivery.
@@ -508,7 +508,7 @@ export default function ProductEdit({ product, categories, brands, hasOrders = f
                                 disabled={hasOrders}
                                 value={offerType}
                                 onChange={(e) => handleOfferPresetChange(e.target.value)}
-                                className="w-full px-3.5 py-2 text-sm bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white disabled:opacity-60 disabled:bg-slate-100"
+                                className="w-full px-3.5 py-2 text-sm bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-primary focus:bg-white disabled:opacity-60 disabled:bg-slate-100"
                             >
                                 <option value="none">No Offer Badge</option>
                                 <option value="Deal of the Day">Deal of the Day</option>
@@ -526,9 +526,9 @@ export default function ProductEdit({ product, categories, brands, hasOrders = f
                                         disabled={hasOrders}
                                         value={customOffer}
                                         onChange={(e) => handleCustomOfferChange(e.target.value)}
-                                        placeholder="e.g. Diwali Super Saver, Flat ₹500 Off"
+                                        placeholder="e.g. Diwali Super Saver, Flat â‚¹500 Off"
                                         maxLength={40}
-                                        className="w-full px-3.5 py-1.5 text-xs bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white font-medium disabled:opacity-60 disabled:bg-slate-100"
+                                        className="w-full px-3.5 py-1.5 text-xs bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-primary focus:bg-white font-medium disabled:opacity-60 disabled:bg-slate-100"
                                     />
                                 </div>
                             )}
@@ -538,7 +538,7 @@ export default function ProductEdit({ product, categories, brands, hasOrders = f
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-4 mt-4 border-t border-slate-100">
                         <div>
                             <label className="block text-sm font-medium text-slate-700 mb-1">
-                                Cost Price (₹)
+                                Cost Price (â‚¹)
                             </label>
                             <input
                                 type="number"
@@ -547,7 +547,7 @@ export default function ProductEdit({ product, categories, brands, hasOrders = f
                                 disabled={hasOrders}
                                 value={data.cost_price}
                                 onChange={(e) => setData('cost_price', e.target.value)}
-                                className="w-full px-3.5 py-2 text-sm bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white disabled:opacity-60 disabled:bg-slate-100"
+                                className="w-full px-3.5 py-2 text-sm bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-primary focus:bg-white disabled:opacity-60 disabled:bg-slate-100"
                             />
                             {errors.cost_price && <p className="text-xs text-rose-500 mt-1">{errors.cost_price}</p>}
                         </div>
@@ -568,7 +568,7 @@ export default function ProductEdit({ product, categories, brands, hasOrders = f
                                         disabled={hasOrders}
                                         checked={data.has_return_exchange}
                                         onChange={(e) => setData('has_return_exchange', e.target.checked)}
-                                        className="h-4 w-4 rounded text-indigo-600 focus:ring-indigo-500 border-slate-300"
+                                        className="h-4 w-4 rounded text-brand-primary focus:ring-brand-primary border-slate-300"
                                     />
                                     <div>
                                         <span className="text-sm font-semibold text-slate-800 block">
@@ -589,7 +589,7 @@ export default function ProductEdit({ product, categories, brands, hasOrders = f
                                             disabled={hasOrders}
                                             value={data.return_window_days}
                                             onChange={(e) => setData('return_window_days', parseInt(e.target.value, 10))}
-                                            className="w-full px-2.5 py-1.5 text-xs bg-white border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 disabled:opacity-60"
+                                            className="w-full px-2.5 py-1.5 text-xs bg-white border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-primary disabled:opacity-60"
                                         >
                                             <option value={3}>3 Days Return & Exchange (Recommended)</option>
                                             <option value={7}>7 Days Return & Exchange</option>
@@ -607,7 +607,7 @@ export default function ProductEdit({ product, categories, brands, hasOrders = f
                                         disabled={hasOrders}
                                         checked={data.cod_available}
                                         onChange={(e) => setData('cod_available', e.target.checked)}
-                                        className="h-4 w-4 rounded text-indigo-600 focus:ring-indigo-500 border-slate-300"
+                                        className="h-4 w-4 rounded text-brand-primary focus:ring-brand-primary border-slate-300"
                                     />
                                     <div>
                                         <span className="text-sm font-semibold text-slate-800 block">
@@ -627,12 +627,12 @@ export default function ProductEdit({ product, categories, brands, hasOrders = f
                 <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-2xs">
                     <div className="flex items-center justify-between mb-4 pb-2 border-b border-slate-100">
                         <div className="flex items-center gap-2">
-                            <ImageIcon className="w-5 h-5 text-indigo-600" />
+                            <ImageIcon className="w-5 h-5 text-brand-primary" />
                             <h2 className="text-base font-semibold text-slate-900">
                                 Product Images
                             </h2>
                         </div>
-                        <span className="text-xs bg-indigo-50 text-indigo-700 font-semibold px-2.5 py-1 rounded-full border border-indigo-200">
+                        <span className="text-xs bg-brand-surface-accent text-brand-secondary font-semibold px-2.5 py-1 rounded-full border border-brand-border">
                             Strict 1:1 Aspect Ratio &bull; Client Optimized &lt;100KB WebP
                         </span>
                     </div>
@@ -668,7 +668,7 @@ export default function ProductEdit({ product, categories, brands, hasOrders = f
                             <label className="block text-xs font-semibold text-slate-700 uppercase tracking-wider">
                                 Add Additional Images
                             </label>
-                            <div className={`border-2 border-dashed ${isOptimizing ? 'border-indigo-400 bg-indigo-50/40' : 'border-slate-300 hover:border-indigo-500 bg-slate-50/60 hover:bg-indigo-50/20'} rounded-xl p-5 text-center transition-all cursor-pointer relative`}>
+                            <div className={`border-2 border-dashed ${isOptimizing ? 'border-brand-primary/60 bg-brand-surface-accent/40' : 'border-slate-300 hover:border-brand-primary bg-slate-50/60 hover:bg-brand-surface-accent/30'} rounded-xl p-5 text-center transition-all cursor-pointer relative`}>
                                 <input
                                     type="file"
                                     multiple
@@ -678,7 +678,7 @@ export default function ProductEdit({ product, categories, brands, hasOrders = f
                                     className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10 disabled:cursor-not-allowed"
                                 />
                                 <div className="flex flex-col items-center justify-center pointer-events-none">
-                                    <div className="w-10 h-10 rounded-full bg-indigo-100 text-indigo-600 flex items-center justify-center mb-1.5">
+                                    <div className="w-10 h-10 rounded-full bg-brand-surface-muted text-brand-primary flex items-center justify-center mb-1.5">
                                         {isOptimizing ? (
                                             <Loader2 className="w-5 h-5 animate-spin" />
                                         ) : (
@@ -739,7 +739,7 @@ export default function ProductEdit({ product, categories, brands, hasOrders = f
                                 disabled={hasOrders}
                                 checked={data.is_active}
                                 onChange={(e) => setData('is_active', e.target.checked)}
-                                className="h-4 w-4 rounded text-indigo-600 focus:ring-indigo-500 border-slate-300"
+                                className="h-4 w-4 rounded text-brand-primary focus:ring-brand-primary border-slate-300"
                             />
                             <div>
                                 <span className="text-sm font-medium text-slate-800 block">Published / Active</span>
@@ -753,7 +753,7 @@ export default function ProductEdit({ product, categories, brands, hasOrders = f
                                 disabled={hasOrders}
                                 checked={data.is_featured}
                                 onChange={(e) => setData('is_featured', e.target.checked)}
-                                className="h-4 w-4 rounded text-indigo-600 focus:ring-indigo-500 border-slate-300"
+                                className="h-4 w-4 rounded text-brand-primary focus:ring-brand-primary border-slate-300"
                             />
                             <div>
                                 <span className="text-sm font-medium text-slate-800 block">Featured Product</span>
@@ -780,7 +780,7 @@ export default function ProductEdit({ product, categories, brands, hasOrders = f
                         <button
                             type="submit"
                             disabled={processing || isOptimizing}
-                            className="inline-flex items-center gap-2 px-6 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-medium text-sm rounded-lg shadow-sm transition-colors disabled:opacity-50"
+                            className="inline-flex items-center gap-2 px-6 py-2.5 bg-brand-primary hover:bg-brand-primary-hover text-white font-medium text-sm rounded-lg shadow-sm transition-colors disabled:opacity-50"
                         >
                             <Save className="w-4 h-4" />
                             <span>{processing ? 'Processing & Saving...' : isOptimizing ? 'Optimizing Photos...' : 'Save Product Changes'}</span>

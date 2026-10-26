@@ -68,7 +68,7 @@ export default function InventoryIndex({ variants, filters }) {
                             placeholder="Filter by product name, variant title, or SKU..."
                             value={search}
                             onChange={(e) => setSearch(e.target.value)}
-                            className="w-full pl-9 pr-3.5 py-2 text-sm bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white"
+                            className="w-full pl-9 pr-3.5 py-2 text-sm bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-primary focus:bg-white"
                         />
                     </div>
                     <button
@@ -177,7 +177,7 @@ export default function InventoryIndex({ variants, filters }) {
                                             {/* Backorder */}
                                             <td className="px-6 py-4 text-center">
                                                 {allowBackorder ? (
-                                                    <span className="text-xs text-indigo-600 font-medium">
+                                                    <span className="text-xs text-brand-primary font-medium">
                                                         Allowed
                                                     </span>
                                                 ) : (
@@ -191,7 +191,7 @@ export default function InventoryIndex({ variants, filters }) {
                                             <td className="px-6 py-4 text-right">
                                                 <button
                                                     onClick={() => openAdjustModal(variant)}
-                                                    className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-indigo-700 bg-indigo-50 hover:bg-indigo-100 rounded-lg transition-colors cursor-pointer"
+                                                    className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-brand-secondary bg-brand-surface-accent hover:bg-brand-surface-muted rounded-lg transition-colors cursor-pointer"
                                                 >
                                                     <Warehouse className="w-3.5 h-3.5" />
                                                     <span>Adjust Stock</span>
@@ -227,7 +227,7 @@ export default function InventoryIndex({ variants, filters }) {
                                     preserveScroll
                                     className={`px-3 py-1.5 text-xs rounded-md transition-colors ${
                                         link.active
-                                            ? 'bg-indigo-600 text-white font-semibold'
+                                            ? 'bg-brand-primary text-white font-semibold'
                                             : !link.url
                                             ? 'text-slate-300 cursor-not-allowed'
                                             : 'text-slate-600 hover:bg-slate-200'
@@ -268,7 +268,7 @@ export default function InventoryIndex({ variants, filters }) {
                             </div>
                             <div className="flex justify-between">
                                 <span className="text-slate-500">Current Stock On Hand:</span>
-                                <span className="font-semibold text-indigo-600">
+                                <span className="font-semibold text-brand-primary">
                                     {(selectedVariant.inventory_level || selectedVariant.inventoryLevel)?.quantity_on_hand ?? 0}
                                 </span>
                             </div>
@@ -282,7 +282,7 @@ export default function InventoryIndex({ variants, filters }) {
                                 <select
                                     value={adjustmentForm.data.type}
                                     onChange={(e) => adjustmentForm.setData('type', e.target.value)}
-                                    className="w-full px-3 py-2 text-sm bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white"
+                                    className="w-full px-3 py-2 text-sm bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-primary focus:bg-white"
                                 >
                                     <option value="adjust">Stock Count Correction / Manual Delta</option>
                                     <option value="receive">Stock Received from Supplier (+)</option>
@@ -301,7 +301,7 @@ export default function InventoryIndex({ variants, filters }) {
                                     onChange={(e) =>
                                         adjustmentForm.setData('quantity', parseInt(e.target.value) || 0)
                                     }
-                                    className="w-full px-3 py-2 text-sm bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white"
+                                    className="w-full px-3 py-2 text-sm bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-primary focus:bg-white"
                                     required
                                 />
                                 <p className="text-xs text-slate-400 mt-1">
@@ -323,7 +323,7 @@ export default function InventoryIndex({ variants, filters }) {
                                     placeholder="e.g. Annual audit count, supplier batch PO-102"
                                     value={adjustmentForm.data.reason}
                                     onChange={(e) => adjustmentForm.setData('reason', e.target.value)}
-                                    className="w-full px-3 py-2 text-sm bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white"
+                                    className="w-full px-3 py-2 text-sm bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-primary focus:bg-white"
                                     required
                                 />
                                 {adjustmentForm.errors.reason && (
@@ -342,7 +342,7 @@ export default function InventoryIndex({ variants, filters }) {
                                     placeholder="e.g. PO-98412"
                                     value={adjustmentForm.data.reference}
                                     onChange={(e) => adjustmentForm.setData('reference', e.target.value)}
-                                    className="w-full px-3 py-2 text-sm bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white"
+                                    className="w-full px-3 py-2 text-sm bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-primary focus:bg-white"
                                 />
                             </div>
 
@@ -357,7 +357,7 @@ export default function InventoryIndex({ variants, filters }) {
                                 <button
                                     type="submit"
                                     disabled={adjustmentForm.processing}
-                                    className="inline-flex items-center gap-2 px-5 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-medium text-sm rounded-lg shadow-xs transition-colors disabled:opacity-50"
+                                    className="inline-flex items-center gap-2 px-5 py-2 bg-brand-primary hover:bg-brand-primary-hover text-white font-medium text-sm rounded-lg shadow-xs transition-colors disabled:opacity-50"
                                 >
                                     <Save className="w-4 h-4" />
                                     <span>

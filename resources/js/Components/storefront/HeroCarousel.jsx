@@ -25,7 +25,7 @@ const SLIDES = [
         imageJpg: '/assets/images/hero/home-page-hero-section-carousel-image-1.jpg',
         alt: 'Smiling woman with sunglasses holding shopping bags and credit card',
         personSide: 'right', // Person is on the right -> Content on the LEFT
-        bgColor: '#FCE4EC',
+        bgColor: 'var(--brand-surface-accent)',
         badge: {
             icon: Sparkles,
             text: 'NEW SEASON COLLECTION',
@@ -52,7 +52,7 @@ const SLIDES = [
         imageJpg: '/assets/images/hero/home-page-hero-section-carousel-image-2.jpg',
         alt: 'Modern guy holding shopping bag over shoulder shushing camera with secret deals',
         personSide: 'left', // Person is on the left -> Content on the RIGHT
-        bgColor: '#FFF1F6',
+        bgColor: 'var(--brand-surface-muted)',
         badge: {
             icon: Flame,
             text: 'INSIDER FLASH OFFERS',
@@ -79,7 +79,7 @@ const SLIDES = [
         imageJpg: '/assets/images/hero/home-page-hero-section-carousel-image-3.jpg',
         alt: 'Dreamy woman smiling and holding colorful shopping bags',
         personSide: 'left', // Person is on the left -> Content on the RIGHT
-        bgColor: '#FCE4EC',
+        bgColor: 'var(--brand-surface-accent)',
         badge: {
             icon: ShoppingBag,
             text: 'WISHLIST FAVORITES',
@@ -106,7 +106,7 @@ const SLIDES = [
         imageJpg: '/assets/images/hero/home-page-hero-section-carousel-image-4.jpg',
         alt: 'Smiling guy demonstrating gift and orange shopping bag',
         personSide: 'left', // Person is on the left -> Content on the RIGHT
-        bgColor: '#FFF1F6',
+        bgColor: 'var(--brand-surface-muted)',
         badge: {
             icon: Gift,
             text: 'SPECIAL FINDS & GIFTS',

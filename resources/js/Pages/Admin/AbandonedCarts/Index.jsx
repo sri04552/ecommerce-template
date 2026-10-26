@@ -38,11 +38,11 @@ export default function Index({ carts, stats }) {
                         <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider">
                             Potential Recoverable Revenue
                         </p>
-                        <p className="text-2xl font-bold text-indigo-600 mt-1 font-mono">
+                        <p className="text-2xl font-bold text-brand-primary mt-1 font-mono">
                             ₹{stats?.total_lost_value?.toLocaleString('en-IN') || 0}
                         </p>
                     </div>
-                    <div className="w-12 h-12 bg-indigo-50 text-indigo-600 rounded-xl flex items-center justify-center border border-indigo-200">
+                    <div className="w-12 h-12 bg-brand-surface-accent text-brand-primary rounded-xl flex items-center justify-center border border-brand-primary/25">
                         <ShoppingCart className="w-6 h-6" />
                     </div>
                 </div>
@@ -125,7 +125,7 @@ export default function Index({ carts, stats }) {
                                                 <Button
                                                     size="sm"
                                                     onClick={() => handleSendRecovery(cart.id)}
-                                                    className="bg-indigo-600 hover:bg-indigo-700 text-white text-[11px] font-semibold px-3 py-1.5 rounded-lg inline-flex items-center gap-1.5 shadow-xs"
+                                                    className="bg-brand-primary hover:bg-brand-primary-hover text-white text-[11px] font-semibold px-3 py-1.5 rounded-lg inline-flex items-center gap-1.5 shadow-xs"
                                                 >
                                                     <Send className="w-3 h-3" />
                                                     <span>Send Recovery</span>

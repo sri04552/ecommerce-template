@@ -83,8 +83,8 @@ export default function OrderShow({ order, returns }) {
     const getStatusBadge = (status) => {
         const styles = {
             pending: 'bg-amber-50 text-amber-700 border-amber-200',
-            confirmed: 'bg-blue-50 text-blue-700 border-blue-200',
-            processing: 'bg-indigo-50 text-indigo-700 border-indigo-200',
+            confirmed: 'bg-sky-50 text-sky-700 border-sky-200',
+            processing: 'bg-brand-surface-accent text-brand-secondary border-brand-border',
             shipped: 'bg-purple-50 text-purple-700 border-purple-200',
             delivered: 'bg-emerald-50 text-emerald-700 border-emerald-200',
             cancelled: 'bg-red-50 text-red-700 border-red-200',
@@ -179,7 +179,7 @@ export default function OrderShow({ order, returns }) {
                         <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
                             <div className="p-4 border-b border-slate-100 flex items-center justify-between">
                                 <h3 className="font-semibold text-slate-900 text-sm flex items-center gap-2">
-                                    <ShoppingBag className="w-4 h-4 text-indigo-600" />
+                                    <ShoppingBag className="w-4 h-4 text-brand-primary" />
                                     <span>Items Ordered ({order.items?.length || 0})</span>
                                 </h3>
                             </div>
@@ -270,7 +270,7 @@ export default function OrderShow({ order, returns }) {
                                                 <span className={`text-xs font-semibold px-2.5 py-0.5 rounded-full capitalize ${
                                                     ret.status === 'approved' ? 'bg-emerald-100 text-emerald-800' :
                                                     ret.status === 'rejected' ? 'bg-red-100 text-red-800' :
-                                                    ret.status === 'completed' ? 'bg-blue-100 text-blue-800' :
+                                                    ret.status === 'completed' ? 'bg-sky-100 text-sky-800' :
                                                     'bg-amber-100 text-amber-800'
                                                 }`}>
                                                     {ret.status}
@@ -288,18 +288,18 @@ export default function OrderShow({ order, returns }) {
                                                     <div className="flex items-center gap-1.5 font-semibold text-slate-900 mb-1">
                                                         {ret.refund_method === 'upi' ? (
                                                             <>
-                                                                <QrCode className="w-3.5 h-3.5 text-indigo-600" />
+                                                                <QrCode className="w-3.5 h-3.5 text-brand-primary" />
                                                                 <span>Customer Refund UPI ID</span>
                                                             </>
                                                         ) : (
                                                             <>
-                                                                <Building2 className="w-3.5 h-3.5 text-indigo-600" />
+                                                                <Building2 className="w-3.5 h-3.5 text-brand-primary" />
                                                                 <span>Customer Bank Account Payout</span>
                                                             </>
                                                         )}
                                                     </div>
                                                     {ret.refund_method === 'upi' ? (
-                                                        <p className="font-mono text-indigo-700 font-bold">{ret.payout_details.upi_id}</p>
+                                                        <p className="font-mono text-brand-primary font-bold">{ret.payout_details.upi_id}</p>
                                                     ) : (
                                                         <div className="grid grid-cols-2 gap-2 text-slate-700">
                                                             <p><span className="text-slate-500">Account Holder:</span> {ret.payout_details.account_holder}</p>
@@ -348,7 +348,7 @@ export default function OrderShow({ order, returns }) {
                                                                 type="button"
                                                                 onClick={() => handleReturnStatusUpdate(ret.id, 'approved')}
                                                                 disabled={returnProcessingId === ret.id}
-                                                                className="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-xs font-semibold transition-colors disabled:opacity-50"
+                                                                className="px-3 py-1.5 bg-brand-primary hover:bg-brand-primary-hover text-white rounded-lg text-xs font-semibold transition-colors disabled:opacity-50"
                                                             >
                                                                 Approve Return
                                                             </button>
@@ -373,14 +373,14 @@ export default function OrderShow({ order, returns }) {
                         {/* Order Status History Timeline */}
                         <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-4">
                             <h3 className="font-semibold text-slate-900 text-sm mb-3 flex items-center gap-2">
-                                <Clock className="w-4 h-4 text-indigo-600" />
+                                <Clock className="w-4 h-4 text-brand-primary" />
                                 <span>Order Activity History</span>
                             </h3>
 
                             <div className="space-y-3 relative pl-4 border-l-2 border-slate-200 ml-2">
                                 {order.histories?.map((history) => (
                                     <div key={history.id} className="relative">
-                                        <div className="absolute -left-[23px] top-1 w-3 h-3 rounded-full bg-indigo-600 ring-4 ring-white" />
+                                        <div className="absolute -left-[23px] top-1 w-3 h-3 rounded-full bg-brand-primary ring-4 ring-white" />
                                         <p className="text-xs font-bold text-slate-900 capitalize">
                                             Status: {history.status}
                                         </p>
@@ -401,20 +401,20 @@ export default function OrderShow({ order, returns }) {
                         {/* Fulfillment & Tracking Updater */}
                         <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-5">
                             <h3 className="font-semibold text-slate-900 text-sm mb-4 flex items-center gap-2">
-                                <Truck className="w-4 h-4 text-indigo-600" />
+                                <Truck className="w-4 h-4 text-brand-primary" />
                                 <span>Update Order Status & Tracking</span>
                             </h3>
 
                             {/* Shiprocket Automated Courier Dispatch */}
-                            <div className="mb-4 p-3.5 bg-indigo-50 border border-indigo-100 rounded-xl flex items-center justify-between gap-3">
+                            <div className="mb-4 p-3.5 bg-brand-surface-accent border border-brand-border rounded-xl flex items-center justify-between gap-3">
                                 <div>
-                                    <p className="text-xs font-bold text-indigo-950">Shiprocket Courier Partner</p>
-                                    <p className="text-[11px] text-indigo-700 mt-0.5">Auto-assign courier partner & generate live AWB</p>
+                                    <p className="text-xs font-bold text-brand-secondary">Shiprocket Courier Partner</p>
+                                    <p className="text-[11px] text-brand-text-muted mt-0.5">Auto-assign courier partner & generate live AWB</p>
                                 </div>
                                 <button
                                     type="button"
                                     onClick={() => router.post(`/admin/orders/${order.id}/generate-shiprocket-awb`, {}, { preserveScroll: true })}
-                                    className="px-3 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs rounded-lg shadow-xs transition-colors shrink-0"
+                                    className="px-3 py-1.5 bg-brand-primary hover:bg-brand-primary-hover text-white font-bold text-xs rounded-lg shadow-xs transition-colors shrink-0"
                                 >
                                     Generate AWB
                                 </button>
@@ -428,7 +428,7 @@ export default function OrderShow({ order, returns }) {
                                     <select
                                         value={data.status}
                                         onChange={(e) => setData('status', e.target.value)}
-                                        className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm capitalize focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                                        className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm capitalize focus:outline-none focus:ring-2 focus:ring-brand-primary"
                                     >
                                         <option value="pending">Pending</option>
                                         <option value="confirmed">Confirmed</option>
@@ -448,7 +448,7 @@ export default function OrderShow({ order, returns }) {
                                         value={data.courier_name}
                                         onChange={(e) => setData('courier_name', e.target.value)}
                                         placeholder="Delhivery, BlueDart, DTDC, India Post..."
-                                        className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                                        className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-brand-primary"
                                     />
                                 </div>
 
@@ -461,7 +461,7 @@ export default function OrderShow({ order, returns }) {
                                         value={data.tracking_number}
                                         onChange={(e) => setData('tracking_number', e.target.value)}
                                         placeholder="AWB123456789IN"
-                                        className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm font-mono focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                                        className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm font-mono focus:outline-none focus:ring-2 focus:ring-brand-primary"
                                     />
                                 </div>
 
@@ -474,7 +474,7 @@ export default function OrderShow({ order, returns }) {
                                         value={data.tracking_url}
                                         onChange={(e) => setData('tracking_url', e.target.value)}
                                         placeholder="https://www.delhivery.com/track/package/..."
-                                        className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                                        className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-brand-primary"
                                     />
                                 </div>
 
@@ -487,14 +487,14 @@ export default function OrderShow({ order, returns }) {
                                         onChange={(e) => setData('comment', e.target.value)}
                                         rows={2}
                                         placeholder="Optional update note visible in history..."
-                                        className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                                        className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-brand-primary"
                                     />
                                 </div>
 
                                 <button
                                     type="submit"
                                     disabled={processing}
-                                    className="w-full py-2.5 px-4 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-lg text-sm shadow-sm transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
+                                    className="w-full py-2.5 px-4 bg-brand-primary hover:bg-brand-primary-hover text-white font-semibold rounded-lg text-sm shadow-sm transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
                                 >
                                     <Truck className="w-4 h-4" />
                                     <span>{processing ? 'Saving...' : 'Save & Update Tracking'}</span>
@@ -505,7 +505,7 @@ export default function OrderShow({ order, returns }) {
                         {/* Customer & Delivery Address Card */}
                         <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-5 space-y-4">
                             <h3 className="font-semibold text-slate-900 text-sm flex items-center gap-2">
-                                <User className="w-4 h-4 text-indigo-600" />
+                                <User className="w-4 h-4 text-brand-primary" />
                                 <span>Customer & Delivery Details</span>
                             </h3>
 
@@ -553,7 +553,7 @@ export default function OrderShow({ order, returns }) {
                                 <div className="p-3 bg-slate-50 rounded-xl border border-slate-200 text-xs space-y-1">
                                     <span className="font-bold text-slate-700 block">Transfer Destination:</span>
                                     {refundModalReturn.refund_method === 'upi' ? (
-                                        <p className="font-mono text-indigo-700 font-bold">UPI: {refundModalReturn.payout_details?.upi_id}</p>
+                                        <p className="font-mono text-brand-primary font-bold">UPI: {refundModalReturn.payout_details?.upi_id}</p>
                                     ) : (
                                         <div className="text-slate-600 space-y-0.5">
                                             <p>A/C: <span className="font-mono font-bold text-slate-900">{refundModalReturn.payout_details?.account_number}</span></p>
@@ -573,7 +573,7 @@ export default function OrderShow({ order, returns }) {
                                         value={refundAmount}
                                         onChange={(e) => setRefundAmount(e.target.value)}
                                         required
-                                        className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm font-bold focus:ring-2 focus:ring-indigo-500"
+                                        className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm font-bold focus:ring-2 focus:ring-brand-primary"
                                     />
                                 </div>
 
@@ -587,7 +587,7 @@ export default function OrderShow({ order, returns }) {
                                         onChange={(e) => setRefundUtr(e.target.value)}
                                         required
                                         placeholder="e.g. UPI/4294829104 or HDFC0001928374"
-                                        className="w-full px-3 py-2 border border-slate-200 rounded-lg text-xs font-mono focus:ring-2 focus:ring-indigo-500"
+                                        className="w-full px-3 py-2 border border-slate-200 rounded-lg text-xs font-mono focus:ring-2 focus:ring-brand-primary"
                                     />
                                     <p className="text-[11px] text-slate-400 mt-1">
                                         This UTR number will be sent to the customer via email and displayed on their tracking screen so they can trace the bank credit.

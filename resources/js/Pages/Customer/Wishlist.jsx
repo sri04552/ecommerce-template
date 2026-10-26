@@ -70,7 +70,7 @@ export default function Wishlist({ products, categories }) {
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-6 border-b border-brand-border gap-4">
                     <div>
                         <div className="flex items-center gap-2.5">
-                            <Heart className="w-6 h-6 text-rose-500 fill-rose-500" />
+                            <Heart className="w-6 h-6 text-brand-primary fill-brand-primary" />
                             <h1 className="text-2xl font-bold text-brand-secondary">My Wishlist</h1>
                         </div>
                         <p className="text-xs text-brand-text-muted mt-1">
@@ -125,7 +125,7 @@ export default function Wishlist({ products, categories }) {
                                         <button
                                             type="button"
                                             onClick={() => handleRemove(product.id)}
-                                            className="absolute top-2 right-2 p-1.5 rounded-full bg-white/90 text-rose-500 hover:bg-rose-50 shadow-xs transition-colors"
+                                            className="absolute top-2 right-2 p-1.5 rounded-full bg-white/90 text-brand-primary hover:bg-brand-surface-accent shadow-xs transition-colors"
                                             title="Remove from Wishlist"
                                         >
                                             <Trash2 className="w-3.5 h-3.5" />

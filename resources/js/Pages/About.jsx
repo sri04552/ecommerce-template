@@ -7,24 +7,21 @@ import {
     RotateCcw,
     CreditCard,
     Award,
-    HeartHandshake,
     Sparkles,
     CheckCircle2,
-    Users,
     MapPin,
     ArrowRight,
     Headphones,
-    Star,
     Layers,
     ChevronRight,
 } from 'lucide-react';
 
 export default function About({ storeName = 'Aura Store', categories = [] }) {
     const stats = [
-        { label: 'Happy Customers Across India', value: '50,000+', icon: Users },
         { label: 'States & UTs Covered', value: '28+', icon: MapPin },
-        { label: 'Verified 5-Star Ratings', value: '4.9 / 5', icon: Star },
-        { label: 'Hassle-Free Returns Window', value: '3 Days', icon: RotateCcw },
+        { label: 'Pan-India Logistics Partners', value: 'Delhivery & BlueDart', icon: Truck },
+        { label: 'Doorstep Return Window', value: '3 Days', icon: RotateCcw },
+        { label: 'Quality Guarantee', value: '100% Inspected', icon: ShieldCheck },
     ];
 
     const values = [
@@ -73,27 +70,6 @@ export default function About({ storeName = 'Aura Store', categories = [] }) {
             year: 'Step 03',
             title: 'Seamless Digital Commerce',
             desc: 'Built with cutting-edge serverless cloud architecture for blazing-fast mobile browsing, instant order tracking, and 1-click cart management.',
-        },
-    ];
-
-    const reviews = [
-        {
-            name: 'Priya Sharma',
-            city: 'Bengaluru, Karnataka',
-            quote: '“The product quality exceeded expectations! Ordered on Wednesday evening and received it by Friday noon. Clean packaging and instant tracking updates.”',
-            rating: 5,
-        },
-        {
-            name: 'Rahul Varma',
-            city: 'Hyderabad, Telangana',
-            quote: '“Returning an item was super easy. Courier picked it up and my refund was credited via UPI within hours. Rare to see this level of honesty in online shopping!”',
-            rating: 5,
-        },
-        {
-            name: 'Ananya Deshmukh',
-            city: 'Pune, Maharashtra',
-            quote: '“Zero hidden fees! What you see is exactly what you pay at checkout. Customer support answered my sizing questions on email within 15 minutes.”',
-            rating: 5,
         },
     ];
 
@@ -290,50 +266,69 @@ export default function About({ storeName = 'Aura Store', categories = [] }) {
                 </div>
             </section>
 
-            {/* Customer Love & Verified Testimonials */}
+            {/* Fulfillment & Quality Standards */}
             <section className="py-16 sm:py-24 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="text-center max-w-xl mx-auto mb-12 space-y-2">
-                    <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-amber-500/10 text-amber-800 border border-amber-300">
-                        <HeartHandshake className="w-3.5 h-3.5 text-amber-600" />
-                        <span>Verified Buyer Stories</span>
+                    <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-brand-surface-accent text-brand-primary border border-brand-primary/20">
+                        <ShieldCheck className="w-3.5 h-3.5 text-brand-primary" />
+                        <span>Fulfillment Integrity</span>
                     </div>
                     <h2 className="text-2xl sm:text-3xl font-extrabold text-brand-secondary tracking-tight">
-                        Loved by Shoppers Across India
+                        Built for Transparent Pan-India Commerce
                     </h2>
                     <p className="text-xs sm:text-sm text-brand-text-muted">
-                        Here is what real customers say after unboxing their orders.
+                        Every transaction is backed by clear operational rules, verified courier partners, and protected consumer rights.
                     </p>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    {reviews.map((r, idx) => (
-                        <div
-                            key={idx}
-                            className="bg-brand-surface rounded-2xl p-6 border border-brand-border shadow-xs flex flex-col justify-between space-y-4"
-                        >
-                            <div className="space-y-3">
-                                <div className="flex items-center gap-1">
-                                    {[...Array(r.rating)].map((_, starIdx) => (
-                                        <Star key={starIdx} className="w-4 h-4 fill-amber-400 text-amber-400" />
-                                    ))}
-                                </div>
-                                <p className="text-xs sm:text-sm text-brand-secondary italic leading-relaxed">
-                                    {r.quote}
-                                </p>
+                    <div className="bg-brand-surface rounded-brand p-6 border border-brand-border shadow-xs flex flex-col justify-between space-y-4">
+                        <div className="space-y-3">
+                            <div className="w-10 h-10 rounded-lg bg-brand-surface-accent text-brand-primary flex items-center justify-center font-bold">
+                                <Truck className="w-5 h-5" />
                             </div>
-
-                            <div className="pt-3 border-t border-brand-border/60 flex items-center justify-between">
-                                <div>
-                                    <h4 className="font-bold text-xs text-brand-secondary">{r.name}</h4>
-                                    <p className="text-[11px] text-brand-text-muted">{r.city}</p>
-                                </div>
-                                <span className="inline-flex items-center gap-1 text-[10px] font-semibold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
-                                    <CheckCircle2 className="w-3 h-3 text-emerald-600" />
-                                    Verified
-                                </span>
-                            </div>
+                            <h3 className="font-bold text-sm text-brand-secondary">Express Doorstep Dispatch</h3>
+                            <p className="text-xs text-brand-text-muted leading-relaxed">
+                                Orders are processed and handed over to premier domestic carriers with verifiable AWB tracking numbers sent immediately via SMS and email.
+                            </p>
                         </div>
-                    ))}
+                        <div className="pt-3 border-t border-brand-border/60 flex items-center justify-between text-[11px] text-brand-text-muted">
+                            <span>Shipment Tracking</span>
+                            <span className="font-semibold text-emerald-600">Live Status Updates</span>
+                        </div>
+                    </div>
+
+                    <div className="bg-brand-surface rounded-brand p-6 border border-brand-border shadow-xs flex flex-col justify-between space-y-4">
+                        <div className="space-y-3">
+                            <div className="w-10 h-10 rounded-lg bg-brand-surface-accent text-brand-primary flex items-center justify-center font-bold">
+                                <RotateCcw className="w-5 h-5" />
+                            </div>
+                            <h3 className="font-bold text-sm text-brand-secondary">3-Day Return & UPI Refund</h3>
+                            <p className="text-xs text-brand-text-muted leading-relaxed">
+                                Request a return or exchange directly from your account within 3 days. Once verified, refunds are deposited directly into your bank or UPI ID.
+                            </p>
+                        </div>
+                        <div className="pt-3 border-t border-brand-border/60 flex items-center justify-between text-[11px] text-brand-text-muted">
+                            <span>Refund Method</span>
+                            <span className="font-semibold text-emerald-600">Direct UPI / Bank UTR</span>
+                        </div>
+                    </div>
+
+                    <div className="bg-brand-surface rounded-brand p-6 border border-brand-border shadow-xs flex flex-col justify-between space-y-4">
+                        <div className="space-y-3">
+                            <div className="w-10 h-10 rounded-lg bg-brand-surface-accent text-brand-primary flex items-center justify-center font-bold">
+                                <CreditCard className="w-5 h-5" />
+                            </div>
+                            <h3 className="font-bold text-sm text-brand-secondary">Fair GST Tax Invoicing</h3>
+                            <p className="text-xs text-brand-text-muted leading-relaxed">
+                                Every fulfilled order includes an itemized, downloadable GST tax invoice complying with Section 31 of the CGST Act, 2017 with zero hidden fees.
+                            </p>
+                        </div>
+                        <div className="pt-3 border-t border-brand-border/60 flex items-center justify-between text-[11px] text-brand-text-muted">
+                            <span>Billing Standards</span>
+                            <span className="font-semibold text-emerald-600">GST Compliant</span>
+                        </div>
+                    </div>
                 </div>
             </section>
 
@@ -375,13 +370,13 @@ export default function About({ storeName = 'Aura Store', categories = [] }) {
             </section>
 
             {/* Final CTA Banner */}
-            <section className="py-14 sm:py-20 bg-gradient-to-r from-brand-secondary via-brand-primary to-[#19121B] text-white text-center relative overflow-hidden">
+            <section className="py-14 sm:py-20 bg-gradient-to-r from-brand-secondary via-brand-primary to-brand-text text-white text-center relative overflow-hidden">
                 <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 space-y-5 relative z-10">
                     <h2 className="text-2xl sm:text-4xl font-black tracking-tight text-white">
                         Ready to Upgrade Your Daily Essentials?
                     </h2>
                     <p className="text-xs sm:text-sm text-pink-100 max-w-xl mx-auto leading-relaxed">
-                        Join over 50,000 satisfied shoppers who trust {storeName} for authentic items, honest pricing, and prompt delivery.
+                        Experience authentic items, honest pricing, and prompt delivery with {storeName}.
                     </p>
                     <div className="pt-2 flex flex-col sm:flex-row items-center justify-center gap-3">
                         <Link href="/products" className="w-full sm:w-auto">

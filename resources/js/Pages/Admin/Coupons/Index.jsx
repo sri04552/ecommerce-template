@@ -112,7 +112,7 @@ export default function Index({ coupons, filters }) {
             actions={
                 <Button
                     onClick={openCreateModal}
-                    className="bg-indigo-600 hover:bg-indigo-700 text-white flex items-center gap-2 text-xs font-semibold py-2 px-3.5 rounded-lg shadow-xs"
+                    className="bg-brand-primary hover:bg-brand-primary-hover text-white flex items-center gap-2 text-xs font-semibold py-2 px-3.5 rounded-lg shadow-xs"
                 >
                     <Plus className="w-4 h-4" />
                     <span>Create Coupon</span>
@@ -131,7 +131,7 @@ export default function Index({ coupons, filters }) {
                             value={search}
                             onChange={(e) => setSearch(e.target.value)}
                             placeholder="Search by coupon code or promotion campaign name..."
-                            className="w-full pl-9 pr-4 py-2 text-xs bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white"
+                            className="w-full pl-9 pr-4 py-2 text-xs bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-primary focus:bg-white"
                         />
                     </div>
                     <Button type="submit" variant="secondary" className="text-xs px-4 py-2">
@@ -169,14 +169,14 @@ export default function Index({ coupons, filters }) {
                                 coupons?.data?.map((coupon) => (
                                     <tr key={coupon.id} className="hover:bg-slate-50/80 transition-colors">
                                         <td className="py-3 px-4">
-                                            <span className="font-mono font-bold text-xs bg-indigo-50 text-indigo-700 border border-indigo-200 px-2.5 py-1 rounded-md">
+                                            <span className="font-mono font-bold text-xs bg-brand-surface-accent text-brand-secondary border border-brand-border px-2.5 py-1 rounded-md">
                                                 {coupon.coupon_code}
                                             </span>
                                         </td>
                                         <td className="py-3 px-4 font-medium text-slate-900">{coupon.title}</td>
                                         <td className="py-3 px-4 font-semibold text-slate-900">
                                             {coupon.discount_type === 'percentage' ? (
-                                                <span className="text-indigo-600 inline-flex items-center gap-0.5">
+                                                <span className="text-brand-primary inline-flex items-center gap-0.5">
                                                     {coupon.discount_value}% OFF
                                                     {coupon.max_discount_amount && (
                                                         <span className="text-[10px] text-slate-400 font-normal">
@@ -220,7 +220,7 @@ export default function Index({ coupons, filters }) {
                                         <td className="py-3 px-4 text-right space-x-1.5">
                                             <button
                                                 onClick={() => openEditModal(coupon)}
-                                                className="p-1 rounded text-slate-400 hover:text-indigo-600 hover:bg-indigo-50"
+                                                className="p-1 rounded text-slate-400 hover:text-brand-primary hover:bg-brand-surface-accent"
                                                 title="Edit Coupon"
                                             >
                                                 <Edit3 className="w-3.5 h-3.5" />
@@ -290,7 +290,7 @@ export default function Index({ coupons, filters }) {
                                     <select
                                         value={data.discount_type}
                                         onChange={(e) => setData('discount_type', e.target.value)}
-                                        className="w-full text-xs py-2 px-3 bg-white border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                                        className="w-full text-xs py-2 px-3 bg-white border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-primary"
                                     >
                                         <option value="percentage">Percentage Discount (%)</option>
                                         <option value="fixed_amount">Fixed Amount Discount (₹)</option>
@@ -386,7 +386,7 @@ export default function Index({ coupons, filters }) {
                                         type="checkbox"
                                         checked={data.is_active}
                                         onChange={(e) => setData('is_active', e.target.checked)}
-                                        className="rounded border-slate-300 text-indigo-600 focus:ring-indigo-500 w-4 h-4"
+                                        className="rounded border-slate-300 text-brand-primary focus:ring-brand-primary w-4 h-4"
                                     />
                                     <span className="text-xs font-semibold text-slate-700">Coupon is Active</span>
                                 </label>
@@ -404,7 +404,7 @@ export default function Index({ coupons, filters }) {
                                 <Button
                                     type="submit"
                                     disabled={processing}
-                                    className="bg-indigo-600 hover:bg-indigo-700 text-white text-xs px-5 py-2 font-semibold"
+                                    className="bg-brand-primary hover:bg-brand-primary-hover text-white text-xs px-5 py-2 font-semibold"
                                 >
                                     {processing ? 'Saving...' : editingCoupon ? 'Update Coupon' : 'Create Coupon'}
                                 </Button>
