@@ -84,12 +84,12 @@ class ProductionCleanSeeder extends Seeder
                 'store_phone' => '+91 98765 43210',
                 'store_currency' => config('ecommerce.currency', 'INR'),
                 'store_currency_symbol' => config('ecommerce.currency_symbol', '₹'),
-                'active_theme' => config('ecommerce.theme.active', 'modern'),
-                'theme_primary_color' => config('ecommerce.theme.primary_color', '#2563eb'),
-                'theme_primary_hover' => config('ecommerce.theme.primary_hover', '#1d4ed8'),
-                'theme_secondary_color' => config('ecommerce.theme.secondary_color', '#0f172a'),
-                'theme_accent_color' => config('ecommerce.theme.accent_color', '#f59e0b'),
-                'theme_border_radius' => config('ecommerce.theme.border_radius', '0.5rem'),
+                'active_theme' => config('ecommerce.theme.active', 'luxury_magenta'),
+                'theme_primary_color' => config('ecommerce.theme.primary_color', '#C2185B'),
+                'theme_primary_hover' => config('ecommerce.theme.primary_hover', '#880E4F'),
+                'theme_secondary_color' => config('ecommerce.theme.secondary_color', '#880E4F'),
+                'theme_accent_color' => config('ecommerce.theme.accent_color', '#E91E63'),
+                'theme_border_radius' => config('ecommerce.theme.border_radius', '0.75rem'),
             ], 'general');
 
             // 4. Default Shipping Methods

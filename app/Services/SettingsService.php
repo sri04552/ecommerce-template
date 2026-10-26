@@ -161,18 +161,43 @@ class SettingsService
     {
         $defaults = config('ecommerce.theme', []);
 
+        $primary = $this->getString('theme_primary_color', $defaults['primary_color'] ?? '#C2185B');
+        if (in_array(strtolower($primary), ['#2563eb', '#1d4ed8', '#3b82f6', '#4f46e5', 'blue'])) {
+            $primary = '#C2185B';
+        }
+
+        $primaryHover = $this->getString('theme_primary_hover', $defaults['primary_hover'] ?? '#880E4F');
+        if (in_array(strtolower($primaryHover), ['#1d4ed8', '#1e40af', '#4338ca'])) {
+            $primaryHover = '#880E4F';
+        }
+
+        $secondary = $this->getString('theme_secondary_color', $defaults['secondary_color'] ?? '#880E4F');
+        if (in_array(strtolower($secondary), ['#0f172a', '#1e293b', '#312e81', 'slate'])) {
+            $secondary = '#880E4F';
+        }
+
+        $accent = $this->getString('theme_accent_color', $defaults['accent_color'] ?? '#E91E63');
+        if (in_array(strtolower($accent), ['#f59e0b', '#d97706', '#fbbf24'])) {
+            $accent = '#E91E63';
+        }
+
+        $radius = $this->getString('theme_border_radius', $defaults['border_radius'] ?? '0.75rem');
+        if ($radius === '0.5rem') {
+            $radius = '0.75rem';
+        }
+
         return [
-            '--brand-primary' => $this->getString('theme_primary_color', $defaults['primary_color'] ?? '#C2185B'),
-            '--brand-primary-hover' => $this->getString('theme_primary_hover', $defaults['primary_hover'] ?? '#880E4F'),
-            '--brand-secondary' => $this->getString('theme_secondary_color', $defaults['secondary_color'] ?? '#880E4F'),
-            '--brand-accent' => $this->getString('theme_accent_color', $defaults['accent_color'] ?? '#E91E63'),
+            '--brand-primary' => $primary,
+            '--brand-primary-hover' => $primaryHover,
+            '--brand-secondary' => $secondary,
+            '--brand-accent' => $accent,
             '--brand-surface' => '#FFFFFF',
             '--brand-surface-muted' => '#FFF1F6',
             '--brand-surface-accent' => '#FCE4EC',
             '--brand-text' => '#19121B',
             '--brand-text-muted' => '#6B5B66',
             '--brand-border' => '#F0DCE5',
-            '--brand-radius' => $this->getString('theme_border_radius', $defaults['border_radius'] ?? '0.75rem'),
+            '--brand-radius' => $radius,
         ];
     }
 
