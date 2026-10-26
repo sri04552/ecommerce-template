@@ -208,7 +208,7 @@ class ProductController extends Controller
                     if (isset($vData['stock'])) {
                         InventoryLevel::updateOrCreate(
                             ['product_variant_id' => $customVariant->id],
-                            ['quantity_on_hand' => (int) $vData['stock'], 'quantity_reserved' => 0]
+                            ['quantity_on_hand' => (int) $vData['stock'], 'reserved_quantity' => 0]
                         );
                     }
                 }
@@ -493,86 +493,133 @@ class ProductController extends Controller
     public function import(Request $request): RedirectResponse
     {
         $request->validate([
-            'csv_file' => ['required', 'file', 'mimes:csv,txt', 'max:5120'],
+            'csv_file' => ['required', 'file', 'max:10240'],
         ]);
 
         $file = $request->file('csv_file');
-        $handle = fopen($file->getRealPath(), 'r');
-        $header = fgetcsv($handle);
+        $ext = strtolower($file->getClientOriginalExtension());
+        if (! in_array($ext, ['csv', 'txt'])) {
+            return back()->with('error', 'The uploaded file must be a valid CSV file (.csv).');
+        }
 
-        if (! $header || count($header) < 5) {
+        $handle = fopen($file->getRealPath(), 'r');
+        if (! $handle) {
+            return back()->with('error', 'Unable to read the uploaded CSV file.');
+        }
+
+        $header = fgetcsv($handle);
+        if ($header && isset($header[0])) {
+            $header[0] = preg_replace('/[\x00-\x1F\x80-\xFF]/', '', $header[0]);
+        }
+
+        if (! $header || count($header) < 3) {
+            fclose($handle);
             return back()->with('error', 'Invalid CSV format. Please download and use the official CSV template.');
         }
 
         $imported = 0;
         $updated = 0;
 
-        DB::transaction(function () use ($handle, &$imported, &$updated) {
-            while (($row = fgetcsv($handle)) !== false) {
-                if (empty($row[0]) || empty($row[2])) {
-                    continue;
+        try {
+            DB::transaction(function () use ($handle, &$imported, &$updated) {
+                while (($row = fgetcsv($handle)) !== false) {
+                    if (empty($row) || ! isset($row[0]) || trim($row[0]) === '') {
+                        continue;
+                    }
+
+                    $name = trim($row[0]);
+                    $sku = ! empty($row[2]) ? strtoupper(trim($row[2])) : strtoupper(Str::slug($name));
+                    if (empty($sku)) {
+                        continue;
+                    }
+
+                    $rawSlug = ! empty($row[1]) ? Str::slug($row[1]) : Str::slug($name);
+                    $slug = $rawSlug ?: 'product-'.strtolower(Str::random(6));
+
+                    // Guarantee unique slug avoiding collisions with other products
+                    $candidateSlug = $slug;
+                    $counter = 1;
+                    while (Product::where('slug', $candidateSlug)->where('sku', '!=', $sku)->exists()) {
+                        $candidateSlug = "{$slug}-{$counter}";
+                        $counter++;
+                    }
+                    $slug = $candidateSlug;
+
+                    $categoryName = ! empty($row[3]) ? trim($row[3]) : 'General';
+                    $basePrice = isset($row[4]) && is_numeric($row[4]) ? (float) $row[4] : 0.00;
+                    $salePrice = isset($row[5]) && is_numeric($row[5]) && (float) $row[5] > 0 ? (float) $row[5] : null;
+                    $deliveryFee = isset($row[6]) && is_numeric($row[6]) ? (float) $row[6] : 0.00;
+                    $codAvailable = ! empty($row[7]) ? in_array(strtolower(trim($row[7])), ['yes', '1', 'true', 'available']) : true;
+                    $returnable = ! empty($row[8]) ? in_array(strtolower(trim($row[8])), ['yes', '1', 'true', 'available']) : true;
+                    $returnWindow = isset($row[9]) && is_numeric($row[9]) ? (int) $row[9] : 3;
+                    $stock = isset($row[10]) && is_numeric($row[10]) ? (int) $row[10] : 10;
+                    $isActive = ! empty($row[11]) ? in_array(strtolower(trim($row[11])), ['active', 'yes', '1', 'true']) : true;
+
+                    $category = Category::firstOrCreate(['slug' => Str::slug($categoryName)], [
+                        'name' => $categoryName,
+                        'is_active' => true,
+                    ]);
+
+                    $product = Product::updateOrCreate(
+                        ['sku' => $sku],
+                        [
+                            'name' => $name,
+                            'slug' => $slug,
+                            'category_id' => $category->id,
+                            'base_price' => $basePrice,
+                            'sale_price' => $salePrice,
+                            'delivery_fee' => $deliveryFee,
+                            'cod_available' => $codAvailable,
+                            'has_return_exchange' => $returnable,
+                            'returnable' => $returnable,
+                            'return_window_days' => $returnWindow,
+                            'is_active' => $isActive,
+                            'status' => $isActive ? 'active' : 'draft',
+                        ]
+                    );
+
+                    // Update or create product variant by unique SKU
+                    $variant = ProductVariant::updateOrCreate(
+                        ['sku' => $sku],
+                        [
+                            'product_id' => $product->id,
+                            'title' => 'Default',
+                            'price' => $basePrice,
+                            'sale_price' => $salePrice,
+                            'is_active' => $isActive,
+                        ]
+                    );
+
+                    // Update or create inventory level using correct 'reserved_quantity' column
+                    InventoryLevel::updateOrCreate(
+                        ['product_variant_id' => $variant->id],
+                        [
+                            'quantity_on_hand' => $stock,
+                            'reserved_quantity' => 0,
+                        ]
+                    );
+
+                    if ($product->wasRecentlyCreated) {
+                        $imported++;
+                    } else {
+                        $updated++;
+                    }
                 }
-
-                $name = trim($row[0]);
-                $slug = ! empty($row[1]) ? Str::slug($row[1]) : Str::slug($name);
-                $sku = strtoupper(trim($row[2]));
-                $categoryName = ! empty($row[3]) ? trim($row[3]) : 'General';
-                $basePrice = (float) ($row[4] ?? 0);
-                $salePrice = ! empty($row[5]) ? (float) $row[5] : null;
-                $deliveryFee = isset($row[6]) ? (float) $row[6] : 0.00;
-                $codAvailable = ! empty($row[7]) ? in_array(strtolower(trim($row[7])), ['yes', '1', 'true']) : true;
-                $returnable = ! empty($row[8]) ? in_array(strtolower(trim($row[8])), ['yes', '1', 'true']) : true;
-                $returnWindow = ! empty($row[9]) ? (int) $row[9] : 3;
-                $stock = ! empty($row[10]) ? (int) $row[10] : 10;
-                $isActive = ! empty($row[11]) ? in_array(strtolower(trim($row[11])), ['active', 'yes', '1', 'true']) : true;
-
-                $category = Category::firstOrCreate(['slug' => Str::slug($categoryName)], [
-                    'name' => $categoryName,
-                    'is_active' => true,
-                ]);
-
-                $product = Product::updateOrCreate(
-                    ['sku' => $sku],
-                    [
-                        'name' => $name,
-                        'slug' => $slug,
-                        'category_id' => $category->id,
-                        'base_price' => $basePrice,
-                        'sale_price' => $salePrice,
-                        'delivery_fee' => $deliveryFee,
-                        'cod_available' => $codAvailable,
-                        'has_return_exchange' => $returnable,
-                        'return_window_days' => $returnWindow,
-                        'is_active' => $isActive,
-                        'status' => $isActive ? 'active' : 'draft',
-                    ]
-                );
-
-                $variant = ProductVariant::updateOrCreate(
-                    ['product_id' => $product->id, 'is_default' => true],
-                    [
-                        'sku' => $sku,
-                        'price' => $basePrice,
-                    ]
-                );
-
-                InventoryLevel::updateOrCreate(
-                    ['product_variant_id' => $variant->id],
-                    [
-                        'quantity_on_hand' => $stock,
-                        'quantity_reserved' => 0,
-                    ]
-                );
-
-                if ($product->wasRecentlyCreated) {
-                    $imported++;
-                } else {
-                    $updated++;
-                }
+            });
+        } catch (\Throwable $e) {
+            if (is_resource($handle)) {
+                fclose($handle);
             }
+            \Illuminate\Support\Facades\Log::error('Bulk Product Import Failed: '.$e->getMessage(), [
+                'trace' => $e->getTraceAsString(),
+            ]);
 
+            return back()->with('error', 'Bulk import failed: '.$e->getMessage());
+        }
+
+        if (is_resource($handle)) {
             fclose($handle);
-        });
+        }
 
         return back()->with('success', "Bulk Import Complete: {$imported} new products imported, {$updated} existing products updated.");
     }

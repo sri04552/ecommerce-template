@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link, router } from '@inertiajs/react';
+import { Link, router, usePage } from '@inertiajs/react';
 import AdminLayout from '@/Layouts/AdminLayout';
 import {
     Plus,
@@ -20,6 +20,8 @@ import {
 } from 'lucide-react';
 
 export default function ProductsIndex({ products, categories, filters }) {
+    const { storeSettings } = usePage().props;
+    const adminPrefix = storeSettings?.admin_prefix || 'admin';
     const [search, setSearch] = useState(filters?.search || '');
     const [category, setCategory] = useState(filters?.category || '');
     const [status, setStatus] = useState(filters?.status || '');
@@ -32,7 +34,7 @@ export default function ProductsIndex({ products, categories, filters }) {
         if (!csvFile) return;
 
         setImporting(true);
-        router.post('/admin/products/import', { csv_file: csvFile }, {
+        router.post(`/${adminPrefix}/products/import`, { csv_file: csvFile }, {
             forceFormData: true,
             onSuccess: () => {
                 setImportModalOpen(false);
@@ -45,7 +47,7 @@ export default function ProductsIndex({ products, categories, filters }) {
     const handleFilterSubmit = (e) => {
         e.preventDefault();
         router.get(
-            '/admin/products',
+            `/${adminPrefix}/products`,
             { search, category, status },
             { preserveState: true, replace: true }
         );
@@ -55,16 +57,16 @@ export default function ProductsIndex({ products, categories, filters }) {
         setSearch('');
         setCategory('');
         setStatus('');
-        router.get('/admin/products', {}, { replace: true });
+        router.get(`/${adminPrefix}/products`, {}, { replace: true });
     };
 
     const handleToggleStatus = (productId) => {
-        router.post(`/admin/products/${productId}/toggle-status`, {}, { preserveScroll: true });
+        router.post(`/${adminPrefix}/products/${productId}/toggle-status`, {}, { preserveScroll: true });
     };
 
     const handleDelete = (productId, productName) => {
         if (confirm(`Are you sure you want to delete "${productName}"? This action cannot be undone.`)) {
-            router.delete(`/admin/products/${productId}`);
+            router.delete(`/${adminPrefix}/products/${productId}`);
         }
     };
 
@@ -97,7 +99,7 @@ export default function ProductsIndex({ products, categories, filters }) {
             actions={
                 <div className="flex items-center gap-2">
                     <a
-                        href="/admin/products/export"
+                        href={`/${adminPrefix}/products/export`}
                         className="inline-flex items-center gap-1.5 px-3 py-2 text-xs font-semibold bg-white border border-slate-300 text-slate-700 rounded-lg hover:bg-slate-50 transition-colors shadow-2xs"
                     >
                         <Download className="w-3.5 h-3.5 text-slate-500" />
@@ -112,7 +114,7 @@ export default function ProductsIndex({ products, categories, filters }) {
                         <span>Bulk Import</span>
                     </button>
                     <Link
-                        href="/admin/products/create"
+                        href={`/${adminPrefix}/products/create`}
                         className="inline-flex items-center gap-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-medium text-xs rounded-lg shadow-xs transition-colors"
                     >
                         <Plus className="w-4 h-4" />
@@ -327,7 +329,7 @@ export default function ProductsIndex({ products, categories, filters }) {
                                                         <Eye className="w-4 h-4" />
                                                     </Link>
                                                     <Link
-                                                        href={`/admin/products/${product.id}/edit`}
+                                                        href={`/${adminPrefix}/products/${product.id}/edit`}
                                                         className="p-1.5 rounded-lg text-indigo-600 hover:text-indigo-700 hover:bg-indigo-50"
                                                         title="Edit product"
                                                     >
@@ -359,7 +361,7 @@ export default function ProductsIndex({ products, categories, filters }) {
                         </p>
                         <div className="mt-5">
                             <Link
-                                href="/admin/products/create"
+                                href={`/${adminPrefix}/products/create`}
                                 className="inline-flex items-center gap-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-medium text-sm rounded-lg shadow-xs transition-colors"
                             >
                                 <Plus className="w-4 h-4" />
@@ -422,7 +424,7 @@ export default function ProductsIndex({ products, categories, filters }) {
                                 <span className="text-[11px] text-indigo-700">Download formatted sample file</span>
                             </div>
                             <a
-                                href="/admin/products/import-template"
+                                href={`/${adminPrefix}/products/import-template`}
                                 className="px-3 py-1.5 bg-white border border-indigo-200 text-indigo-700 font-bold text-xs rounded-lg hover:bg-indigo-100/50 shadow-2xs"
                             >
                                 Download Template

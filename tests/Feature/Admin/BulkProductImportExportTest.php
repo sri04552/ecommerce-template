@@ -80,5 +80,44 @@ class BulkProductImportExportTest extends TestCase
         $this->assertDatabaseHas('categories', [
             'name' => 'Apparel',
         ]);
+
+        $this->assertDatabaseHas('product_variants', [
+            'sku' => 'SHIRT-099',
+            'price' => 999.00,
+        ]);
+
+        $this->assertDatabaseHas('inventory_levels', [
+            'quantity_on_hand' => 45,
+            'reserved_quantity' => 0,
+        ]);
+    }
+
+    public function test_bulk_import_gracefully_handles_duplicate_slug_and_nonstandard_csv_mime(): void
+    {
+        // Pre-existing product with colliding slug
+        Product::create([
+            'name' => 'Designer Cotton Shirt Existing',
+            'slug' => 'designer-cotton-shirt',
+            'sku' => 'EXISTING-001',
+            'base_price' => 500.00,
+            'is_active' => true,
+        ]);
+
+        $csvContent = "Name,Slug,SKU,Category,Base Price,Sale Price,Delivery Fee,COD Available,Returnable,Return Window Days,Stock,Status\n"
+            ."Designer Cotton Shirt,designer-cotton-shirt,SHIRT-999,Apparel,999.00,799.00,40.00,Yes,Yes,3,50,Active";
+
+        $file = UploadedFile::fake()->createWithContent('import_test.csv', $csvContent);
+
+        $response = $this->actingAs($this->admin)->post(route('admin.products.import'), [
+            'csv_file' => $file,
+        ]);
+
+        $response->assertRedirect()->assertSessionHas('success');
+
+        // New product was created with deduplicated slug and didn't crash
+        $this->assertDatabaseHas('products', [
+            'sku' => 'SHIRT-999',
+            'slug' => 'designer-cotton-shirt-1',
+        ]);
     }
 }

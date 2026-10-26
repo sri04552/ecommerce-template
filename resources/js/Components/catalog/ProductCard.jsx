@@ -1,38 +1,34 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, usePage } from '@inertiajs/react';
 import Badge from '../ui/Badge';
 import { ShoppingBag, Sparkles, Heart } from 'lucide-react';
+import { isProductInWishlist, toggleWishlistItem } from '@/utils/wishlist';
 
 export default function ProductCard({ product }) {
     const { auth, storeSettings } = usePage().props;
     const currency = storeSettings?.currency_symbol || '₹';
-    const [inWishlist, setInWishlist] = useState(false);
+    const [inWishlist, setInWishlist] = useState(() => isProductInWishlist(product.id));
     const [wishlistLoading, setWishlistLoading] = useState(false);
+
+    useEffect(() => {
+        setInWishlist(isProductInWishlist(product.id));
+
+        const handleWishlistSync = () => {
+            setInWishlist(isProductInWishlist(product.id));
+        };
+
+        window.addEventListener('aura-wishlist-updated', handleWishlistSync);
+        return () => window.removeEventListener('aura-wishlist-updated', handleWishlistSync);
+    }, [product.id]);
 
     const handleWishlistToggle = async (e) => {
         e.preventDefault();
         e.stopPropagation();
 
-        if (!auth?.user) {
-            window.location.href = '/login';
-            return;
-        }
-
         setWishlistLoading(true);
         try {
-            const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
-            const res = await fetch(`/api/wishlist/${product.id}/toggle`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json',
-                    'X-CSRF-TOKEN': csrfToken || '',
-                },
-            });
-            const data = await res.json();
-            if (res.ok && data.success) {
-                setInWishlist(data.in_wishlist);
-            }
+            const res = await toggleWishlistItem(product, auth?.user);
+            setInWishlist(res.inWishlist);
         } catch (err) {
             console.error('Failed to update wishlist:', err);
         } finally {

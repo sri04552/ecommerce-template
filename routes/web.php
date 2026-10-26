@@ -38,6 +38,7 @@ Route::get('/categories/{slug}', [CatalogController::class, 'category'])->name('
 Route::get('/cart', function () {
     return Inertia::render('Cart/Index');
 })->name('cart.index');
+Route::get('/wishlist', [WishlistController::class, 'index'])->name('wishlist.index');
 Route::get('/track', [StorefrontOrderController::class, 'track'])->name('orders.track');
 Route::get('/orders/{order}/invoice', [StorefrontOrderController::class, 'invoice'])->name('orders.invoice');
 Route::post('/api/coupons/apply', [StorefrontCouponController::class, 'apply'])->name('coupons.apply');

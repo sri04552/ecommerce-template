@@ -2,21 +2,34 @@ import { useState, useEffect } from 'react';
 import { Link, usePage, router } from '@inertiajs/react';
 import { ShoppingBag, Search, User, Menu, X, Layers, ChevronDown, LogOut, ShieldCheck, MapPin, RotateCcw, Truck, CreditCard, Heart } from 'lucide-react';
 import { getCartCount, onCartChange } from '../utils/cart';
+import { getWishlistCount } from '../utils/wishlist';
 
 export default function StorefrontLayout({ children, categories = [] }) {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const [userDropdownOpen, setUserDropdownOpen] = useState(false);
     const [searchQuery, setSearchQuery] = useState('');
     const [cartCount, setCartCount] = useState(0);
+    const [wishlistCount, setWishlistCount] = useState(0);
     const { auth, storeSettings } = usePage().props;
     const user = auth?.user;
 
     useEffect(() => {
         setCartCount(getCartCount());
+        setWishlistCount(getWishlistCount());
+
         const unsubscribe = onCartChange((detail) => {
             setCartCount(detail?.count ?? getCartCount());
         });
-        return unsubscribe;
+
+        const handleWishlistChange = (e) => {
+            setWishlistCount(e.detail?.count ?? getWishlistCount());
+        };
+        window.addEventListener('aura-wishlist-updated', handleWishlistChange);
+
+        return () => {
+            unsubscribe();
+            window.removeEventListener('aura-wishlist-updated', handleWishlistChange);
+        };
     }, []);
 
     const storeName = storeSettings?.store_name || 'Aura Store';
@@ -174,6 +187,23 @@ export default function StorefrontLayout({ children, categories = [] }) {
                                 )}
                             </div>
 
+                            {/* Wishlist Button */}
+                            <Link
+                                href="/wishlist"
+                                className="relative p-2 rounded-brand text-brand-text hover:text-rose-500 hover:bg-brand-surface-muted transition-colors"
+                                aria-label="Wishlist"
+                                title="My Wishlist"
+                            >
+                                <Heart className="w-5 h-5" />
+                                {wishlistCount > 0 ? (
+                                    <span className="absolute -top-1 -right-1 min-w-[18px] h-[18px] px-1 rounded-full bg-rose-500 text-white text-[10px] font-bold flex items-center justify-center shadow-xs">
+                                        {wishlistCount > 20 ? '20+' : wishlistCount}
+                                    </span>
+                                ) : (
+                                    <span className="absolute top-1.5 right-1.5 w-1.5 h-1.5 rounded-full bg-slate-300"></span>
+                                )}
+                            </Link>
+
                             {/* Shopping Cart Button */}
                             <Link
                                 href="/cart"
@@ -231,6 +261,18 @@ export default function StorefrontLayout({ children, categories = [] }) {
                         >
                             All Products
                         </Link>
+                        <Link
+                            href="/wishlist"
+                            onClick={() => setMobileMenuOpen(false)}
+                            className="flex items-center justify-between py-2 text-sm font-semibold text-brand-text hover:text-rose-500"
+                        >
+                            <span>My Wishlist</span>
+                            {wishlistCount > 0 && (
+                                <span className="px-2 py-0.5 rounded-full bg-rose-500 text-white text-[10px] font-bold">
+                                    {wishlistCount}
+                                </span>
+                            )}
+                        </Link>
 
                         <div className="pt-3 border-t border-brand-border">
                             {user ? (
@@ -270,45 +312,6 @@ export default function StorefrontLayout({ children, categories = [] }) {
 
             {/* Premium Dark E-Commerce Footer */}
             <footer className="bg-slate-950 text-slate-300 border-t border-slate-800 mt-0">
-                {/* Confidence Bar */}
-                <div className="border-b border-slate-800/80 bg-slate-900/60 py-6">
-                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
-                            <div className="flex flex-col items-center gap-1.5">
-                                <div className="w-10 h-10 rounded-full bg-indigo-950/80 text-indigo-400 border border-indigo-800/60 flex items-center justify-center">
-                                    <ShieldCheck className="w-5 h-5" />
-                                </div>
-                                <span className="text-xs font-bold text-white uppercase tracking-wider">100% Genuine</span>
-                                <span className="text-[11px] text-slate-400">Directly sourced authentic items</span>
-                            </div>
-
-                            <div className="flex flex-col items-center gap-1.5">
-                                <div className="w-10 h-10 rounded-full bg-indigo-950/80 text-indigo-400 border border-indigo-800/60 flex items-center justify-center">
-                                    <RotateCcw className="w-5 h-5" />
-                                </div>
-                                <span className="text-xs font-bold text-white uppercase tracking-wider">3-Day Easy Returns</span>
-                                <span className="text-[11px] text-slate-400">Instant UPI & bank account refunds</span>
-                            </div>
-
-                            <div className="flex flex-col items-center gap-1.5">
-                                <div className="w-10 h-10 rounded-full bg-indigo-950/80 text-indigo-400 border border-indigo-800/60 flex items-center justify-center">
-                                    <Truck className="w-5 h-5" />
-                                </div>
-                                <span className="text-xs font-bold text-white uppercase tracking-wider">Fast Dispatch</span>
-                                <span className="text-[11px] text-slate-400">Safe tracked delivery across India</span>
-                            </div>
-
-                            <div className="flex flex-col items-center gap-1.5">
-                                <div className="w-10 h-10 rounded-full bg-indigo-950/80 text-indigo-400 border border-indigo-800/60 flex items-center justify-center">
-                                    <CreditCard className="w-5 h-5" />
-                                </div>
-                                <span className="text-xs font-bold text-white uppercase tracking-wider">COD & UPI</span>
-                                <span className="text-[11px] text-slate-400">Cash on delivery & instant UPI</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
                 {/* Footer Main Links */}
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
                     <div className="grid grid-cols-1 md:grid-cols-4 gap-8 pb-10 border-b border-slate-800">

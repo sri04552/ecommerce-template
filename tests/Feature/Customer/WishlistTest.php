@@ -85,4 +85,10 @@ class WishlistTest extends TestCase
         $response = $this->actingAs($user)->get(route('account.wishlist'));
         $response->assertStatus(200);
     }
+
+    public function test_guest_can_view_public_wishlist_page(): void
+    {
+        $response = $this->get(route('wishlist.index'));
+        $response->assertStatus(200);
+    }
 }

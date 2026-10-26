@@ -1,37 +1,64 @@
-import { Head, Link } from '@inertiajs/react';
+import { useState, useEffect } from 'react';
+import { Head, Link, usePage } from '@inertiajs/react';
 import { Heart, ShoppingBag, ArrowRight, Trash2, ArrowLeft } from 'lucide-react';
 import StorefrontLayout from '@/Layouts/StorefrontLayout';
 import Button from '@/Components/ui/Button';
 import { addToCart } from '@/utils/cart';
+import { getLocalWishlist, removeWishlistItem, saveLocalWishlist } from '@/utils/wishlist';
 
 export default function Wishlist({ products, categories }) {
-    const items = products?.data || [];
+    const { auth } = usePage().props;
+    const serverProducts = products?.data || [];
+
+    const [items, setItems] = useState(() => {
+        if (serverProducts.length > 0) {
+            return serverProducts;
+        }
+        return getLocalWishlist();
+    });
+
+    useEffect(() => {
+        if (serverProducts.length > 0) {
+            setItems(serverProducts);
+            // Sync to local storage for offline / quick reference
+            saveLocalWishlist(serverProducts);
+        } else {
+            setItems(getLocalWishlist());
+        }
+
+        const handleSync = () => {
+            if (!auth?.user || serverProducts.length === 0) {
+                setItems(getLocalWishlist());
+            }
+        };
+
+        window.addEventListener('aura-wishlist-updated', handleSync);
+        return () => window.removeEventListener('aura-wishlist-updated', handleSync);
+    }, [serverProducts, auth?.user]);
 
     const handleAddToCart = (product) => {
-        addToCart({
+        const result = addToCart({
             id: product.id,
             productId: product.id,
             name: product.name,
-            price: parseFloat(product.base_price || product.price || 0),
-            image: product.images?.[0]?.image_path || '/placeholder-product.svg',
+            price: parseFloat(product.sale_price || product.base_price || product.price || 0),
+            image: product.images?.[0]?.image_path || product.primary_image?.image_path || '/placeholder-product.svg',
             quantity: 1,
             deliveryFee: parseFloat(product.delivery_fee || 0),
             codAvailable: Boolean(product.cod_available),
-            returnable: Boolean(product.returnable),
+            returnable: Boolean(product.returnable || product.has_return_exchange),
         });
-        alert(`"${product.name}" added to your cart!`);
+
+        if (result.success) {
+            alert(`"${product.name}" added to your cart!`);
+        } else {
+            alert(result.message);
+        }
     };
 
     const handleRemove = async (productId) => {
-        const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
-        await fetch(`/api/wishlist/${productId}/toggle`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': csrfToken || '',
-            },
-        });
-        window.location.reload();
+        await removeWishlistItem(productId, auth?.user);
+        setItems((prev) => prev.filter((item) => String(item.id) !== String(productId)));
     };
 
     return (
@@ -79,8 +106,8 @@ export default function Wishlist({ products, categories }) {
                 ) : (
                     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mt-6">
                         {items.map((product) => {
-                            const image = product.images?.[0]?.image_path || '/placeholder-product.svg';
-                            const price = parseFloat(product.base_price || product.price || 0);
+                            const image = product.images?.[0]?.image_path || product.primary_image?.image_path || '/placeholder-product.svg';
+                            const price = parseFloat(product.sale_price || product.base_price || product.price || 0);
 
                             return (
                                 <div
@@ -98,7 +125,7 @@ export default function Wishlist({ products, categories }) {
                                         <button
                                             type="button"
                                             onClick={() => handleRemove(product.id)}
-                                            className="absolute top-2.5 right-2.5 p-1.5 rounded-full bg-white/90 text-rose-500 hover:bg-rose-50 shadow-xs"
+                                            className="absolute top-2.5 right-2.5 p-1.5 rounded-full bg-white/90 text-rose-500 hover:bg-rose-50 shadow-xs transition-colors"
                                             title="Remove from Wishlist"
                                         >
                                             <Trash2 className="w-4 h-4" />

@@ -24,10 +24,12 @@ class WishlistController extends Controller
     {
         $user = $request->user();
 
-        $wishlistProducts = $user->wishlistProducts()
-            ->with(['primaryImage', 'images', 'category'])
-            ->latest('wishlists.created_at')
-            ->paginate(12);
+        $wishlistProducts = $user
+            ? $user->wishlistProducts()
+                ->with(['primaryImage', 'images', 'category'])
+                ->latest('wishlists.created_at')
+                ->paginate(12)
+            : null;
 
         return Inertia::render('Customer/Wishlist', [
             'products' => $wishlistProducts,
