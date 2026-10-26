@@ -33,6 +33,18 @@ export default function StorefrontLayout({ children, categories = [] }) {
         };
     }, []);
 
+    // Prevent body scroll when mobile drawer is open
+    useEffect(() => {
+        if (mobileMenuOpen) {
+            document.body.style.overflow = 'hidden';
+        } else {
+            document.body.style.overflow = 'unset';
+        }
+        return () => {
+            document.body.style.overflow = 'unset';
+        };
+    }, [mobileMenuOpen]);
+
     const storeName = storeSettings?.store_name || 'Aura Store';
     const announcement = storeSettings?.announcement_text || 'Free standard delivery across India on orders over ₹999';
     const adminPrefix = storeSettings?.admin_prefix || 'admin';
@@ -40,6 +52,14 @@ export default function StorefrontLayout({ children, categories = [] }) {
     const handleSearch = (e) => {
         e.preventDefault();
         if (searchQuery.trim()) {
+            router.get('/products', { search: searchQuery.trim() });
+        }
+    };
+
+    const handleMobileSearch = (e) => {
+        e.preventDefault();
+        if (searchQuery.trim()) {
+            setMobileMenuOpen(false);
             router.get('/products', { search: searchQuery.trim() });
         }
     };
@@ -82,15 +102,15 @@ export default function StorefrontLayout({ children, categories = [] }) {
 
                         {/* Search Input & Actions */}
                         <div className="flex items-center gap-2 sm:gap-3">
-                            {/* Product Search Form */}
-                            <form onSubmit={handleSearch} className="relative">
+                            {/* Product Search Form (Desktop Only) */}
+                            <form onSubmit={handleSearch} className="hidden lg:block relative">
                                 <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-brand-text-muted" />
                                 <input
                                     type="search"
                                     value={searchQuery}
                                     onChange={(e) => setSearchQuery(e.target.value)}
                                     placeholder="Search products..."
-                                    className="pl-9 pr-3 py-1.5 text-xs bg-brand-surface-muted border border-brand-border rounded-brand text-brand-text placeholder-brand-text-muted focus:outline-none focus:ring-1 focus:ring-brand-primary w-36 sm:w-52 lg:w-64 transition-all"
+                                    className="pl-9 pr-3 py-1.5 text-xs bg-brand-surface-muted border border-brand-border rounded-brand text-brand-text placeholder-brand-text-muted focus:outline-none focus:ring-1 focus:ring-brand-primary w-48 lg:w-64 transition-all"
                                 />
                             </form>
 
@@ -245,241 +265,256 @@ export default function StorefrontLayout({ children, categories = [] }) {
                         </div>
                     </div>
                 </div>
+            </header>
 
-                {/* Mobile & Tablet Drawer Menu (Off-Canvas Side Drawer) */}
-                {mobileMenuOpen && (
-                    <>
-                        {/* Overlay backdrop */}
-                        <div
-                            className="fixed inset-0 bg-black/60 z-40 backdrop-blur-xs lg:hidden transition-opacity"
-                            onClick={() => setMobileMenuOpen(false)}
-                        />
+            {/* Mobile & Tablet Drawer Menu (Off-Canvas Side Drawer Outside Header to avoid stacking context traps) */}
+            {mobileMenuOpen && (
+                <div className="lg:hidden fixed inset-0 z-50">
+                    {/* Overlay backdrop */}
+                    <div
+                        className="fixed inset-0 bg-black/60 backdrop-blur-xs transition-opacity"
+                        onClick={() => setMobileMenuOpen(false)}
+                    />
 
-                        {/* Slide-out Drawer Panel */}
-                        <div className="lg:hidden fixed inset-y-0 left-0 w-80 max-w-[85vw] bg-white z-50 shadow-2xl flex flex-col justify-between overflow-y-auto animate-in slide-in-from-left duration-200">
-                            <div>
-                                {/* Drawer User Greeting Header */}
-                                <div className="bg-gradient-to-r from-brand-secondary to-slate-900 text-white p-5">
-                                    <div className="flex items-center justify-between pb-3">
-                                        <div className="flex items-center gap-2">
-                                            <div className="w-8 h-8 rounded-brand bg-brand-primary flex items-center justify-center font-bold text-white text-sm">
-                                                <Layers className="w-4 h-4" />
-                                            </div>
-                                            <span className="font-bold text-base tracking-tight">{storeName}</span>
+                    {/* Slide-out Drawer Panel */}
+                    <div className="fixed inset-y-0 left-0 w-80 max-w-[85vw] bg-white shadow-2xl flex flex-col justify-between overflow-y-auto z-10 animate-in slide-in-from-left duration-200">
+                        <div>
+                            {/* Drawer User Greeting Header */}
+                            <div className="bg-gradient-to-r from-brand-secondary to-slate-900 text-white p-5">
+                                <div className="flex items-center justify-between pb-3">
+                                    <div className="flex items-center gap-2">
+                                        <div className="w-8 h-8 rounded-brand bg-brand-primary flex items-center justify-center font-bold text-white text-sm">
+                                            <Layers className="w-4 h-4" />
                                         </div>
-                                        <button
-                                            type="button"
-                                            onClick={() => setMobileMenuOpen(false)}
-                                            className="p-1 rounded-lg text-slate-300 hover:text-white hover:bg-white/10"
-                                            aria-label="Close menu"
-                                        >
-                                            <X className="w-5 h-5" />
-                                        </button>
+                                        <span className="font-bold text-base tracking-tight">{storeName}</span>
                                     </div>
-
-                                    {user ? (
-                                        <div className="pt-2">
-                                            <div className="flex items-center gap-3">
-                                                <div className="w-10 h-10 rounded-full bg-brand-primary text-white flex items-center justify-center font-bold text-base shadow-sm">
-                                                    {user.name.charAt(0).toUpperCase()}
-                                                </div>
-                                                <div className="min-w-0 flex-1">
-                                                    <p className="text-sm font-bold text-white truncate">{user.name}</p>
-                                                    <p className="text-xs text-slate-300 truncate">{user.email}</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    ) : (
-                                        <div className="pt-2">
-                                            <p className="text-xs text-slate-300">Welcome to {storeName}</p>
-                                            <Link
-                                                href="/login"
-                                                onClick={() => setMobileMenuOpen(false)}
-                                                className="mt-2.5 inline-flex items-center justify-center gap-2 w-full py-2 px-3 text-xs font-bold text-slate-900 bg-white hover:bg-slate-100 rounded-lg shadow-sm transition-colors"
-                                            >
-                                                <User className="w-4 h-4 text-brand-primary" />
-                                                <span>Sign In / Create Account</span>
-                                            </Link>
-                                        </div>
-                                    )}
+                                    <button
+                                        type="button"
+                                        onClick={() => setMobileMenuOpen(false)}
+                                        className="p-1 rounded-lg text-slate-300 hover:text-white hover:bg-white/10"
+                                        aria-label="Close menu"
+                                    >
+                                        <X className="w-5 h-5" />
+                                    </button>
                                 </div>
 
-                                {/* Commerce Quick Actions: Profile, Cart, Wishlist */}
-                                <div className="p-4 border-b border-slate-100 bg-slate-50/60 space-y-2">
-                                    <p className="text-[10px] font-bold uppercase tracking-wider text-slate-400 px-1">
-                                        Commerce Essentials
-                                    </p>
-
-                                    {/* Cart Option inside Hamburger */}
-                                    <Link
-                                        href="/cart"
-                                        onClick={() => setMobileMenuOpen(false)}
-                                        className="flex items-center justify-between p-2.5 bg-white border border-slate-200 rounded-xl hover:border-brand-primary hover:shadow-xs transition-all"
-                                    >
+                                {user ? (
+                                    <div className="pt-2">
                                         <div className="flex items-center gap-3">
-                                            <div className="w-8 h-8 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center">
-                                                <ShoppingBag className="w-4 h-4" />
+                                            <div className="w-10 h-10 rounded-full bg-brand-primary text-white flex items-center justify-center font-bold text-base shadow-sm">
+                                                {user.name.charAt(0).toUpperCase()}
                                             </div>
-                                            <div>
-                                                <span className="text-xs font-bold text-slate-900 block">My Cart</span>
-                                                <span className="text-[11px] text-slate-500 block">View shopping bag</span>
+                                            <div className="min-w-0 flex-1">
+                                                <p className="text-sm font-bold text-white truncate">{user.name}</p>
+                                                <p className="text-xs text-slate-300 truncate">{user.email}</p>
                                             </div>
-                                        </div>
-                                        <span className="px-2.5 py-0.5 rounded-full bg-blue-600 text-white text-xs font-extrabold font-mono">
-                                            {cartCount}
-                                        </span>
-                                    </Link>
-
-                                    {/* Wishlist Option inside Hamburger */}
-                                    <Link
-                                        href="/wishlist"
-                                        onClick={() => setMobileMenuOpen(false)}
-                                        className="flex items-center justify-between p-2.5 bg-white border border-slate-200 rounded-xl hover:border-rose-400 hover:shadow-xs transition-all"
-                                    >
-                                        <div className="flex items-center gap-3">
-                                            <div className="w-8 h-8 rounded-lg bg-rose-50 text-rose-500 flex items-center justify-center">
-                                                <Heart className="w-4 h-4 fill-rose-500/20" />
-                                            </div>
-                                            <div>
-                                                <span className="text-xs font-bold text-slate-900 block">My Wishlist</span>
-                                                <span className="text-[11px] text-slate-500 block">Saved favorites</span>
-                                            </div>
-                                        </div>
-                                        <span className="px-2.5 py-0.5 rounded-full bg-rose-500 text-white text-xs font-extrabold font-mono">
-                                            {wishlistCount}
-                                        </span>
-                                    </Link>
-
-                                    {/* Profile Option inside Hamburger */}
-                                    <Link
-                                        href={user ? '/account' : '/login'}
-                                        onClick={() => setMobileMenuOpen(false)}
-                                        className="flex items-center justify-between p-2.5 bg-white border border-slate-200 rounded-xl hover:border-slate-400 hover:shadow-xs transition-all"
-                                    >
-                                        <div className="flex items-center gap-3">
-                                            <div className="w-8 h-8 rounded-lg bg-slate-100 text-slate-700 flex items-center justify-center">
-                                                <User className="w-4 h-4" />
-                                            </div>
-                                            <div>
-                                                <span className="text-xs font-bold text-slate-900 block">
-                                                    {user ? 'My Profile' : 'Sign In'}
-                                                </span>
-                                                <span className="text-[11px] text-slate-500 block">
-                                                    {user ? 'Orders & saved addresses' : 'Access your account'}
-                                                </span>
-                                            </div>
-                                        </div>
-                                        <ChevronDown className="w-4 h-4 text-slate-400 -rotate-90" />
-                                    </Link>
-                                </div>
-
-                                {/* Navigation Links */}
-                                <div className="p-4 space-y-1">
-                                    <p className="text-[10px] font-bold uppercase tracking-wider text-slate-400 px-1 mb-2">
-                                        Store Navigation
-                                    </p>
-
-                                    <Link
-                                        href="/"
-                                        onClick={() => setMobileMenuOpen(false)}
-                                        className={`flex items-center gap-3 px-3 py-2 rounded-lg text-xs font-semibold transition-colors ${
-                                            currentUrl === '/' ? 'bg-blue-50 text-blue-700 font-bold' : 'text-slate-700 hover:bg-slate-50'
-                                        }`}
-                                    >
-                                        <Home className="w-4 h-4" />
-                                        <span>Home</span>
-                                    </Link>
-
-                                    <Link
-                                        href="/products"
-                                        onClick={() => setMobileMenuOpen(false)}
-                                        className={`flex items-center gap-3 px-3 py-2 rounded-lg text-xs font-semibold transition-colors ${
-                                            currentUrl.startsWith('/products') ? 'bg-blue-50 text-blue-700 font-bold' : 'text-slate-700 hover:bg-slate-50'
-                                        }`}
-                                    >
-                                        <ShoppingBag className="w-4 h-4" />
-                                        <span>All Products Catalog</span>
-                                    </Link>
-
-                                    <Link
-                                        href="/track"
-                                        onClick={() => setMobileMenuOpen(false)}
-                                        className="flex items-center gap-3 px-3 py-2 rounded-lg text-xs font-semibold text-slate-700 hover:bg-slate-50"
-                                    >
-                                        <Truck className="w-4 h-4 text-slate-500" />
-                                        <span>Track Live Order</span>
-                                    </Link>
-
-                                    <Link
-                                        href="/about"
-                                        onClick={() => setMobileMenuOpen(false)}
-                                        className={`flex items-center gap-3 px-3 py-2 rounded-lg text-xs font-semibold transition-colors ${
-                                            currentUrl === '/about' ? 'bg-blue-50 text-blue-700 font-bold' : 'text-slate-700 hover:bg-slate-50'
-                                        }`}
-                                    >
-                                        <Info className="w-4 h-4" />
-                                        <span>About Us & Our Story</span>
-                                    </Link>
-                                </div>
-
-                                {/* Categories List */}
-                                {categories && categories.length > 0 && (
-                                    <div className="p-4 pt-2 border-t border-slate-100">
-                                        <p className="text-[10px] font-bold uppercase tracking-wider text-slate-400 px-1 mb-2">
-                                            Shop By Category
-                                        </p>
-                                        <div className="space-y-0.5">
-                                            {categories.slice(0, 6).map((cat) => (
-                                                <Link
-                                                    key={cat.id}
-                                                    href={`/categories/${cat.slug}`}
-                                                    onClick={() => setMobileMenuOpen(false)}
-                                                    className="flex items-center justify-between px-3 py-1.5 text-xs text-slate-600 hover:text-blue-600 hover:bg-slate-50 rounded-lg transition-colors"
-                                                >
-                                                    <span>{cat.name}</span>
-                                                    <span className="text-[10px] text-slate-400">View</span>
-                                                </Link>
-                                            ))}
                                         </div>
                                     </div>
-                                )}
-
-                                {/* Admin Link (Only for admin/manager) */}
-                                {user?.roles && (user.roles.includes('admin') || user.roles.includes('manager')) && (
-                                    <div className="p-4 pt-2 border-t border-slate-100">
+                                ) : (
+                                    <div className="pt-2">
+                                        <p className="text-xs text-slate-300">Welcome to {storeName}</p>
                                         <Link
-                                            href={`/${adminPrefix}/dashboard`}
+                                            href="/login"
                                             onClick={() => setMobileMenuOpen(false)}
-                                            className="flex items-center justify-between p-2.5 bg-blue-50 text-blue-700 border border-blue-200 rounded-xl text-xs font-bold hover:bg-blue-100 transition-colors"
+                                            className="mt-2.5 inline-flex items-center justify-center gap-2 w-full py-2 px-3 text-xs font-bold text-slate-900 bg-white hover:bg-slate-100 rounded-lg shadow-sm transition-colors"
                                         >
-                                            <span className="flex items-center gap-2">
-                                                <ShieldCheck className="w-4 h-4 text-blue-600" />
-                                                <span>Store Admin Panel</span>
-                                            </span>
-                                            <span>&rarr;</span>
+                                            <User className="w-4 h-4 text-brand-primary" />
+                                            <span>Sign In / Create Account</span>
                                         </Link>
                                     </div>
                                 )}
                             </div>
 
-                            {/* Drawer Footer Sign Out */}
-                            {user && (
-                                <div className="p-4 border-t border-slate-100 bg-slate-50">
+                            {/* Search Bar Inside Hamburger Menu (Tablets & Mobile) */}
+                            <form onSubmit={handleMobileSearch} className="p-3.5 bg-slate-50 border-b border-slate-200">
+                                <div className="relative">
+                                    <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
+                                    <input
+                                        type="search"
+                                        value={searchQuery}
+                                        onChange={(e) => setSearchQuery(e.target.value)}
+                                        placeholder="Search products, brands, deals..."
+                                        className="w-full pl-9 pr-3 py-2 text-xs bg-white border border-slate-300 rounded-xl text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-blue-600 transition-all shadow-2xs"
+                                    />
+                                </div>
+                            </form>
+
+                            {/* Commerce Quick Actions: Profile, Cart, Wishlist */}
+                            <div className="p-4 border-b border-slate-100 bg-slate-50/60 space-y-2">
+                                <p className="text-[10px] font-bold uppercase tracking-wider text-slate-400 px-1">
+                                    Commerce Essentials
+                                </p>
+
+                                {/* Cart Option inside Hamburger */}
+                                <Link
+                                    href="/cart"
+                                    onClick={() => setMobileMenuOpen(false)}
+                                    className="flex items-center justify-between p-2.5 bg-white border border-slate-200 rounded-xl hover:border-brand-primary hover:bg-blue-50/30 transition-all"
+                                >
+                                    <div className="flex items-center gap-3">
+                                        <div className="w-8 h-8 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center">
+                                            <ShoppingBag className="w-4 h-4" />
+                                        </div>
+                                        <div>
+                                            <span className="text-xs font-bold text-slate-900 block">My Cart</span>
+                                            <span className="text-[11px] text-slate-500 block">View shopping bag</span>
+                                        </div>
+                                    </div>
+                                    <span className="px-2.5 py-0.5 rounded-full bg-blue-600 text-white text-xs font-extrabold font-mono">
+                                        {cartCount}
+                                    </span>
+                                </Link>
+
+                                {/* Wishlist Option inside Hamburger */}
+                                <Link
+                                    href="/wishlist"
+                                    onClick={() => setMobileMenuOpen(false)}
+                                    className="flex items-center justify-between p-2.5 bg-white border border-slate-200 rounded-xl hover:border-rose-400 hover:bg-rose-50/30 transition-all"
+                                >
+                                    <div className="flex items-center gap-3">
+                                        <div className="w-8 h-8 rounded-lg bg-rose-50 text-rose-500 flex items-center justify-center">
+                                            <Heart className="w-4 h-4 fill-rose-500/20" />
+                                        </div>
+                                        <div>
+                                            <span className="text-xs font-bold text-slate-900 block">My Wishlist</span>
+                                            <span className="text-[11px] text-slate-500 block">Saved favorites</span>
+                                        </div>
+                                    </div>
+                                    <span className="px-2.5 py-0.5 rounded-full bg-rose-500 text-white text-xs font-extrabold font-mono">
+                                        {wishlistCount}
+                                    </span>
+                                </Link>
+
+                                {/* Profile Option inside Hamburger */}
+                                <Link
+                                    href={user ? '/account' : '/login'}
+                                    onClick={() => setMobileMenuOpen(false)}
+                                    className="flex items-center justify-between p-2.5 bg-white border border-slate-200 rounded-xl hover:border-slate-400 hover:bg-slate-50 transition-all"
+                                >
+                                    <div className="flex items-center gap-3">
+                                        <div className="w-8 h-8 rounded-lg bg-slate-100 text-slate-700 flex items-center justify-center">
+                                            <User className="w-4 h-4" />
+                                        </div>
+                                        <div>
+                                            <span className="text-xs font-bold text-slate-900 block">
+                                                {user ? 'My Profile & Account' : 'Sign In'}
+                                            </span>
+                                            <span className="text-[11px] text-slate-500 block">
+                                                {user ? 'Orders & saved addresses' : 'Access your account'}
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <ChevronDown className="w-4 h-4 text-slate-400 -rotate-90" />
+                                </Link>
+                            </div>
+
+                            {/* Navigation Links */}
+                            <div className="p-4 space-y-1">
+                                <p className="text-[10px] font-bold uppercase tracking-wider text-slate-400 px-1 mb-2">
+                                    Store Navigation
+                                </p>
+
+                                <Link
+                                    href="/"
+                                    onClick={() => setMobileMenuOpen(false)}
+                                    className={`flex items-center gap-3 px-3 py-2 rounded-lg text-xs font-semibold transition-colors ${
+                                        currentUrl === '/' ? 'bg-blue-50 text-blue-700 font-bold' : 'text-slate-700 hover:bg-slate-50'
+                                    }`}
+                                >
+                                    <Home className="w-4 h-4" />
+                                    <span>Home</span>
+                                </Link>
+
+                                <Link
+                                    href="/products"
+                                    onClick={() => setMobileMenuOpen(false)}
+                                    className={`flex items-center gap-3 px-3 py-2 rounded-lg text-xs font-semibold transition-colors ${
+                                        currentUrl.startsWith('/products') ? 'bg-blue-50 text-blue-700 font-bold' : 'text-slate-700 hover:bg-slate-50'
+                                    }`}
+                                >
+                                    <ShoppingBag className="w-4 h-4" />
+                                    <span>All Products Catalog</span>
+                                </Link>
+
+                                <Link
+                                    href="/track"
+                                    onClick={() => setMobileMenuOpen(false)}
+                                    className="flex items-center gap-3 px-3 py-2 rounded-lg text-xs font-semibold text-slate-700 hover:bg-slate-50"
+                                >
+                                    <Truck className="w-4 h-4 text-slate-500" />
+                                    <span>Track Live Order</span>
+                                </Link>
+
+                                <Link
+                                    href="/about"
+                                    onClick={() => setMobileMenuOpen(false)}
+                                    className={`flex items-center gap-3 px-3 py-2 rounded-lg text-xs font-semibold transition-colors ${
+                                        currentUrl === '/about' ? 'bg-blue-50 text-blue-700 font-bold' : 'text-slate-700 hover:bg-slate-50'
+                                    }`}
+                                >
+                                    <Info className="w-4 h-4" />
+                                    <span>About Us & Our Story</span>
+                                </Link>
+                            </div>
+
+                            {/* Categories List */}
+                            {categories && categories.length > 0 && (
+                                <div className="p-4 pt-2 border-t border-slate-100">
+                                    <p className="text-[10px] font-bold uppercase tracking-wider text-slate-400 px-1 mb-2">
+                                        Shop By Category
+                                    </p>
+                                    <div className="space-y-0.5">
+                                        {categories.slice(0, 6).map((cat) => (
+                                            <Link
+                                                key={cat.id}
+                                                href={`/categories/${cat.slug}`}
+                                                onClick={() => setMobileMenuOpen(false)}
+                                                className="flex items-center justify-between px-3 py-1.5 text-xs text-slate-600 hover:text-blue-600 hover:bg-slate-50 rounded-lg transition-colors"
+                                            >
+                                                <span>{cat.name}</span>
+                                                <span className="text-[10px] text-slate-400">View</span>
+                                            </Link>
+                                        ))}
+                                    </div>
+                                </div>
+                            )}
+
+                            {/* Admin Link (Only for admin/manager) */}
+                            {user?.roles && (user.roles.includes('admin') || user.roles.includes('manager')) && (
+                                <div className="p-4 pt-2 border-t border-slate-100">
                                     <Link
-                                        href="/logout"
-                                        method="post"
-                                        as="button"
-                                        className="w-full flex items-center justify-center gap-2 py-2 px-3 text-xs font-bold text-rose-600 hover:bg-rose-50 border border-rose-200 rounded-xl transition-colors"
+                                        href={`/${adminPrefix}/dashboard`}
+                                        onClick={() => setMobileMenuOpen(false)}
+                                        className="flex items-center justify-between p-2.5 bg-blue-50 text-blue-700 border border-blue-200 rounded-xl text-xs font-bold hover:bg-blue-100 transition-colors"
                                     >
-                                        <LogOut className="w-4 h-4" />
-                                        <span>Sign Out</span>
+                                        <span className="flex items-center gap-2">
+                                            <ShieldCheck className="w-4 h-4 text-blue-600" />
+                                            <span>Store Admin Panel</span>
+                                        </span>
+                                        <span>&rarr;</span>
                                     </Link>
                                 </div>
                             )}
                         </div>
-                    </>
-                )}
-            </header>
+
+                        {/* Drawer Footer Sign Out */}
+                        {user && (
+                            <div className="p-4 border-t border-slate-100 bg-slate-50">
+                                <Link
+                                    href="/logout"
+                                    method="post"
+                                    as="button"
+                                    onClick={() => setMobileMenuOpen(false)}
+                                    className="w-full flex items-center justify-center gap-2 py-2 px-3 text-xs font-bold text-rose-600 hover:bg-rose-50 border border-rose-200 rounded-xl transition-colors"
+                                >
+                                    <LogOut className="w-4 h-4" />
+                                    <span>Sign Out</span>
+                                </Link>
+                            </div>
+                        )}
+                    </div>
+                </div>
+            )}
 
             {/* Main Storefront Content */}
             <main className="flex-1">{children}</main>
