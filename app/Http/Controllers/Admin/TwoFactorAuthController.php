@@ -43,6 +43,7 @@ class TwoFactorAuthController extends Controller
     {
         $validated = $request->validate([
             'code' => ['required', 'string', 'size:6'],
+            'remember_device' => ['nullable', 'boolean'],
         ]);
 
         $storedCode = $request->session()->get('admin_2fa_code');
@@ -57,10 +58,19 @@ class TwoFactorAuthController extends Controller
         }
 
         // Clear code and set verified
+        $user = $request->user();
         $request->session()->forget(['admin_2fa_code', 'admin_2fa_expires_at']);
         $request->session()->put('admin_2fa_verified', true);
 
-        return redirect()->intended(route('admin.orders.index'))->with('success', 'Security verification completed.');
+        $response = redirect()->intended(route('admin.orders.index'))->with('success', 'Security verification completed.');
+
+        if ($request->boolean('remember_device')) {
+            $signature = hash_hmac('sha256', 'admin_trust_'.$user->id, config('app.key'));
+            // 30 days = 43200 minutes
+            $response->withCookie(cookie('admin_trusted_device', $signature, 43200, null, null, false, true));
+        }
+
+        return $response;
     }
 
     /**

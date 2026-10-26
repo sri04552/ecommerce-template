@@ -1,42 +1,45 @@
 import { useState } from 'react';
-import { useForm, Head } from '@inertiajs/react';
-import { ShieldCheck, ArrowRight, RotateCw, AlertCircle } from 'lucide-react';
+import { useForm, Head, usePage } from '@inertiajs/react';
+import { ShieldCheck, ArrowRight, RotateCw, AlertCircle, Laptop, Smartphone } from 'lucide-react';
 import Button from '@/Components/ui/Button';
-import Input from '@/Components/ui/Input';
 
 export default function TwoFactorChallenge({ adminEmail }) {
+    const { storeSettings } = usePage().props;
+    const adminPrefix = storeSettings?.admin_prefix || 'admin';
+
     const { data, setData, post, processing, errors } = useForm({
         code: '',
+        remember_device: true,
     });
 
     const [resending, setResending] = useState(false);
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        post('/admin/two-factor/verify');
+        post(`/${adminPrefix}/two-factor/verify`);
     };
 
     const handleResend = () => {
         setResending(true);
-        post('/admin/two-factor/resend', {
+        post(`/${adminPrefix}/two-factor/resend`, {
             onFinish: () => setResending(false),
         });
     };
 
     return (
-        <div className="min-h-screen bg-slate-900 flex flex-col justify-center items-center p-4">
+        <div className="min-h-screen bg-slate-950 flex flex-col justify-center items-center p-4 font-sans text-slate-100">
             <Head title="Two-Factor Security Verification" />
 
-            <div className="max-w-md w-full bg-slate-800 border border-slate-700/80 rounded-2xl p-8 shadow-2xl">
-                <div className="flex items-center justify-center w-14 h-14 bg-indigo-500/20 text-indigo-400 border border-indigo-500/30 rounded-2xl mx-auto mb-6">
+            <div className="max-w-md w-full bg-slate-900 border border-slate-800 rounded-2xl p-7 sm:p-8 shadow-2xl">
+                <div className="flex items-center justify-center w-14 h-14 bg-blue-600/20 text-blue-400 border border-blue-500/30 rounded-2xl mx-auto mb-5">
                     <ShieldCheck className="w-8 h-8" />
                 </div>
 
                 <h1 className="text-xl font-bold text-center text-white">Security Verification</h1>
-                <p className="text-sm text-center text-slate-400 mt-2">
-                    Enter the 6-digit verification code sent to your registered admin email:
+                <p className="text-xs text-center text-slate-400 mt-2">
+                    Enter the 6-digit verification code dispatched to your registered admin email:
                 </p>
-                <div className="text-xs text-center font-mono font-medium text-indigo-300 bg-slate-900/60 py-1.5 px-3 rounded-lg mt-2 mx-auto max-w-xs truncate border border-slate-700">
+                <div className="text-xs text-center font-mono font-medium text-blue-300 bg-slate-950 py-1.5 px-3 rounded-lg mt-2 mx-auto max-w-xs truncate border border-slate-800">
                     {adminEmail}
                 </div>
 
@@ -52,7 +55,7 @@ export default function TwoFactorChallenge({ adminEmail }) {
                             onChange={(e) => setData('code', e.target.value.replace(/\D/g, ''))}
                             placeholder="······"
                             autoFocus
-                            className="w-full text-center text-3xl font-mono tracking-[12px] bg-slate-900 border border-slate-700 text-white rounded-xl py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                            className="w-full text-center text-3xl font-mono tracking-[12px] bg-slate-950 border border-slate-700 text-white rounded-xl py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                         />
                         {errors.code && (
                             <div className="flex items-center gap-1.5 text-rose-400 text-xs mt-2 justify-center">
@@ -62,23 +65,41 @@ export default function TwoFactorChallenge({ adminEmail }) {
                         )}
                     </div>
 
+                    {/* Trust this device for 30 days (Real-world multi-device security) */}
+                    <div className="p-3 bg-slate-950/70 border border-slate-800 rounded-xl">
+                        <label className="flex items-start gap-2.5 cursor-pointer">
+                            <input
+                                type="checkbox"
+                                checked={data.remember_device}
+                                onChange={(e) => setData('remember_device', e.target.checked)}
+                                className="mt-0.5 rounded border-slate-700 text-blue-600 focus:ring-blue-500 bg-slate-900"
+                            />
+                            <div className="text-xs">
+                                <span className="font-semibold text-slate-200 block">Trust this device for 30 days</span>
+                                <span className="text-[11px] text-slate-400 block mt-0.5">
+                                    Skip 2FA verification code on this browser for the next month.
+                                </span>
+                            </div>
+                        </label>
+                    </div>
+
                     <Button
                         type="submit"
                         disabled={processing || data.code.length !== 6}
-                        className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-3 rounded-xl flex items-center justify-center gap-2"
+                        className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-xl flex items-center justify-center gap-2 shadow-sm transition-colors"
                     >
-                        <span>{processing ? 'Verifying...' : 'Verify & Continue'}</span>
+                        <span>{processing ? 'Verifying...' : 'Authorize Device & Continue'}</span>
                         <ArrowRight className="w-4 h-4" />
                     </Button>
                 </form>
 
-                <div className="mt-6 pt-5 border-t border-slate-700/60 flex items-center justify-between text-xs text-slate-400">
+                <div className="mt-6 pt-5 border-t border-slate-800 flex items-center justify-between text-xs text-slate-400">
                     <span>Didn't receive code?</span>
                     <button
                         type="button"
                         onClick={handleResend}
                         disabled={resending}
-                        className="inline-flex items-center gap-1.5 text-indigo-400 hover:text-indigo-300 font-medium disabled:opacity-50"
+                        className="inline-flex items-center gap-1.5 text-blue-400 hover:text-blue-300 font-medium disabled:opacity-50"
                     >
                         <RotateCw className={`w-3.5 h-3.5 ${resending ? 'animate-spin' : ''}`} />
                         <span>Resend Code</span>

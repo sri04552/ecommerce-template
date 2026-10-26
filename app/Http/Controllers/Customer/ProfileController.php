@@ -55,6 +55,43 @@ class ProfileController extends Controller
         $user = $request->user();
         $user->loadMissing('customerProfile');
 
+        $sessions = [];
+        try {
+            if (config('session.driver') === 'database') {
+                $sessions = \Illuminate\Support\Facades\DB::table('sessions')
+                    ->where('user_id', $user->id)
+                    ->orderBy('last_activity', 'desc')
+                    ->get()
+                    ->map(function ($s) use ($request) {
+                        $ua = $s->user_agent ?: 'Unknown Device';
+                        $device = 'Desktop / PC';
+                        if (str_contains($ua, 'iPhone')) $device = 'Apple iPhone';
+                        elseif (str_contains($ua, 'iPad')) $device = 'Apple iPad';
+                        elseif (str_contains($ua, 'Android')) $device = 'Android Device';
+                        elseif (str_contains($ua, 'Macintosh') || str_contains($ua, 'Mac OS')) $device = 'Apple Mac';
+                        elseif (str_contains($ua, 'Windows')) $device = 'Windows PC';
+                        elseif (str_contains($ua, 'Linux')) $device = 'Linux Computer';
+
+                        $browser = 'Web Browser';
+                        if (str_contains($ua, 'Chrome') && ! str_contains($ua, 'Edg')) $browser = 'Google Chrome';
+                        elseif (str_contains($ua, 'Safari') && ! str_contains($ua, 'Chrome')) $browser = 'Safari';
+                        elseif (str_contains($ua, 'Firefox')) $browser = 'Mozilla Firefox';
+                        elseif (str_contains($ua, 'Edg')) $browser = 'Microsoft Edge';
+
+                        return [
+                            'id' => $s->id,
+                            'device' => $device,
+                            'browser' => $browser,
+                            'ip_address' => $s->ip_address,
+                            'is_current_device' => $s->id === $request->session()->getId(),
+                            'last_active' => \Carbon\Carbon::createFromTimestamp($s->last_activity)->diffForHumans(),
+                        ];
+                    })->values()->all();
+            }
+        } catch (\Throwable $e) {
+            $sessions = [];
+        }
+
         return Inertia::render('Customer/Profile', [
             'profile' => [
                 'name' => $user->name,
@@ -66,6 +103,7 @@ class ProfileController extends Controller
                 'gender' => $user->customerProfile?->gender,
                 'has_password' => ! empty($user->password),
             ],
+            'sessions' => $sessions,
             'status' => session('status'),
             'cooldown' => session('cooldown_remaining', 0),
         ]);
@@ -198,5 +236,30 @@ class ProfileController extends Controller
         ]);
 
         return back()->with('success', 'Phone number verified and updated successfully.');
+    }
+
+    /**
+     * Invalidate all other active login sessions/devices except the current one.
+     */
+    public function logoutOtherDevices(Request $request): RedirectResponse
+    {
+        $validated = $request->validate([
+            'password' => ['required', 'string', 'current_password'],
+        ]);
+
+        \Illuminate\Support\Facades\Auth::logoutOtherDevices($validated['password']);
+
+        try {
+            if (config('session.driver') === 'database') {
+                \Illuminate\Support\Facades\DB::table('sessions')
+                    ->where('user_id', $request->user()->id)
+                    ->where('id', '!=', $request->session()->getId())
+                    ->delete();
+            }
+        } catch (\Throwable $e) {
+            // Ignore database session cleanup errors
+        }
+
+        return back()->with('success', 'Successfully logged out of all other devices and browser sessions.');
     }
 }

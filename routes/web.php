@@ -104,6 +104,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
         Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
         Route::put('/password', [ProfileController::class, 'updatePassword'])->name('password.change');
+        Route::post('/sessions/logout-other-devices', [ProfileController::class, 'logoutOtherDevices'])->name('profile.logout-other-devices');
 
         // Phone Update & Verification
         Route::post('/phone/send-otp', [ProfileController::class, 'sendPhoneOtp'])->name('phone.send-otp');
@@ -131,15 +132,15 @@ Route::middleware('auth')->group(function () {
 */
 $adminPrefix = config('ecommerce.admin_prefix', env('ADMIN_PREFIX', 'admin'));
 
-// 2FA Challenge & Verification (Guarded by auth, admin, ip, but not 2fa itself)
-Route::prefix($adminPrefix)->name('admin.')->middleware(['auth', 'admin', 'admin.ip'])->group(function () {
+// 2FA Challenge & Verification (Guarded by auth & admin role)
+Route::prefix($adminPrefix)->name('admin.')->middleware(['auth', 'admin'])->group(function () {
     Route::get('/two-factor/challenge', [TwoFactorAuthController::class, 'challenge'])->name('2fa.challenge');
     Route::post('/two-factor/verify', [TwoFactorAuthController::class, 'verify'])->name('2fa.verify');
     Route::post('/two-factor/resend', [TwoFactorAuthController::class, 'resend'])->name('2fa.resend');
 });
 
-// Full Administrative Operations (Guarded by auth, admin, ip, and 2fa)
-Route::prefix($adminPrefix)->name('admin.')->middleware(['auth', 'admin', 'admin.ip', 'admin.2fa'])->group(function () {
+// Full Administrative Operations (Guarded by auth, admin role, and multi-device 2fa)
+Route::prefix($adminPrefix)->name('admin.')->middleware(['auth', 'admin', 'admin.2fa'])->group(function () {
     Route::get('/', [AdminDashboardController::class, 'index'])->name('dashboard.redirect');
     Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
     Route::get('/analytics', [AdminDashboardController::class, 'index'])->name('analytics');

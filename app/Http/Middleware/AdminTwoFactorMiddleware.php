@@ -32,6 +32,16 @@ class AdminTwoFactorMiddleware
             return $next($request);
         }
 
+        // Check for trusted multi-device authorization cookie (e.g., remembered for 30 days)
+        $trustedCookie = $request->cookie('admin_trusted_device');
+        if ($trustedCookie) {
+            $expectedSignature = hash_hmac('sha256', 'admin_trust_'.$user->id, config('app.key'));
+            if (hash_equals($expectedSignature, $trustedCookie)) {
+                $request->session()->put('admin_2fa_verified', true);
+                return $next($request);
+            }
+        }
+
         // Exclude 2FA challenge and verification endpoints themselves
         if ($request->routeIs('admin.2fa.*')) {
             return $next($request);
