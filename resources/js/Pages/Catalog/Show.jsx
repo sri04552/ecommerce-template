@@ -914,7 +914,7 @@ export default function Show({ product, relatedProducts = [], categories = [] })
                 )}
 
                 {/* Mobile Sticky Add-to-Cart Purchase Bar */}
-                <div className="lg:hidden fixed bottom-14 left-0 right-0 z-30 bg-white/95 backdrop-blur-md border-t border-slate-200 px-4 py-2.5 flex items-center justify-between shadow-lg">
+                <div className="lg:hidden fixed bottom-0 left-0 right-0 z-30 bg-white/95 backdrop-blur-md border-t border-slate-200 px-4 py-2.5 flex items-center justify-between shadow-lg">
                     <div className="max-w-[50%]">
                         <div className="flex items-baseline gap-1.5 flex-wrap">
                             <span className="font-extrabold text-base text-slate-900">

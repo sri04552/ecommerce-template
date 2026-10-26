@@ -34,7 +34,6 @@ export default function About({ storeName = 'Aura Store', categories = [] }) {
             description:
                 'Every product is directly sourced from certified manufacturers and artisan workshops. Zero grey-market stock, zero compromises.',
             badge: 'Quality First',
-            color: 'from-blue-600 to-indigo-600',
         },
         {
             icon: RotateCcw,
@@ -42,7 +41,6 @@ export default function About({ storeName = 'Aura Store', categories = [] }) {
             description:
                 'Not satisfied? Hand it back to our courier within 3 days and get direct UPI or bank account refunds credited right after verification.',
             badge: 'Risk Free',
-            color: 'from-emerald-600 to-teal-600',
         },
         {
             icon: Truck,
@@ -50,7 +48,6 @@ export default function About({ storeName = 'Aura Store', categories = [] }) {
             description:
                 'We partner with premier courier networks (Shiprocket, Delhivery, BlueDart) to bring fast, tracked, and insured delivery to your doorstep.',
             badge: 'Fast Dispatch',
-            color: 'from-amber-500 to-orange-600',
         },
         {
             icon: CreditCard,
@@ -58,7 +55,6 @@ export default function About({ storeName = 'Aura Store', categories = [] }) {
             description:
                 'No hidden convenience charges at checkout. Enjoy transparent GST invoicing, flexible Cash on Delivery, and 256-bit secure online payments.',
             badge: 'No Hidden Fees',
-            color: 'from-rose-500 to-pink-600',
         },
     ];
 
@@ -117,31 +113,27 @@ export default function About({ storeName = 'Aura Store', categories = [] }) {
             </div>
 
             {/* Hero Section */}
-            <section className="relative overflow-hidden bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 text-white py-16 sm:py-24 lg:py-28">
-                {/* Decorative Ambient Glows */}
-                <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-indigo-500/15 blur-[120px] rounded-full pointer-events-none" />
-                <div className="absolute -bottom-20 right-10 w-[400px] h-[250px] bg-rose-500/10 blur-[100px] rounded-full pointer-events-none" />
-
-                <div className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-6">
-                    <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider bg-indigo-950/80 text-indigo-300 border border-indigo-800/60 shadow-inner">
-                        <Sparkles className="w-3.5 h-3.5 text-indigo-400" />
+            <section className="bg-white border-b border-slate-200 py-14 sm:py-20 lg:py-24">
+                <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-5">
+                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-blue-50 text-blue-700 border border-blue-200">
+                        <Sparkles className="w-3.5 h-3.5 text-blue-600" />
                         <span>Crafted For India · Built For Everyday Living</span>
                     </div>
 
-                    <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight leading-[1.1] text-white">
-                        Democratizing Premium Quality for <span className="bg-gradient-to-r from-indigo-400 via-sky-300 to-teal-300 bg-clip-text text-transparent">Every Indian Home</span>
+                    <h1 className="text-3xl sm:text-5xl font-black tracking-tight leading-tight text-slate-900">
+                        Democratizing Premium Quality for <span className="text-blue-600">Every Indian Home</span>
                     </h1>
 
-                    <p className="max-w-2xl mx-auto text-sm sm:text-base lg:text-lg text-slate-300 font-normal leading-relaxed">
+                    <p className="max-w-2xl mx-auto text-sm sm:text-base text-slate-600 font-normal leading-relaxed">
                         We bridge the gap between high-end craftsmanship and transparent pricing. Discover carefully vetted apparel, electronics, and lifestyle trends engineered for longevity, function, and genuine joy.
                     </p>
 
-                    <div className="pt-4 flex flex-col sm:flex-row items-center justify-center gap-3.5">
+                    <div className="pt-3 flex flex-col sm:flex-row items-center justify-center gap-3">
                         <Link href="/products" className="w-full sm:w-auto">
                             <Button
                                 variant="primary"
                                 size="lg"
-                                className="w-full sm:w-auto gap-2 bg-indigo-600 hover:bg-indigo-500 text-white font-bold px-7 py-3.5 rounded-xl shadow-lg shadow-indigo-600/30 transition-all hover:scale-[1.02] active:scale-[0.98]"
+                                className="w-full sm:w-auto gap-2 bg-blue-600 hover:bg-blue-700 text-white font-bold px-7 py-3 rounded-lg shadow-xs transition-colors"
                             >
                                 <span>Explore Catalog</span>
                                 <ArrowRight className="w-4 h-4" />
@@ -152,9 +144,9 @@ export default function About({ storeName = 'Aura Store', categories = [] }) {
                             <Button
                                 variant="outline"
                                 size="lg"
-                                className="w-full sm:w-auto gap-2 bg-slate-900/60 hover:bg-slate-800 text-slate-200 border-slate-700 font-semibold px-6 py-3.5 rounded-xl backdrop-blur-xs"
+                                className="w-full sm:w-auto gap-2 bg-white hover:bg-slate-50 text-slate-800 border-slate-300 font-semibold px-6 py-3 rounded-lg transition-colors"
                             >
-                                <Truck className="w-4 h-4 text-indigo-400" />
+                                <Truck className="w-4 h-4 text-blue-600" />
                                 <span>Track Order</span>
                             </Button>
                         </Link>
@@ -163,13 +155,13 @@ export default function About({ storeName = 'Aura Store', categories = [] }) {
             </section>
 
             {/* Key Metrics / Numbers Counter */}
-            <section className="relative z-10 -mt-8 sm:-mt-12 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6 bg-white rounded-2xl border border-brand-border p-5 sm:p-8 shadow-xl shadow-slate-900/5">
+            <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+                <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6 bg-slate-50 rounded-2xl border border-slate-200 p-5 sm:p-8">
                     {stats.map((stat, idx) => {
                         const Icon = stat.icon;
                         return (
                             <div key={idx} className="flex flex-col items-center text-center p-2 sm:p-4">
-                                <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center mb-2.5 sm:mb-3">
+                                <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center mb-2.5 sm:mb-3 border border-blue-100">
                                     <Icon className="w-5 h-5 sm:w-6 sm:h-6" />
                                 </div>
                                 <span className="text-xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
@@ -185,15 +177,15 @@ export default function About({ storeName = 'Aura Store', categories = [] }) {
             </section>
 
             {/* Our Story & Heritage */}
-            <section className="py-16 sm:py-24 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <section className="py-12 sm:py-16 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-14 items-center">
-                    <div className="space-y-5">
-                        <div className="inline-flex items-center gap-2 text-xs font-bold text-indigo-600 uppercase tracking-wider">
+                    <div className="space-y-4">
+                        <div className="inline-flex items-center gap-2 text-xs font-bold text-blue-600 uppercase tracking-wider">
                             <Award className="w-4 h-4" />
                             <span>Our Origin & Purpose</span>
                         </div>
 
-                        <h2 className="text-2xl sm:text-4xl font-extrabold text-slate-900 tracking-tight leading-tight">
+                        <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight leading-tight">
                             Say Goodbye to Counterfeits, Delayed Shipping, and Shady Refund Terms.
                         </h2>
 
@@ -205,7 +197,7 @@ export default function About({ storeName = 'Aura Store', categories = [] }) {
                             Unlike giant marketplaces flooded with untested third-party resellers, every SKU on our platform undergoes rigorous sample inspection, real-world stress testing, and packaging audits. We stand behind every parcel that leaves our warehouse.
                         </p>
 
-                        <div className="space-y-3 pt-2">
+                        <div className="space-y-2.5 pt-2">
                             {[
                                 'Government GST-compliant tax invoicing on every purchase',
                                 'Safe packaging with tear-resistant tamper-evident seals',
@@ -220,9 +212,9 @@ export default function About({ storeName = 'Aura Store', categories = [] }) {
                     </div>
 
                     {/* Visual Feature Card Stack */}
-                    <div className="bg-gradient-to-br from-indigo-50 to-slate-100 rounded-2xl p-6 sm:p-8 border border-indigo-100 shadow-sm space-y-6">
+                    <div className="bg-slate-50 rounded-2xl p-6 sm:p-8 border border-slate-200 shadow-2xs space-y-5">
                         <div className="flex items-center gap-3">
-                            <div className="w-10 h-10 rounded-xl bg-indigo-600 text-white flex items-center justify-center font-bold">
+                            <div className="w-10 h-10 rounded-xl bg-blue-600 text-white flex items-center justify-center font-bold">
                                 <Layers className="w-5 h-5" />
                             </div>
                             <div>
@@ -231,10 +223,10 @@ export default function About({ storeName = 'Aura Store', categories = [] }) {
                             </div>
                         </div>
 
-                        <div className="space-y-4">
+                        <div className="space-y-3">
                             {milestones.map((m, idx) => (
-                                <div key={idx} className="bg-white rounded-xl p-4 border border-slate-200/80 shadow-2xs space-y-1">
-                                    <span className="text-[10px] font-bold uppercase tracking-wider text-indigo-600 font-mono">
+                                <div key={idx} className="bg-white rounded-xl p-4 border border-slate-200 shadow-2xs space-y-1">
+                                    <span className="text-[10px] font-bold uppercase tracking-wider text-blue-600 font-mono">
                                         {m.year}
                                     </span>
                                     <h4 className="font-bold text-xs sm:text-sm text-slate-900">
@@ -251,10 +243,10 @@ export default function About({ storeName = 'Aura Store', categories = [] }) {
             </section>
 
             {/* Our 4 Customer Guarantees (The Pillars) */}
-            <section className="bg-slate-50 border-y border-slate-200/80 py-16 sm:py-20">
+            <section className="bg-slate-50 border-y border-slate-200 py-14 sm:py-18">
                 <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="text-center max-w-2xl mx-auto mb-12 space-y-2">
-                        <span className="text-xs font-bold uppercase tracking-wider text-indigo-600">
+                    <div className="text-center max-w-2xl mx-auto mb-10 space-y-2">
+                        <span className="text-xs font-bold uppercase tracking-wider text-blue-600">
                             Transparent Standards
                         </span>
                         <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
@@ -265,25 +257,25 @@ export default function About({ storeName = 'Aura Store', categories = [] }) {
                         </p>
                     </div>
 
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
                         {values.map((v, i) => {
                             const Icon = v.icon;
                             return (
                                 <div
                                     key={i}
-                                    className="bg-white rounded-2xl p-6 border border-slate-200/80 shadow-xs hover:shadow-md transition-shadow flex flex-col justify-between"
+                                    className="bg-white rounded-xl p-5 border border-slate-200 shadow-2xs hover:shadow-xs hover:border-blue-300 transition-all flex flex-col justify-between"
                                 >
-                                    <div className="space-y-4">
+                                    <div className="space-y-3.5">
                                         <div className="flex items-center justify-between">
-                                            <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${v.color} text-white flex items-center justify-center shadow-md`}>
-                                                <Icon className="w-6 h-6" />
+                                            <div className="w-11 h-11 rounded-lg bg-blue-50 text-blue-600 border border-blue-100 flex items-center justify-center">
+                                                <Icon className="w-5 h-5" />
                                             </div>
-                                            <span className="text-[10px] font-bold uppercase px-2 py-0.5 rounded-full bg-slate-100 text-slate-600">
+                                            <span className="text-[10px] font-bold uppercase px-2 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-100">
                                                 {v.badge}
                                             </span>
                                         </div>
 
-                                        <h3 className="font-bold text-base text-slate-900">
+                                        <h3 className="font-bold text-sm text-slate-900">
                                             {v.title}
                                         </h3>
 
@@ -350,7 +342,7 @@ export default function About({ storeName = 'Aura Store', categories = [] }) {
                 <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 text-center sm:text-left">
                         <div className="flex flex-col sm:flex-row items-center gap-3.5">
-                            <div className="w-12 h-12 rounded-xl bg-slate-800 border border-slate-700 text-indigo-400 flex items-center justify-center shrink-0">
+                            <div className="w-12 h-12 rounded-xl bg-slate-800 border border-slate-700 text-blue-400 flex items-center justify-center shrink-0">
                                 <ShieldCheck className="w-6 h-6" />
                             </div>
                             <div>
@@ -360,7 +352,7 @@ export default function About({ storeName = 'Aura Store', categories = [] }) {
                         </div>
 
                         <div className="flex flex-col sm:flex-row items-center gap-3.5">
-                            <div className="w-12 h-12 rounded-xl bg-slate-800 border border-slate-700 text-indigo-400 flex items-center justify-center shrink-0">
+                            <div className="w-12 h-12 rounded-xl bg-slate-800 border border-slate-700 text-blue-400 flex items-center justify-center shrink-0">
                                 <Headphones className="w-6 h-6" />
                             </div>
                             <div>
@@ -370,7 +362,7 @@ export default function About({ storeName = 'Aura Store', categories = [] }) {
                         </div>
 
                         <div className="flex flex-col sm:flex-row items-center gap-3.5">
-                            <div className="w-12 h-12 rounded-xl bg-slate-800 border border-slate-700 text-indigo-400 flex items-center justify-center shrink-0">
+                            <div className="w-12 h-12 rounded-xl bg-slate-800 border border-slate-700 text-blue-400 flex items-center justify-center shrink-0">
                                 <CreditCard className="w-6 h-6" />
                             </div>
                             <div>
@@ -383,19 +375,19 @@ export default function About({ storeName = 'Aura Store', categories = [] }) {
             </section>
 
             {/* Final CTA Banner */}
-            <section className="py-16 sm:py-20 bg-gradient-to-r from-indigo-900 via-indigo-800 to-slate-900 text-white text-center">
-                <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
+            <section className="py-14 sm:py-18 bg-blue-600 text-white text-center">
+                <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 space-y-5">
                     <h2 className="text-2xl sm:text-4xl font-black tracking-tight text-white">
                         Ready to Upgrade Your Daily Essentials?
                     </h2>
-                    <p className="text-xs sm:text-sm text-indigo-200 max-w-xl mx-auto leading-relaxed">
+                    <p className="text-xs sm:text-sm text-blue-100 max-w-xl mx-auto leading-relaxed">
                         Join over 50,000 satisfied shoppers who trust {storeName} for authentic items, honest pricing, and prompt delivery.
                     </p>
                     <div className="pt-2 flex flex-col sm:flex-row items-center justify-center gap-3">
                         <Link href="/products" className="w-full sm:w-auto">
                             <Button
                                 size="lg"
-                                className="w-full sm:w-auto bg-white hover:bg-slate-100 text-slate-950 font-bold px-8 py-3.5 rounded-xl shadow-lg transition-transform hover:scale-[1.02]"
+                                className="w-full sm:w-auto bg-white hover:bg-slate-100 text-slate-900 font-bold px-8 py-3 rounded-lg shadow-sm transition-colors"
                             >
                                 <span>Browse Catalog</span>
                                 <ArrowRight className="w-4 h-4" />

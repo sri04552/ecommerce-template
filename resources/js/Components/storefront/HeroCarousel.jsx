@@ -97,7 +97,7 @@ const SLIDES = [
         },
         highlights: [
             { icon: Star, text: '4.9/5 Customer Rating' },
-            { icon: RotateCcw, text: '30-Day Easy Returns' },
+            { icon: RotateCcw, text: '3-Day Easy Returns' },
         ],
     },
     {
