@@ -12,9 +12,9 @@ import {
     CreditCard,
     Percent,
     Clock,
-    Star,
-    RotateCcw,
     ShieldCheck,
+    RotateCcw,
+    CheckCircle2,
 } from 'lucide-react';
 import Button from '../ui/Button';
 
@@ -23,54 +23,56 @@ const SLIDES = [
         id: 'slide-1',
         imageWebp: '/assets/images/hero/home-page-hero-section-carousel-image-1.webp',
         imageJpg: '/assets/images/hero/home-page-hero-section-carousel-image-1.jpg',
-        alt: 'Smiling woman with sunglasses holding shopping bags and credit card',
-        personSide: 'right', // Person is on the right -> Content on the LEFT
-        bgColor: 'var(--brand-surface-accent)',
+        alt: 'Smiling woman with sunglasses holding shopping bags and card',
+        personSide: 'right', // Content on LEFT
+        bgGradient: 'from-white via-[#FFF1F6] to-[#FCE4EC]',
+        accentAura: 'rgba(194, 24, 91, 0.12)',
         badge: {
             icon: Sparkles,
-            text: 'NEW SEASON COLLECTION',
-            style: 'bg-brand-surface-accent text-brand-primary border-brand-primary/25',
+            text: 'SIGNATURE COLLECTION 2026',
         },
-        title: 'Shop Smart. Spend Better.',
-        subtitle: 'Unlock exclusive member rewards, instant checkout perks, and curated lifestyle trends with guaranteed quality.',
+        titlePrimary: 'Shop Smart.',
+        titleAccent: 'Spend Better.',
+        subtitle: 'Curated premium fashion, electronics, and lifestyle essentials engineered for longevity, transparent pricing, and effortless everyday living.',
         primaryCta: {
-            text: 'Shop New Arrivals',
+            text: 'Explore New Arrivals',
             url: '/products',
         },
         secondaryCta: {
-            text: 'Explore Catalog',
+            text: 'View Featured Deals',
             url: '/products?featured=1',
         },
         highlights: [
-            { icon: Truck, text: 'Fast & Secure Delivery' },
-            { icon: CreditCard, text: 'Instant UPI & COD' },
+            { icon: Truck, text: 'Express Pan-India Delivery' },
+            { icon: CreditCard, text: 'Instant UPI, Cards & COD' },
         ],
     },
     {
         id: 'slide-2',
         imageWebp: '/assets/images/hero/home-page-hero-section-carousel-image-2.webp',
         imageJpg: '/assets/images/hero/home-page-hero-section-carousel-image-2.jpg',
-        alt: 'Modern guy holding shopping bag over shoulder shushing camera with secret deals',
-        personSide: 'left', // Person is on the left -> Content on the RIGHT
-        bgColor: 'var(--brand-surface-muted)',
+        alt: 'Modern guy holding shopping bag over shoulder with deals',
+        personSide: 'left', // Content on RIGHT
+        bgGradient: 'from-[#FFF1F6] via-white to-[#FCE4EC]',
+        accentAura: 'rgba(136, 14, 79, 0.10)',
         badge: {
             icon: Flame,
-            text: 'INSIDER FLASH OFFERS',
-            style: 'bg-brand-surface-accent text-brand-primary border-brand-primary/25',
+            text: 'CURATED PROMOTIONAL OFFERS',
         },
-        title: "Don't Miss The Best Kept Deals.",
-        subtitle: 'Handpicked discounts on premium fashion, accessories, and daily essentials before they sell out.',
+        titlePrimary: 'Refined Quality.',
+        titleAccent: 'Direct Value.',
+        subtitle: 'Discover handpicked collections crafted with strict durability standards, authentic origin, and zero middleman markups.',
         primaryCta: {
-            text: 'Claim Flash Deals',
+            text: 'Discover Collection',
             url: '/products',
         },
         secondaryCta: {
-            text: 'View Trending',
+            text: 'Explore Trending',
             url: '/products?featured=1',
         },
         highlights: [
-            { icon: Percent, text: 'Up to 50% Off Selected' },
-            { icon: Clock, text: 'Limited Quantities' },
+            { icon: Percent, text: 'Direct Manufacturer Value' },
+            { icon: Clock, text: 'Real-Time Inventory' },
         ],
     },
     {
@@ -78,53 +80,55 @@ const SLIDES = [
         imageWebp: '/assets/images/hero/home-page-hero-section-carousel-image-3.webp',
         imageJpg: '/assets/images/hero/home-page-hero-section-carousel-image-3.jpg',
         alt: 'Dreamy woman smiling and holding colorful shopping bags',
-        personSide: 'left', // Person is on the left -> Content on the RIGHT
-        bgColor: 'var(--brand-surface-accent)',
+        personSide: 'left', // Content on RIGHT
+        bgGradient: 'from-[#FCE4EC] via-white to-[#FFF1F6]',
+        accentAura: 'rgba(233, 30, 99, 0.12)',
         badge: {
             icon: ShoppingBag,
-            text: 'WISHLIST FAVORITES',
-            style: 'bg-brand-surface-accent text-brand-primary border-brand-primary/25',
+            text: 'VERIFIED CATALOG ESSENTIALS',
         },
-        title: 'Turn Your Wishlist Into Reality.',
-        subtitle: 'Discover handpicked styles and everyday essentials crafted with verified quality for the modern home and wardrobe.',
+        titlePrimary: 'Turn Everyday Living',
+        titleAccent: 'Into Luxury.',
+        subtitle: 'From modern apparel to home accessories, elevate your daily lifestyle with verified authenticity and seamless pan-India fulfillment.',
         primaryCta: {
-            text: 'Explore Catalog',
+            text: 'Browse Product Catalog',
             url: '/products',
         },
         secondaryCta: {
-            text: 'Browse Categories',
-            url: '/categories',
+            text: 'Track Existing Order',
+            url: '/track',
         },
         highlights: [
-            { icon: Star, text: '4.9/5 Quality Rating' },
-            { icon: RotateCcw, text: '3-Day Easy Returns' },
+            { icon: CheckCircle2, text: '100% Inspected & Authentic' },
+            { icon: RotateCcw, text: '3-Day Doorstep Returns' },
         ],
     },
     {
         id: 'slide-4',
         imageWebp: '/assets/images/hero/home-page-hero-section-carousel-image-4.webp',
         imageJpg: '/assets/images/hero/home-page-hero-section-carousel-image-4.jpg',
-        alt: 'Smiling guy demonstrating gift and orange shopping bag',
-        personSide: 'left', // Person is on the left -> Content on the RIGHT
-        bgColor: 'var(--brand-surface-muted)',
+        alt: 'Smiling guy demonstrating gift and shopping bag',
+        personSide: 'left', // Content on RIGHT
+        bgGradient: 'from-white via-[#FFF1F6] to-[#FCE4EC]',
+        accentAura: 'rgba(194, 24, 91, 0.10)',
         badge: {
             icon: Gift,
-            text: 'SPECIAL FINDS & GIFTS',
-            style: 'bg-brand-surface-accent text-brand-primary border-brand-primary/25',
+            text: 'SPECIAL FINDS & PREMIUM PACKAGING',
         },
-        title: 'Delivering Happiness To Your Door.',
-        subtitle: 'Thoughtfully curated gifts and signature essentials with premium packaging, guaranteed quality, and rapid dispatch.',
+        titlePrimary: 'Delivering Joy',
+        titleAccent: 'To Every Door.',
+        subtitle: 'Express courier dispatch via Delhivery & BlueDart with real-time live SMS tracking and tamper-evident retail presentation.',
         primaryCta: {
-            text: 'Shop Gift Ideas',
+            text: 'Shop Curated Catalog',
             url: '/products',
         },
         secondaryCta: {
-            text: 'Best Sellers',
+            text: 'Browse Best Sellers',
             url: '/products?featured=1',
         },
         highlights: [
-            { icon: Truck, text: 'Express Delivery Across India' },
-            { icon: ShieldCheck, text: '100% Quality Guaranteed' },
+            { icon: Truck, text: 'Delhivery & BlueDart Logistics' },
+            { icon: ShieldCheck, text: 'GST Tax Invoiced & Insured' },
         ],
     },
 ];
@@ -144,32 +148,14 @@ export default function HeroCarousel() {
         setCurrent((prev) => (prev - 1 + slideCount) % slideCount);
     }, [slideCount]);
 
-    // Auto-sliding interval (3 seconds)
     useEffect(() => {
         if (isPaused) return;
-
-        const timer = setInterval(() => {
+        const interval = setInterval(() => {
             nextSlide();
-        }, 3000);
+        }, 6000);
+        return () => clearInterval(interval);
+    }, [isPaused, nextSlide]);
 
-        return () => clearInterval(timer);
-    }, [nextSlide, isPaused]);
-
-    // Keyboard navigation (Left/Right arrow keys)
-    useEffect(() => {
-        const handleKeyDown = (e) => {
-            if (e.key === 'ArrowLeft') {
-                prevSlide();
-            } else if (e.key === 'ArrowRight') {
-                nextSlide();
-            }
-        };
-
-        window.addEventListener('keydown', handleKeyDown);
-        return () => window.removeEventListener('keydown', handleKeyDown);
-    }, [nextSlide, prevSlide]);
-
-    // Touch handlers for mobile swipe
     const handleTouchStart = (e) => {
         touchStartX.current = e.touches[0].clientX;
     };
@@ -181,24 +167,48 @@ export default function HeroCarousel() {
     const handleTouchEnd = () => {
         const diff = touchStartX.current - touchEndX.current;
         if (Math.abs(diff) > 50) {
-            if (diff > 0) {
-                nextSlide();
-            } else {
-                prevSlide();
-            }
+            if (diff > 0) nextSlide();
+            else prevSlide();
         }
     };
 
     return (
         <section
             aria-label="Promotional Hero Showcase"
-            className="relative w-full overflow-hidden select-none bg-slate-900 transition-colors duration-700 min-h-[520px] md:min-h-[580px] lg:h-[100dvh]"
+            className="relative w-full overflow-hidden select-none bg-brand-surface transition-colors duration-700 min-h-[520px] md:min-h-[600px] lg:min-h-[calc(100vh-80px)]"
             onMouseEnter={() => setIsPaused(true)}
             onMouseLeave={() => setIsPaused(false)}
             onTouchStart={handleTouchStart}
             onTouchMove={handleTouchMove}
             onTouchEnd={handleTouchEnd}
         >
+            {/* Background Ambient SVG Geometric Accents */}
+            <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden opacity-40">
+                <svg
+                    className="absolute top-12 left-10 w-96 h-96 text-brand-primary/10 animate-pulse duration-1000"
+                    viewBox="0 0 400 400"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                >
+                    <circle cx="200" cy="200" r="180" stroke="currentColor" strokeWidth="1" strokeDasharray="6 6" />
+                    <circle cx="200" cy="200" r="130" stroke="currentColor" strokeWidth="0.75" />
+                    <circle cx="200" cy="200" r="80" stroke="currentColor" strokeWidth="0.5" strokeDasharray="3 3" />
+                </svg>
+
+                <svg
+                    className="absolute -bottom-16 right-16 w-80 h-80 text-brand-accent/10"
+                    viewBox="0 0 300 300"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                >
+                    <path
+                        d="M150 0L190 110L300 150L190 190L150 300L110 190L0 150L110 110L150 0Z"
+                        fill="currentColor"
+                        opacity="0.25"
+                    />
+                </svg>
+            </div>
+
             {/* Slides Track */}
             {SLIDES.map((slide, index) => {
                 const isActive = index === current;
@@ -209,16 +219,23 @@ export default function HeroCarousel() {
                     <div
                         key={slide.id}
                         aria-hidden={!isActive}
-                        style={{ backgroundColor: slide.bgColor }}
-                        className={`absolute inset-0 w-full h-full transition-opacity duration-500 ease-in-out ${
+                        className={`absolute inset-0 w-full h-full bg-gradient-to-br ${slide.bgGradient} transition-opacity duration-700 ease-in-out ${
                             isActive
                                 ? 'opacity-100 z-10 pointer-events-auto'
                                 : 'opacity-0 z-0 pointer-events-none'
                         }`}
                     >
+                        {/* Subtle Radial Glow Aura */}
+                        <div
+                            className="absolute inset-0 pointer-events-none opacity-60"
+                            style={{
+                                background: `radial-gradient(circle at ${isContentLeft ? '75% 40%' : '25% 40%'}, ${slide.accentAura} 0%, transparent 65%)`,
+                            }}
+                        />
+
                         {/* ========================================================
                             DESKTOP LAYOUT (lg: 1024px and up)
-                            Full-bleed 100dvh with person pinned & text floating
+                            Full-height editorial showcase
                            ======================================================== */}
                         <div className="hidden lg:block absolute inset-0 w-full h-full">
                             <picture className="absolute inset-0 w-full h-full block">
@@ -237,29 +254,34 @@ export default function HeroCarousel() {
                             <div className="relative z-20 max-w-7xl mx-auto h-full px-8 lg:px-12 flex items-center">
                                 <div className={`w-full flex ${isContentLeft ? 'justify-start' : 'justify-end'}`}>
                                     <div
-                                        className={`w-full max-w-xl lg:max-w-2xl text-left transition-all duration-700 delay-150 transform ${
+                                        className={`w-full max-w-xl lg:max-w-2xl text-left transition-all duration-700 delay-100 transform ${
                                             isActive ? 'translate-y-0 opacity-100' : 'translate-y-6 opacity-0'
                                         }`}
                                     >
-                                        <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-bold tracking-wide uppercase border mb-4 shadow-2xs backdrop-blur-sm bg-white/80 border-slate-900/10 text-slate-900">
-                                            <BadgeIcon className="w-3.5 h-3.5 text-slate-900" />
+                                        {/* Editorial Eyebrow Badge */}
+                                        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-bold tracking-wider uppercase mb-5 shadow-xs backdrop-blur-md bg-white/90 border border-brand-border text-brand-primary">
+                                            <BadgeIcon className="w-3.5 h-3.5 text-brand-primary" />
                                             <span>{slide.badge.text}</span>
                                         </div>
 
-                                        <h1 className="text-4xl lg:text-6xl font-black tracking-tight text-slate-950 leading-[1.08] mb-4">
-                                            {slide.title}
+                                        {/* Headline */}
+                                        <h1 className="text-4xl lg:text-6xl font-black tracking-tight text-brand-text leading-[1.08] mb-5">
+                                            <span>{slide.titlePrimary} </span>
+                                            <span className="text-brand-primary">{slide.titleAccent}</span>
                                         </h1>
 
-                                        <p className="text-base lg:text-lg text-slate-800 font-medium leading-relaxed mb-6 max-w-xl">
+                                        {/* Supporting Copy */}
+                                        <p className="text-base lg:text-lg text-brand-text-muted font-medium leading-relaxed mb-8 max-w-xl">
                                             {slide.subtitle}
                                         </p>
 
-                                        <div className="flex items-center gap-3.5 mb-6">
+                                        {/* CTA Buttons */}
+                                        <div className="flex items-center gap-4 mb-8">
                                             <Link href={slide.primaryCta.url}>
                                                 <Button
                                                     variant="primary"
                                                     size="lg"
-                                                    className="gap-2 text-sm sm:text-base font-semibold px-7 py-3.5 shadow-md shadow-brand-primary/25 hover:scale-[1.02] active:scale-[0.98] transition-transform bg-brand-primary hover:bg-brand-primary-hover text-white"
+                                                    className="gap-2 text-sm sm:text-base font-semibold px-8 py-4 shadow-md shadow-brand-primary/25 hover:scale-[1.02] active:scale-[0.98] transition-transform bg-brand-primary hover:bg-brand-primary-hover text-white rounded-brand"
                                                 >
                                                     <span>{slide.primaryCta.text}</span>
                                                     <ArrowRight className="w-4 h-4" />
@@ -270,19 +292,22 @@ export default function HeroCarousel() {
                                                 <Button
                                                     variant="outline"
                                                     size="lg"
-                                                    className="text-sm sm:text-base font-semibold px-6 py-3.5 bg-white/90 hover:bg-white text-brand-text border-brand-border shadow-2xs hover:border-brand-primary/40 backdrop-blur-sm"
+                                                    className="text-sm sm:text-base font-semibold px-7 py-4 bg-white/90 hover:bg-white text-brand-text border border-brand-border shadow-xs hover:border-brand-primary/50 backdrop-blur-sm rounded-brand"
                                                 >
                                                     {slide.secondaryCta.text}
                                                 </Button>
                                             </Link>
                                         </div>
 
-                                        <div className="flex flex-wrap items-center gap-x-6 gap-y-2 pt-1 text-sm font-semibold text-slate-900">
+                                        {/* Verified Operational Highlights */}
+                                        <div className="flex flex-wrap items-center gap-x-6 gap-y-2.5 pt-2 border-t border-brand-border text-xs sm:text-sm font-semibold text-brand-text">
                                             {slide.highlights.map((item, i) => {
                                                 const ItemIcon = item.icon;
                                                 return (
                                                     <div key={i} className="inline-flex items-center gap-2">
-                                                        <ItemIcon className="w-4 h-4 text-slate-950 shrink-0" />
+                                                        <div className="w-6 h-6 rounded-full bg-brand-surface-accent flex items-center justify-center text-brand-primary shrink-0">
+                                                            <ItemIcon className="w-3.5 h-3.5" />
+                                                        </div>
                                                         <span>{item.text}</span>
                                                     </div>
                                                 );
@@ -295,25 +320,23 @@ export default function HeroCarousel() {
 
                         {/* ========================================================
                             TABLET LAYOUT (md: 768px - 1023px)
-                            Side-by-side 2-column balanced split (zero overlap)
                            ======================================================== */}
                         <div className="hidden md:block lg:hidden absolute inset-0 w-full h-full">
                             <div className="max-w-5xl mx-auto h-full px-6 py-8 flex items-center">
-                                <div className="grid grid-cols-2 gap-6 items-center w-full">
-                                    {/* Left Column */}
+                                <div className="grid grid-cols-2 gap-8 items-center w-full">
                                     {isContentLeft ? (
-                                        /* Content on Left */
                                         <div className="text-left space-y-4">
-                                            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold tracking-wide uppercase border bg-white/80 border-slate-900/10 text-slate-900 shadow-2xs">
-                                                <BadgeIcon className="w-3.5 h-3.5 text-slate-900" />
+                                            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold tracking-wide uppercase backdrop-blur-md bg-white/90 border border-brand-border text-brand-primary shadow-2xs">
+                                                <BadgeIcon className="w-3.5 h-3.5 text-brand-primary" />
                                                 <span>{slide.badge.text}</span>
                                             </div>
 
-                                            <h1 className="text-3xl font-black tracking-tight text-slate-950 leading-tight">
-                                                {slide.title}
+                                            <h1 className="text-3xl font-black tracking-tight text-brand-text leading-tight">
+                                                <span>{slide.titlePrimary} </span>
+                                                <span className="text-brand-primary">{slide.titleAccent}</span>
                                             </h1>
 
-                                            <p className="text-sm text-slate-800 font-medium leading-relaxed">
+                                            <p className="text-sm text-brand-text-muted font-medium leading-relaxed">
                                                 {slide.subtitle}
                                             </p>
 
@@ -322,7 +345,7 @@ export default function HeroCarousel() {
                                                     <Button
                                                         variant="primary"
                                                         size="md"
-                                                        className="gap-2 text-xs font-semibold px-5 py-2.5 bg-brand-primary hover:bg-brand-primary-hover text-white shadow-md shadow-brand-primary/25"
+                                                        className="gap-2 text-xs font-semibold px-5 py-2.5 bg-brand-primary hover:bg-brand-primary-hover text-white shadow-md shadow-brand-primary/25 rounded-brand"
                                                     >
                                                         <span>{slide.primaryCta.text}</span>
                                                         <ArrowRight className="w-3.5 h-3.5" />
@@ -332,19 +355,19 @@ export default function HeroCarousel() {
                                                     <Button
                                                         variant="outline"
                                                         size="md"
-                                                        className="text-xs font-semibold px-4 py-2.5 bg-white/90 hover:bg-white text-brand-text border-brand-border hover:border-brand-primary/40"
+                                                        className="text-xs font-semibold px-4 py-2.5 bg-white/90 hover:bg-white text-brand-text border border-brand-border hover:border-brand-primary/50 rounded-brand"
                                                     >
                                                         {slide.secondaryCta.text}
                                                     </Button>
                                                 </Link>
                                             </div>
 
-                                            <div className="flex flex-col gap-2 pt-2 text-xs font-semibold text-slate-900">
+                                            <div className="flex flex-col gap-2 pt-2 text-xs font-semibold text-brand-text">
                                                 {slide.highlights.map((item, i) => {
                                                     const ItemIcon = item.icon;
                                                     return (
                                                         <div key={i} className="inline-flex items-center gap-2">
-                                                            <ItemIcon className="w-4 h-4 text-slate-950 shrink-0" />
+                                                            <ItemIcon className="w-4 h-4 text-brand-primary shrink-0" />
                                                             <span>{item.text}</span>
                                                         </div>
                                                     );
@@ -352,45 +375,33 @@ export default function HeroCarousel() {
                                             </div>
                                         </div>
                                     ) : (
-                                        /* Person Photo on Left */
-                                        <div className="h-[460px] w-full flex items-center justify-center overflow-hidden rounded-2xl bg-black/5">
+                                        <div className="h-[460px] w-full flex items-center justify-center overflow-hidden rounded-brand bg-brand-surface-muted/50 border border-brand-border shadow-xs">
                                             <picture className="w-full h-full block">
                                                 <source srcSet={slide.imageWebp} type="image/webp" />
                                                 <img
                                                     src={slide.imageJpg}
                                                     alt={slide.alt}
-                                                    className="w-full h-full object-cover object-left select-none"
+                                                    loading={index === 0 ? 'eager' : 'lazy'}
+                                                    decoding="async"
+                                                    className="w-full h-full object-cover"
                                                 />
                                             </picture>
                                         </div>
                                     )}
 
-                                    {/* Right Column */}
-                                    {isContentLeft ? (
-                                        /* Person Photo on Right */
-                                        <div className="h-[460px] w-full flex items-center justify-center overflow-hidden rounded-2xl bg-black/5">
-                                            <picture className="w-full h-full block">
-                                                <source srcSet={slide.imageWebp} type="image/webp" />
-                                                <img
-                                                    src={slide.imageJpg}
-                                                    alt={slide.alt}
-                                                    className="w-full h-full object-cover object-right select-none"
-                                                />
-                                            </picture>
-                                        </div>
-                                    ) : (
-                                        /* Content on Right */
+                                    {!isContentLeft ? (
                                         <div className="text-left space-y-4">
-                                            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold tracking-wide uppercase border bg-white/80 border-slate-900/10 text-slate-900 shadow-2xs">
-                                                <BadgeIcon className="w-3.5 h-3.5 text-slate-900" />
+                                            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold tracking-wide uppercase backdrop-blur-md bg-white/90 border border-brand-border text-brand-primary shadow-2xs">
+                                                <BadgeIcon className="w-3.5 h-3.5 text-brand-primary" />
                                                 <span>{slide.badge.text}</span>
                                             </div>
 
-                                            <h1 className="text-3xl font-black tracking-tight text-slate-950 leading-tight">
-                                                {slide.title}
+                                            <h1 className="text-3xl font-black tracking-tight text-brand-text leading-tight">
+                                                <span>{slide.titlePrimary} </span>
+                                                <span className="text-brand-primary">{slide.titleAccent}</span>
                                             </h1>
 
-                                            <p className="text-sm text-slate-800 font-medium leading-relaxed">
+                                            <p className="text-sm text-brand-text-muted font-medium leading-relaxed">
                                                 {slide.subtitle}
                                             </p>
 
@@ -399,7 +410,7 @@ export default function HeroCarousel() {
                                                     <Button
                                                         variant="primary"
                                                         size="md"
-                                                        className="gap-2 text-xs font-semibold px-5 py-2.5 bg-brand-primary hover:bg-brand-primary-hover text-white shadow-md shadow-brand-primary/25"
+                                                        className="gap-2 text-xs font-semibold px-5 py-2.5 bg-brand-primary hover:bg-brand-primary-hover text-white shadow-md shadow-brand-primary/25 rounded-brand"
                                                     >
                                                         <span>{slide.primaryCta.text}</span>
                                                         <ArrowRight className="w-3.5 h-3.5" />
@@ -409,24 +420,37 @@ export default function HeroCarousel() {
                                                     <Button
                                                         variant="outline"
                                                         size="md"
-                                                        className="text-xs font-semibold px-4 py-2.5 bg-white/90 hover:bg-white text-brand-text border-brand-border hover:border-brand-primary/40"
+                                                        className="text-xs font-semibold px-4 py-2.5 bg-white/90 hover:bg-white text-brand-text border border-brand-border hover:border-brand-primary/50 rounded-brand"
                                                     >
                                                         {slide.secondaryCta.text}
                                                     </Button>
                                                 </Link>
                                             </div>
 
-                                            <div className="flex flex-col gap-2 pt-2 text-xs font-semibold text-slate-900">
+                                            <div className="flex flex-col gap-2 pt-2 text-xs font-semibold text-brand-text">
                                                 {slide.highlights.map((item, i) => {
                                                     const ItemIcon = item.icon;
                                                     return (
                                                         <div key={i} className="inline-flex items-center gap-2">
-                                                            <ItemIcon className="w-4 h-4 text-slate-950 shrink-0" />
+                                                            <ItemIcon className="w-4 h-4 text-brand-primary shrink-0" />
                                                             <span>{item.text}</span>
                                                         </div>
                                                     );
                                                 })}
                                             </div>
+                                        </div>
+                                    ) : (
+                                        <div className="h-[460px] w-full flex items-center justify-center overflow-hidden rounded-brand bg-brand-surface-muted/50 border border-brand-border shadow-xs">
+                                            <picture className="w-full h-full block">
+                                                <source srcSet={slide.imageWebp} type="image/webp" />
+                                                <img
+                                                    src={slide.imageJpg}
+                                                    alt={slide.alt}
+                                                    loading={index === 0 ? 'eager' : 'lazy'}
+                                                    decoding="async"
+                                                    className="w-full h-full object-cover"
+                                                />
+                                            </picture>
                                         </div>
                                     )}
                                 </div>
@@ -434,12 +458,11 @@ export default function HeroCarousel() {
                         </div>
 
                         {/* ========================================================
-                            MOBILE LAYOUT (< 768px)
-                            Vertical Stack: Clean photo top, clear text bottom
+                            MOBILE LAYOUT (Below 768px)
                            ======================================================== */}
-                        <div className="block md:hidden absolute inset-0 w-full h-full flex flex-col justify-between pt-3 pb-12 px-4 select-none">
-                            {/* Top Half: Person photo cleanly framed without text obstruction */}
-                            <div className="w-full h-48 sm:h-56 relative rounded-xl overflow-hidden shadow-sm shrink-0 bg-black/5">
+                        <div className="block md:hidden absolute inset-0 w-full h-full flex flex-col justify-between pt-3 pb-14 px-4 select-none">
+                            {/* Photo Area */}
+                            <div className="w-full h-52 sm:h-60 relative rounded-brand overflow-hidden shadow-xs shrink-0 border border-brand-border">
                                 <picture className="w-full h-full block">
                                     <source srcSet={slide.imageWebp} type="image/webp" />
                                     <img
@@ -454,27 +477,28 @@ export default function HeroCarousel() {
                                 </picture>
                             </div>
 
-                            {/* Bottom Half: High-contrast typography & CTAs */}
+                            {/* Text & CTAs */}
                             <div className="w-full flex-1 flex flex-col justify-center text-center items-center px-1 pt-3 pb-2">
-                                <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-bold tracking-wide uppercase border bg-white/85 border-slate-900/10 text-slate-900 mb-2 shadow-2xs">
-                                    <BadgeIcon className="w-3 h-3 text-slate-900" />
+                                <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-bold tracking-wide uppercase bg-white/90 border border-brand-border text-brand-primary mb-2 shadow-2xs">
+                                    <BadgeIcon className="w-3 h-3 text-brand-primary" />
                                     <span>{slide.badge.text}</span>
                                 </div>
 
-                                <h1 className="text-2xl sm:text-3xl font-black tracking-tight text-slate-950 leading-tight mb-2">
-                                    {slide.title}
+                                <h1 className="text-2xl sm:text-3xl font-black tracking-tight text-brand-text leading-tight mb-2">
+                                    <span>{slide.titlePrimary} </span>
+                                    <span className="text-brand-primary">{slide.titleAccent}</span>
                                 </h1>
 
-                                <p className="text-xs text-slate-800 font-medium leading-relaxed max-w-sm mb-3.5 line-clamp-2">
+                                <p className="text-xs text-brand-text-muted font-medium leading-relaxed max-w-sm mb-4 line-clamp-2">
                                     {slide.subtitle}
                                 </p>
 
-                                <div className="flex items-center justify-center gap-2.5 mb-3 w-full max-w-xs">
+                                <div className="flex items-center justify-center gap-2.5 mb-3.5 w-full max-w-xs">
                                     <Link href={slide.primaryCta.url} className="flex-1">
                                         <Button
                                             variant="primary"
                                             size="sm"
-                                            className="w-full justify-center gap-1.5 text-xs font-semibold py-2.5 bg-brand-primary hover:bg-brand-primary-hover text-white shadow-sm shadow-brand-primary/25"
+                                            className="w-full justify-center gap-1.5 text-xs font-semibold py-2.5 bg-brand-primary hover:bg-brand-primary-hover text-white shadow-sm shadow-brand-primary/25 rounded-brand"
                                         >
                                             <span>{slide.primaryCta.text}</span>
                                             <ArrowRight className="w-3 h-3" />
@@ -485,19 +509,19 @@ export default function HeroCarousel() {
                                         <Button
                                             variant="outline"
                                             size="sm"
-                                            className="w-full justify-center text-xs font-semibold py-2.5 bg-white/90 hover:bg-white text-brand-text border-brand-border hover:border-brand-primary/40 shadow-2xs"
+                                            className="w-full justify-center text-xs font-semibold py-2.5 bg-white hover:bg-brand-surface-muted text-brand-text border border-brand-border hover:border-brand-primary/50 shadow-2xs rounded-brand"
                                         >
                                             {slide.secondaryCta.text}
                                         </Button>
                                     </Link>
                                 </div>
 
-                                <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-1 text-[11px] font-semibold text-slate-900">
+                                <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-1 text-[11px] font-semibold text-brand-text">
                                     {slide.highlights.map((item, i) => {
                                         const ItemIcon = item.icon;
                                         return (
                                             <div key={i} className="inline-flex items-center gap-1.5">
-                                                <ItemIcon className="w-3.5 h-3.5 text-slate-950 shrink-0" />
+                                                <ItemIcon className="w-3.5 h-3.5 text-brand-primary shrink-0" />
                                                 <span>{item.text}</span>
                                             </div>
                                         );
@@ -514,27 +538,27 @@ export default function HeroCarousel() {
                 type="button"
                 onClick={prevSlide}
                 aria-label="Previous slide"
-                className="hidden md:flex absolute left-4 lg:left-6 top-1/2 -translate-y-1/2 z-30 w-11 h-11 rounded-full bg-white/85 hover:bg-white text-slate-900 shadow-md backdrop-blur-sm items-center justify-center transition-all hover:scale-110 active:scale-95 focus:outline-none focus:ring-2 focus:ring-slate-900"
+                className="hidden md:flex absolute left-4 lg:left-6 top-1/2 -translate-y-1/2 z-30 w-11 h-11 rounded-full bg-white/90 hover:bg-white text-brand-text border border-brand-border shadow-md backdrop-blur-sm items-center justify-center transition-all hover:scale-110 active:scale-95 focus:outline-none focus:ring-2 focus:ring-brand-primary"
             >
-                <ChevronLeft className="w-6 h-6" />
+                <ChevronLeft className="w-5 h-5 text-brand-secondary" />
             </button>
 
             <button
                 type="button"
                 onClick={nextSlide}
                 aria-label="Next slide"
-                className="hidden md:flex absolute right-4 lg:right-6 top-1/2 -translate-y-1/2 z-30 w-11 h-11 rounded-full bg-white/85 hover:bg-white text-slate-900 shadow-md backdrop-blur-sm items-center justify-center transition-all hover:scale-110 active:scale-95 focus:outline-none focus:ring-2 focus:ring-slate-900"
+                className="hidden md:flex absolute right-4 lg:right-6 top-1/2 -translate-y-1/2 z-30 w-11 h-11 rounded-full bg-white/90 hover:bg-white text-brand-text border border-brand-border shadow-md backdrop-blur-sm items-center justify-center transition-all hover:scale-110 active:scale-95 focus:outline-none focus:ring-2 focus:ring-brand-primary"
             >
-                <ChevronRight className="w-6 h-6" />
+                <ChevronRight className="w-5 h-5 text-brand-secondary" />
             </button>
 
-            {/* Mobile Navigation Chevrons (Positioned cleanly over photo area) */}
+            {/* Mobile Navigation Chevrons */}
             <div className="md:hidden absolute top-28 -translate-y-1/2 left-2 right-2 z-30 flex justify-between pointer-events-none">
                 <button
                     type="button"
                     onClick={prevSlide}
                     aria-label="Previous slide"
-                    className="pointer-events-auto w-8 h-8 rounded-full bg-white/80 hover:bg-white text-slate-900 shadow-sm flex items-center justify-center transition-transform active:scale-95"
+                    className="pointer-events-auto w-8 h-8 rounded-full bg-white/90 hover:bg-white text-brand-secondary border border-brand-border shadow-sm flex items-center justify-center transition-transform active:scale-95"
                 >
                     <ChevronLeft className="w-4 h-4" />
                 </button>
@@ -542,14 +566,14 @@ export default function HeroCarousel() {
                     type="button"
                     onClick={nextSlide}
                     aria-label="Next slide"
-                    className="pointer-events-auto w-8 h-8 rounded-full bg-white/80 hover:bg-white text-slate-900 shadow-sm flex items-center justify-center transition-transform active:scale-95"
+                    className="pointer-events-auto w-8 h-8 rounded-full bg-white/90 hover:bg-white text-brand-secondary border border-brand-border shadow-sm flex items-center justify-center transition-transform active:scale-95"
                 >
                     <ChevronRight className="w-4 h-4" />
                 </button>
             </div>
 
             {/* Bottom Pagination Dots */}
-            <div className="absolute bottom-3 sm:bottom-6 left-1/2 -translate-x-1/2 z-30 flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-950/35 backdrop-blur-md border border-white/20 shadow-sm">
+            <div className="absolute bottom-4 sm:bottom-6 left-1/2 -translate-x-1/2 z-30 flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/80 backdrop-blur-md border border-brand-border shadow-sm">
                 {SLIDES.map((slide, index) => {
                     const isActive = index === current;
                     return (
@@ -559,7 +583,7 @@ export default function HeroCarousel() {
                             onClick={() => setCurrent(index)}
                             aria-label={`Go to slide ${index + 1}`}
                             className={`h-2 rounded-full transition-all duration-300 ${
-                                isActive ? 'w-6 bg-brand-primary shadow-xs' : 'w-2 bg-white/70 hover:bg-white'
+                                isActive ? 'w-6 bg-brand-primary shadow-xs' : 'w-2 bg-brand-border hover:bg-brand-primary/50'
                             }`}
                         />
                     );

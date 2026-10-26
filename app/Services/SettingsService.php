@@ -196,7 +196,7 @@ class SettingsService
             '--brand-surface-accent' => '#FCE4EC',
             '--brand-text' => '#19121B',
             '--brand-text-muted' => '#6B5B66',
-            '--brand-border' => '#F0DCE5',
+            '--brand-border' => 'rgba(240, 220, 229, 0.5)',
             '--brand-radius' => $radius,
         ];
     }

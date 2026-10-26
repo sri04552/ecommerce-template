@@ -16,15 +16,6 @@ export default function Category({ category, subcategories = [], products, categ
             <Head title={`${category.name} — Category`} />
 
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
-                {/* Breadcrumbs */}
-                <div className="text-xs text-brand-text-muted mb-4 flex items-center gap-1.5">
-                    <Link href="/" className="hover:text-brand-text">Home</Link>
-                    <span>/</span>
-                    <Link href="/products" className="hover:text-brand-text">Catalog</Link>
-                    <span>/</span>
-                    <span className="font-semibold text-brand-secondary">{category.name}</span>
-                </div>
-
                 {/* Category Banner / Header */}
                 <div className="bg-brand-surface border border-brand-border rounded-brand p-5 sm:p-8 mb-8">
                     <div className="max-w-2xl">

@@ -35,16 +35,9 @@ export default function Index({ products, categories = [], selectedCategory = nu
             <Head title={filters.search ? `Search: "${filters.search}" — Catalog` : 'All Products — Catalog'} />
 
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
-                {/* Header & Breadcrumb */}
+                {/* Header */}
                 <div className="flex flex-col md:flex-row md:items-end justify-between pb-6 border-b border-brand-border gap-4">
                     <div>
-                        <div className="text-xs text-brand-text-muted mb-1 flex items-center gap-1.5">
-                            <Link href="/" className="hover:text-brand-text">Home</Link>
-                            <span>/</span>
-                            <span className="font-semibold text-brand-secondary">
-                                {selectedCategory ? selectedCategory.name : 'All Products'}
-                            </span>
-                        </div>
                         <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-brand-secondary">
                             {selectedCategory ? selectedCategory.name : 'Product Catalog'}
                         </h1>

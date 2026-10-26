@@ -128,15 +128,4 @@ class CatalogController extends Controller
             'categories' => $this->catalogService->getVisibleCategories(),
         ]);
     }
-
-    /**
-     * Display the About Us brand story & trust page.
-     */
-    public function about(Request $request): Response
-    {
-        return Inertia::render('About', [
-            'storeName' => config('ecommerce.store_name', 'Ecommerce Store'),
-            'categories' => $this->catalogService->getVisibleCategories(),
-        ]);
-    }
 }

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link, usePage, router } from '@inertiajs/react';
-import { ShoppingBag, Search, User, Menu, X, Layers, ChevronDown, LogOut, ShieldCheck, MapPin, Truck, Heart, Home, Info } from 'lucide-react';
+import { ShoppingBag, Search, User, Menu, X, Layers, ChevronDown, LogOut, ShieldCheck, MapPin, Truck, Heart, Home } from 'lucide-react';
 import { getCartCount, onCartChange } from '../utils/cart';
 import { getWishlistCount } from '../utils/wishlist';
 
@@ -97,9 +97,6 @@ export default function StorefrontLayout({ children, categories = [] }) {
                             </Link>
                             <Link href="/products" className={`transition-colors ${currentUrl.startsWith('/products') ? 'text-brand-primary' : 'hover:text-brand-primary'}`}>
                                 All Products
-                            </Link>
-                            <Link href="/about" className={`transition-colors ${currentUrl === '/about' ? 'text-brand-primary' : 'hover:text-brand-primary'}`}>
-                                About Us
                             </Link>
                         </nav>
 
@@ -447,17 +444,6 @@ export default function StorefrontLayout({ children, categories = [] }) {
                                     <Truck className="w-4 h-4 text-slate-500" />
                                     <span>Track Live Order</span>
                                 </Link>
-
-                                <Link
-                                    href="/about"
-                                    onClick={() => setMobileMenuOpen(false)}
-                                    className={`flex items-center gap-3 px-3 py-2 rounded-lg text-xs font-semibold transition-colors ${
-                                        currentUrl === '/about' ? 'bg-brand-primary/10 text-brand-primary font-bold' : 'text-slate-700 hover:bg-slate-50'
-                                    }`}
-                                >
-                                    <Info className="w-4 h-4" />
-                                    <span>About Us & Our Story</span>
-                                </Link>
                             </div>
 
                             {/* Categories List */}
@@ -553,11 +539,6 @@ export default function StorefrontLayout({ children, categories = [] }) {
                                 <li>
                                     <Link href="/products" className="hover:text-brand-accent transition-colors">
                                         All Products
-                                    </Link>
-                                </li>
-                                <li>
-                                    <Link href="/about" className="hover:text-brand-accent transition-colors">
-                                        About Our Story
                                     </Link>
                                 </li>
                                 <li>
