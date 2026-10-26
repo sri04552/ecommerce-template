@@ -314,9 +314,9 @@ export default function StorefrontLayout({ children, categories = [] }) {
             <footer className="bg-slate-950 text-slate-300 border-t border-slate-800 mt-0">
                 {/* Footer Main Links */}
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-                    <div className="grid grid-cols-1 md:grid-cols-4 gap-8 pb-10 border-b border-slate-800">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:flex lg:flex-row lg:justify-between lg:items-start gap-8 lg:gap-12 pb-10 border-b border-slate-800">
                         {/* Column 1: Store Bio */}
-                        <div className="space-y-4">
+                        <div className="w-full lg:max-w-[280px] space-y-4">
                             <div className="flex items-center gap-2.5">
                                 <div className="w-8 h-8 rounded-lg bg-indigo-600 flex items-center justify-center text-white font-bold text-sm shadow-md">
                                     <Layers className="w-4 h-4" />
@@ -333,7 +333,7 @@ export default function StorefrontLayout({ children, categories = [] }) {
                         </div>
 
                         {/* Column 2: Quick Links */}
-                        <div className="space-y-3">
+                        <div className="w-full lg:w-auto space-y-3">
                             <h4 className="font-bold text-xs uppercase tracking-wider text-white">
                                 Shop Categories
                             </h4>
@@ -346,6 +346,11 @@ export default function StorefrontLayout({ children, categories = [] }) {
                                 <li>
                                     <Link href="/products?featured=1" className="hover:text-indigo-400 transition-colors">
                                         Today's Deals & Offers
+                                    </Link>
+                                </li>
+                                <li>
+                                    <Link href="/wishlist" className="hover:text-indigo-400 transition-colors">
+                                        My Wishlist
                                     </Link>
                                 </li>
                                 <li>
@@ -362,7 +367,7 @@ export default function StorefrontLayout({ children, categories = [] }) {
                         </div>
 
                         {/* Column 3: Customer Care & Returns */}
-                        <div className="space-y-3">
+                        <div className="w-full lg:w-auto space-y-3">
                             <h4 className="font-bold text-xs uppercase tracking-wider text-white">
                                 Customer Care
                             </h4>
@@ -391,7 +396,7 @@ export default function StorefrontLayout({ children, categories = [] }) {
                         </div>
 
                         {/* Column 4: Payment Methods & Trust */}
-                        <div className="space-y-3">
+                        <div className="w-full lg:max-w-[280px] space-y-3">
                             <h4 className="font-bold text-xs uppercase tracking-wider text-white">
                                 100% Secure Payments
                             </h4>
