@@ -192,7 +192,7 @@ export default function HeroCarousel() {
     return (
         <section
             aria-label="Promotional Hero Showcase"
-            className="relative w-full overflow-hidden select-none bg-slate-900 transition-colors duration-700 min-h-[560px] md:min-h-[580px] lg:h-[100dvh]"
+            className="relative w-full overflow-hidden select-none bg-slate-900 transition-colors duration-700 min-h-[520px] md:min-h-[580px] lg:h-[100dvh]"
             onMouseEnter={() => setIsPaused(true)}
             onMouseLeave={() => setIsPaused(false)}
             onTouchStart={handleTouchStart}
@@ -437,9 +437,9 @@ export default function HeroCarousel() {
                             MOBILE LAYOUT (< 768px)
                             Vertical Stack: Clean photo top, clear text bottom
                            ======================================================== */}
-                        <div className="block md:hidden absolute inset-0 w-full h-full flex flex-col justify-between pt-3 pb-14 px-4 overflow-y-auto">
+                        <div className="block md:hidden absolute inset-0 w-full h-full flex flex-col justify-between pt-3 pb-12 px-4 select-none">
                             {/* Top Half: Person photo cleanly framed without text obstruction */}
-                            <div className="w-full h-52 sm:h-64 relative rounded-xl overflow-hidden shadow-sm shrink-0 bg-black/5">
+                            <div className="w-full h-48 sm:h-56 relative rounded-xl overflow-hidden shadow-sm shrink-0 bg-black/5">
                                 <picture className="w-full h-full block">
                                     <source srcSet={slide.imageWebp} type="image/webp" />
                                     <img

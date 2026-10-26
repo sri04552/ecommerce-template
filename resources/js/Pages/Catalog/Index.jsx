@@ -54,24 +54,24 @@ export default function Index({ products, categories = [], selectedCategory = nu
                     </div>
 
                     {/* Sorting & Search Controls */}
-                    <div className="flex items-center gap-3">
-                        <form onSubmit={handleSearchSubmit} className="relative">
+                    <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 sm:gap-3 w-full sm:w-auto">
+                        <form onSubmit={handleSearchSubmit} className="relative flex-1 sm:w-60">
                             <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-brand-text-muted" />
                             <input
                                 type="search"
                                 value={searchTerm}
                                 onChange={(e) => setSearchTerm(e.target.value)}
-                                placeholder="Search in catalog..."
-                                className="pl-9 pr-4 py-1.5 text-xs bg-brand-surface border border-brand-border rounded-brand text-brand-text placeholder-brand-text-muted focus:outline-none focus:ring-1 focus:ring-brand-primary w-48 sm:w-60"
+                                placeholder="Search products..."
+                                className="w-full pl-9 pr-4 py-2 text-xs bg-brand-surface border border-brand-border rounded-xl text-brand-text placeholder-brand-text-muted focus:outline-none focus:ring-1 focus:ring-brand-primary"
                             />
                         </form>
 
-                        <div className="flex items-center gap-1.5">
+                        <div className="flex items-center gap-1.5 shrink-0">
                             <SlidersHorizontal className="w-4 h-4 text-brand-text-muted hidden sm:inline" />
                             <select
                                 value={filters.sort || ''}
                                 onChange={handleSortChange}
-                                className="px-3 py-1.5 text-xs bg-brand-surface border border-brand-border rounded-brand text-brand-text focus:outline-none focus:ring-1 focus:ring-brand-primary"
+                                className="w-full sm:w-auto px-3 py-2 text-xs bg-brand-surface border border-brand-border rounded-xl text-brand-text focus:outline-none focus:ring-1 focus:ring-brand-primary"
                             >
                                 <option value="">Sort: Newest</option>
                                 <option value="price_asc">Price: Low to High</option>
@@ -79,6 +79,35 @@ export default function Index({ products, categories = [], selectedCategory = nu
                                 <option value="name_asc">Name: A to Z</option>
                             </select>
                         </div>
+                    </div>
+                </div>
+
+                {/* Mobile & Tablet Category Quick Filter Bar (Horizontal Scrollable Chips) */}
+                <div className="lg:hidden pt-4 -mx-4 px-4 sm:mx-0 sm:px-0">
+                    <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none text-xs">
+                        <Link
+                            href="/products"
+                            className={`shrink-0 px-3.5 py-1.5 rounded-full font-semibold transition-colors ${
+                                !filters.category
+                                    ? 'bg-brand-primary text-white shadow-xs'
+                                    : 'bg-white border border-slate-200 text-slate-700 hover:bg-slate-50'
+                            }`}
+                        >
+                            All Categories
+                        </Link>
+                        {categories.map((cat) => (
+                            <Link
+                                key={cat.id}
+                                href={`/products?category=${cat.id}`}
+                                className={`shrink-0 px-3.5 py-1.5 rounded-full font-medium transition-colors ${
+                                    Number(filters.category) === cat.id
+                                        ? 'bg-brand-primary text-white font-semibold shadow-xs'
+                                        : 'bg-white border border-slate-200 text-slate-700 hover:bg-slate-50'
+                                }`}
+                            >
+                                {cat.name}
+                            </Link>
+                        ))}
                     </div>
                 </div>
 
@@ -113,9 +142,9 @@ export default function Index({ products, categories = [], selectedCategory = nu
                 )}
 
                 {/* Main Content: Categories Sidebar & Product Grid */}
-                <div className="grid grid-cols-1 lg:grid-cols-4 gap-8 pt-8">
-                    {/* Category Filter Sidebar (Sticky with internal scroll) */}
-                    <aside className="lg:col-span-1 space-y-6">
+                <div className="grid grid-cols-1 lg:grid-cols-4 gap-8 pt-6 sm:pt-8">
+                    {/* Category Filter Sidebar - Hidden on mobile/tablet because horizontal quick bar is used */}
+                    <aside className="hidden lg:block lg:col-span-1 space-y-6">
                         <div className="bg-brand-surface border border-brand-border rounded-brand p-5 lg:sticky lg:top-24 lg:max-h-[calc(100vh-7rem)] overflow-y-auto shadow-2xs">
                             <div className="flex items-center justify-between pb-2 mb-3 border-b border-brand-border/60">
                                 <h3 className="font-bold text-xs uppercase tracking-wider text-brand-secondary">
@@ -154,10 +183,10 @@ export default function Index({ products, categories = [], selectedCategory = nu
                         </div>
                     </aside>
 
-                    {/* Products Grid */}
+                    {/* Products Grid - 2 columns on mobile, 2/3 on tablet, 3 on desktop */}
                     <div className="lg:col-span-3 space-y-8">
                         {products.data.length > 0 ? (
-                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-3 sm:gap-6">
                                 {products.data.map((product) => (
                                     <ProductCard key={product.id} product={product} />
                                 ))}

@@ -438,8 +438,8 @@ export default function TrackOrder({ order, queriedOrderNumber, categories = [] 
 
                 {/* Return / Exchange Modal with UPI / Bank Account Input */}
                 {returnModalOpen && (
-                    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs">
-                        <div className="bg-white rounded-2xl shadow-2xl max-w-lg w-full p-6 max-h-[90vh] overflow-y-auto">
+                    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 bg-black/60 backdrop-blur-xs">
+                        <div className="bg-white rounded-t-2xl sm:rounded-2xl shadow-2xl max-w-lg w-full p-5 sm:p-6 max-h-[90vh] overflow-y-auto">
                             <div className="flex items-center justify-between pb-4 border-b border-slate-100">
                                 <div className="flex items-center gap-2">
                                     <RotateCcw className="w-5 h-5 text-indigo-600" />

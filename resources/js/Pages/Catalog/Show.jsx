@@ -905,13 +905,43 @@ export default function Show({ product, relatedProducts = [], categories = [] })
                             </Link>
                         </div>
 
-                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6">
                             {relatedProducts.map((p) => (
                                 <ProductCard key={p.id} product={p} />
                             ))}
                         </div>
                     </div>
                 )}
+
+                {/* Mobile Sticky Add-to-Cart Purchase Bar */}
+                <div className="lg:hidden fixed bottom-14 left-0 right-0 z-30 bg-white/95 backdrop-blur-md border-t border-slate-200 px-4 py-2.5 flex items-center justify-between shadow-lg">
+                    <div className="max-w-[50%]">
+                        <div className="flex items-baseline gap-1.5 flex-wrap">
+                            <span className="font-extrabold text-base text-slate-900">
+                                {formatPrice(displayPrice)}
+                            </span>
+                            {hasDiscount && (
+                                <span className="text-xs text-slate-400 line-through">
+                                    {formatPrice(activePrice)}
+                                </span>
+                            )}
+                        </div>
+                        <p className="text-[10px] text-emerald-600 font-semibold truncate">
+                            {inStock ? (product.delivery_fee > 0 ? `+${formatPrice(product.delivery_fee)} Delivery` : 'Free Delivery') : 'Out of Stock'}
+                        </p>
+                    </div>
+
+                    <Button
+                        variant="primary"
+                        size="sm"
+                        disabled={!inStock}
+                        onClick={handleAddToCart}
+                        className="gap-1.5 px-5 py-2.5 font-bold rounded-xl shadow-md shrink-0"
+                    >
+                        <ShoppingBag className="w-4 h-4" />
+                        <span>{inStock ? 'Add to Cart' : 'Sold Out'}</span>
+                    </Button>
+                </div>
             </div>
         </StorefrontLayout>
     );

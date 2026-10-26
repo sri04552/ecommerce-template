@@ -26,13 +26,13 @@ export default function Category({ category, subcategories = [], products, categ
                 </div>
 
                 {/* Category Banner / Header */}
-                <div className="bg-brand-surface border border-brand-border rounded-brand p-8 mb-8">
+                <div className="bg-brand-surface border border-brand-border rounded-brand p-5 sm:p-8 mb-8">
                     <div className="max-w-2xl">
-                        <h1 className="text-3xl font-extrabold tracking-tight text-brand-secondary">
+                        <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-brand-secondary">
                             {category.name}
                         </h1>
                         {category.description && (
-                            <p className="mt-2 text-sm text-brand-text-muted leading-relaxed">
+                            <p className="mt-2 text-xs sm:text-sm text-brand-text-muted leading-relaxed">
                                 {category.description}
                             </p>
                         )}
@@ -40,7 +40,7 @@ export default function Category({ category, subcategories = [], products, categ
 
                     {/* Subcategories Pills */}
                     {subcategories.length > 0 && (
-                        <div className="mt-6 pt-6 border-t border-brand-border flex flex-wrap gap-2">
+                        <div className="mt-4 sm:mt-6 pt-4 sm:pt-6 border-t border-brand-border flex flex-wrap gap-2">
                             <span className="text-xs font-semibold text-brand-text-muted self-center mr-2">
                                 Subcategories:
                             </span>
@@ -58,7 +58,7 @@ export default function Category({ category, subcategories = [], products, categ
                 </div>
 
                 {/* Controls Bar */}
-                <div className="flex items-center justify-between pb-6 mb-6 border-b border-brand-border">
+                <div className="flex items-center justify-between pb-4 sm:pb-6 mb-6 border-b border-brand-border">
                     <span className="text-xs text-brand-text-muted">
                         Showing {products.total} {products.total === 1 ? 'product' : 'products'}
                     </span>
@@ -80,7 +80,7 @@ export default function Category({ category, subcategories = [], products, categ
 
                 {/* Product Grid */}
                 {products.data.length > 0 ? (
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6">
                         {products.data.map((product) => (
                             <ProductCard key={product.id} product={product} />
                         ))}

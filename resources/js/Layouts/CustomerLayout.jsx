@@ -74,36 +74,36 @@ export default function CustomerLayout({ title, subtitle, children }) {
                 </div>
 
                 {/* Main Content Layout */}
-                <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
-                    {/* Navigation Sidebar */}
+                <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 lg:gap-8">
+                    {/* Navigation Sidebar / Horizontal Tabs on Mobile */}
                     <aside className="lg:col-span-1">
-                        <nav className="space-y-1.5 bg-brand-surface border border-brand-border rounded-brand p-2">
+                        <nav className="flex lg:flex-col gap-2 lg:gap-0 lg:space-y-1.5 overflow-x-auto lg:overflow-visible pb-2 lg:pb-0 bg-brand-surface border border-brand-border rounded-brand p-2 scrollbar-none">
                             {navLinks.map((item) => {
                                 const Icon = item.icon;
                                 return (
                                     <Link
                                         key={item.name}
                                         href={item.href}
-                                        className={`flex items-center gap-3 px-3.5 py-2.5 text-sm font-medium rounded-brand transition-colors ${
+                                        className={`flex shrink-0 items-center gap-2.5 px-3.5 py-2.5 text-sm font-medium rounded-brand whitespace-nowrap transition-colors ${
                                             item.active
                                                 ? 'bg-brand-primary text-white shadow-xs'
                                                 : 'text-brand-text-muted hover:text-brand-text hover:bg-brand-surface-muted'
                                         }`}
                                     >
-                                        <Icon className="w-4 h-4" />
+                                        <Icon className="w-4 h-4 shrink-0" />
                                         <span>{item.name}</span>
                                     </Link>
                                 );
                             })}
 
-                            <div className="pt-2 mt-2 border-t border-brand-border">
+                            <div className="lg:pt-2 lg:mt-2 lg:border-t lg:border-brand-border shrink-0 flex items-center">
                                 <Link
                                     href="/logout"
                                     method="post"
                                     as="button"
-                                    className="w-full flex items-center gap-3 px-3.5 py-2.5 text-sm font-medium rounded-brand text-rose-600 hover:bg-rose-50 transition-colors text-left"
+                                    className="flex shrink-0 items-center gap-2.5 px-3.5 py-2.5 text-sm font-medium rounded-brand text-rose-600 hover:bg-rose-50 transition-colors whitespace-nowrap text-left"
                                 >
-                                    <LogOut className="w-4 h-4" />
+                                    <LogOut className="w-4 h-4 shrink-0" />
                                     <span>Sign Out</span>
                                 </Link>
                             </div>

@@ -104,7 +104,7 @@ export default function Wishlist({ products, categories }) {
                         </Link>
                     </div>
                 ) : (
-                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mt-6">
+                    <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-6 mt-6">
                         {items.map((product) => {
                             const image = product.images?.[0]?.image_path || product.primary_image?.image_path || '/placeholder-product.svg';
                             const price = parseFloat(product.sale_price || product.base_price || product.price || 0);
@@ -125,14 +125,14 @@ export default function Wishlist({ products, categories }) {
                                         <button
                                             type="button"
                                             onClick={() => handleRemove(product.id)}
-                                            className="absolute top-2.5 right-2.5 p-1.5 rounded-full bg-white/90 text-rose-500 hover:bg-rose-50 shadow-xs transition-colors"
+                                            className="absolute top-2 right-2 p-1.5 rounded-full bg-white/90 text-rose-500 hover:bg-rose-50 shadow-xs transition-colors"
                                             title="Remove from Wishlist"
                                         >
-                                            <Trash2 className="w-4 h-4" />
+                                            <Trash2 className="w-3.5 h-3.5" />
                                         </button>
                                     </div>
 
-                                    <div className="p-4 flex-1 flex flex-col justify-between">
+                                    <div className="p-3 sm:p-4 flex-1 flex flex-col justify-between">
                                         <div>
                                             <Link
                                                 href={`/products/${product.slug}`}
@@ -140,8 +140,8 @@ export default function Wishlist({ products, categories }) {
                                             >
                                                 {product.name}
                                             </Link>
-                                            <div className="mt-2 flex items-baseline gap-2">
-                                                <span className="font-extrabold text-base text-slate-900 font-mono">
+                                            <div className="mt-1.5 flex items-baseline gap-2">
+                                                <span className="font-extrabold text-sm sm:text-base text-slate-900 font-mono">
                                                     ₹{price.toFixed(2)}
                                                 </span>
                                             </div>
@@ -149,7 +149,7 @@ export default function Wishlist({ products, categories }) {
 
                                         <Button
                                             onClick={() => handleAddToCart(product)}
-                                            className="w-full mt-4 bg-brand-primary hover:bg-brand-primary/90 text-white text-xs font-bold py-2 rounded-lg flex items-center justify-center gap-1.5 shadow-xs"
+                                            className="w-full mt-3 sm:mt-4 bg-brand-primary hover:bg-brand-primary/90 text-white text-[11px] sm:text-xs font-bold py-2 rounded-lg flex items-center justify-center gap-1 sm:gap-1.5 shadow-xs"
                                         >
                                             <ShoppingBag className="w-3.5 h-3.5" />
                                             <span>Move to Cart</span>

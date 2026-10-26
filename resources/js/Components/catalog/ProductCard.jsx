@@ -107,15 +107,15 @@ export default function ProductCard({ product }) {
             </div>
 
             {/* Product Content Details */}
-            <div className="p-4 flex-1 flex flex-col justify-between">
+            <div className="p-3 sm:p-4 flex-1 flex flex-col justify-between">
                 <div>
                     {product.category && (
-                        <p className="text-[11px] font-semibold uppercase tracking-wider text-brand-primary mb-1">
+                        <p className="text-[10px] sm:text-[11px] font-semibold uppercase tracking-wider text-brand-primary mb-1 truncate">
                             {product.category.name}
                         </p>
                     )}
 
-                    <h3 className="font-semibold text-sm text-brand-secondary line-clamp-2 group-hover:text-brand-primary transition-colors">
+                    <h3 className="font-semibold text-xs sm:text-sm text-brand-secondary line-clamp-2 group-hover:text-brand-primary transition-colors leading-snug">
                         <Link href={`/products/${product.slug}`}>
                             <span aria-hidden="true" className="absolute inset-0 z-0"></span>
                             {product.name}
@@ -123,40 +123,40 @@ export default function ProductCard({ product }) {
                     </h3>
 
                     {product.short_description && (
-                        <p className="mt-1 text-xs text-brand-text-muted line-clamp-2 leading-relaxed">
+                        <p className="mt-1 text-[11px] sm:text-xs text-brand-text-muted line-clamp-2 leading-relaxed hidden sm:block">
                             {product.short_description}
                         </p>
                     )}
 
-                    <div className="mt-2 flex items-center justify-between text-[10px]">
+                    <div className="mt-2 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-0.5 text-[9px] sm:text-[10px]">
                         {product.delivery_fee && parseFloat(product.delivery_fee) > 0 ? (
-                            <span className="text-slate-500 font-medium">
+                            <span className="text-slate-500 font-medium truncate">
                                 +{formatPrice(product.delivery_fee)} Delivery
                             </span>
                         ) : (
-                            <span className="text-emerald-600 font-semibold">
+                            <span className="text-emerald-600 font-semibold truncate">
                                 Free Delivery
                             </span>
                         )}
-                        <span className="text-slate-400 font-medium">
-                            {product.cod_available ? 'COD Available' : 'Prepaid Only'}
+                        <span className="text-slate-400 font-medium truncate">
+                            {product.cod_available ? 'COD' : 'Prepaid'}
                         </span>
                     </div>
                 </div>
 
-                <div className="mt-4 pt-3 border-t border-brand-border flex items-center justify-between z-10 relative">
-                    <div className="flex items-baseline gap-1.5 flex-wrap">
-                        <span className="text-base font-bold text-brand-secondary">
+                <div className="mt-3 sm:mt-4 pt-2.5 sm:pt-3 border-t border-brand-border flex items-center justify-between z-10 relative">
+                    <div className="flex items-baseline gap-1 sm:gap-1.5 flex-wrap">
+                        <span className="text-sm sm:text-base font-bold text-brand-secondary">
                             {formatPrice(displayPrice)}
                         </span>
                         {hasDiscount && (
                             <>
-                                <span className="text-xs text-brand-text-muted line-through">
+                                <span className="text-[10px] sm:text-xs text-brand-text-muted line-through">
                                     {formatPrice(originalPrice)}
                                 </span>
                                 {discountPercent && (
-                                    <span className="text-[11px] font-bold text-emerald-600">
-                                        {discountPercent}% off
+                                    <span className="text-[10px] sm:text-[11px] font-bold text-emerald-600">
+                                        {discountPercent}%
                                     </span>
                                 )}
                             </>
@@ -165,7 +165,7 @@ export default function ProductCard({ product }) {
 
                     <Link
                         href={`/products/${product.slug}`}
-                        className="text-xs font-semibold text-brand-primary hover:text-brand-primary-hover transition-colors"
+                        className="text-[11px] sm:text-xs font-semibold text-brand-primary hover:text-brand-primary-hover transition-colors shrink-0"
                     >
                         View &rarr;
                     </Link>

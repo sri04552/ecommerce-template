@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link, usePage, router } from '@inertiajs/react';
-import { ShoppingBag, Search, User, Menu, X, Layers, ChevronDown, LogOut, ShieldCheck, MapPin, RotateCcw, Truck, CreditCard, Heart } from 'lucide-react';
+import { ShoppingBag, Search, User, Menu, X, Layers, ChevronDown, LogOut, ShieldCheck, MapPin, RotateCcw, Truck, CreditCard, Heart, Home, Info } from 'lucide-react';
 import { getCartCount, onCartChange } from '../utils/cart';
 import { getWishlistCount } from '../utils/wishlist';
 
@@ -12,6 +12,7 @@ export default function StorefrontLayout({ children, categories = [] }) {
     const [wishlistCount, setWishlistCount] = useState(0);
     const { auth, storeSettings } = usePage().props;
     const user = auth?.user;
+    const currentUrl = usePage().url;
 
     useEffect(() => {
         setCartCount(getCartCount());
@@ -66,13 +67,16 @@ export default function StorefrontLayout({ children, categories = [] }) {
                             </span>
                         </Link>
 
-                        {/* Desktop Navigation Links (Home and All Products only) */}
+                        {/* Desktop Navigation Links */}
                         <nav className="hidden md:flex items-center gap-8 text-sm font-semibold text-brand-text-muted">
-                            <Link href="/" className="hover:text-brand-primary transition-colors">
+                            <Link href="/" className={`transition-colors ${currentUrl === '/' ? 'text-brand-primary' : 'hover:text-brand-primary'}`}>
                                 Home
                             </Link>
-                            <Link href="/products" className="hover:text-brand-primary transition-colors">
+                            <Link href="/products" className={`transition-colors ${currentUrl.startsWith('/products') ? 'text-brand-primary' : 'hover:text-brand-primary'}`}>
                                 All Products
+                            </Link>
+                            <Link href="/about" className={`transition-colors ${currentUrl === '/about' ? 'text-brand-primary' : 'hover:text-brand-primary'}`}>
+                                About Us
                             </Link>
                         </nav>
 
@@ -233,82 +237,231 @@ export default function StorefrontLayout({ children, categories = [] }) {
                     </div>
                 </div>
 
-                {/* Mobile Navigation Dropdown (Home and All Products only) */}
+                {/* Mobile Navigation Drawer & Backdrop */}
                 {mobileMenuOpen && (
-                    <div className="md:hidden border-b border-brand-border bg-brand-surface px-4 pt-3 pb-5 space-y-3">
-                        <form onSubmit={handleSearch} className="relative mb-3">
-                            <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-brand-text-muted" />
-                            <input
-                                type="search"
-                                value={searchQuery}
-                                onChange={(e) => setSearchQuery(e.target.value)}
-                                placeholder="Search products..."
-                                className="w-full pl-9 pr-4 py-2 text-xs bg-brand-surface-muted border border-brand-border rounded-brand text-brand-text focus:outline-none focus:ring-1 focus:ring-brand-primary"
-                            />
-                        </form>
+                    <>
+                        {/* Overlay backdrop */}
+                        <div
+                            className="fixed inset-0 bg-black/60 z-40 backdrop-blur-xs md:hidden"
+                            onClick={() => setMobileMenuOpen(false)}
+                        />
 
-                        <Link
-                            href="/"
-                            onClick={() => setMobileMenuOpen(false)}
-                            className="block py-2 text-sm font-semibold text-brand-text hover:text-brand-primary"
-                        >
-                            Home
-                        </Link>
-                        <Link
-                            href="/products"
-                            onClick={() => setMobileMenuOpen(false)}
-                            className="block py-2 text-sm font-semibold text-brand-text hover:text-brand-primary"
-                        >
-                            All Products
-                        </Link>
-                        <Link
-                            href="/wishlist"
-                            onClick={() => setMobileMenuOpen(false)}
-                            className="flex items-center justify-between py-2 text-sm font-semibold text-brand-text hover:text-rose-500"
-                        >
-                            <span>My Wishlist</span>
-                            {wishlistCount > 0 && (
-                                <span className="px-2 py-0.5 rounded-full bg-rose-500 text-white text-[10px] font-bold">
-                                    {wishlistCount}
-                                </span>
-                            )}
-                        </Link>
+                        {/* Slide-down Drawer Panel */}
+                        <div className="md:hidden fixed top-16 left-0 right-0 max-h-[calc(100vh-4rem)] overflow-y-auto bg-brand-surface z-50 border-b border-brand-border px-5 py-5 space-y-4 shadow-2xl animate-fadeIn">
+                            <form onSubmit={handleSearch} className="relative">
+                                <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-brand-text-muted" />
+                                <input
+                                    type="search"
+                                    value={searchQuery}
+                                    onChange={(e) => setSearchQuery(e.target.value)}
+                                    placeholder="Search products, brands, essentials..."
+                                    className="w-full pl-9 pr-4 py-2.5 text-xs bg-brand-surface-muted border border-brand-border rounded-xl text-brand-text focus:outline-none focus:ring-2 focus:ring-brand-primary"
+                                />
+                            </form>
 
-                        <div className="pt-3 border-t border-brand-border">
-                            {user ? (
-                                <>
-                                    <Link
-                                        href="/account"
-                                        onClick={() => setMobileMenuOpen(false)}
-                                        className="block py-2 text-sm font-semibold text-brand-primary"
-                                    >
-                                        My Account ({user.name})
-                                    </Link>
-                                    <Link
-                                        href="/logout"
-                                        method="post"
-                                        as="button"
-                                        className="block py-1.5 text-sm text-rose-600 font-medium"
-                                    >
-                                        Sign Out
-                                    </Link>
-                                </>
-                            ) : (
+                            <nav className="space-y-1">
                                 <Link
-                                    href="/login"
+                                    href="/"
                                     onClick={() => setMobileMenuOpen(false)}
-                                    className="block py-2 text-sm font-semibold text-brand-primary"
+                                    className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-semibold transition-colors ${
+                                        currentUrl === '/' ? 'bg-brand-primary/10 text-brand-primary' : 'text-slate-700 hover:bg-slate-50'
+                                    }`}
                                 >
-                                    Sign In / Register
+                                    <Home className="w-4 h-4" />
+                                    <span>Home</span>
                                 </Link>
-                            )}
+
+                                <Link
+                                    href="/products"
+                                    onClick={() => setMobileMenuOpen(false)}
+                                    className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-semibold transition-colors ${
+                                        currentUrl.startsWith('/products') ? 'bg-brand-primary/10 text-brand-primary' : 'text-slate-700 hover:bg-slate-50'
+                                    }`}
+                                >
+                                    <ShoppingBag className="w-4 h-4" />
+                                    <span>All Products</span>
+                                </Link>
+
+                                <Link
+                                    href="/about"
+                                    onClick={() => setMobileMenuOpen(false)}
+                                    className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-semibold transition-colors ${
+                                        currentUrl === '/about' ? 'bg-brand-primary/10 text-brand-primary' : 'text-slate-700 hover:bg-slate-50'
+                                    }`}
+                                >
+                                    <Info className="w-4 h-4" />
+                                    <span>About Us & Our Story</span>
+                                </Link>
+
+                                <Link
+                                    href="/wishlist"
+                                    onClick={() => setMobileMenuOpen(false)}
+                                    className="flex items-center justify-between px-3 py-2.5 rounded-lg text-sm font-semibold text-slate-700 hover:bg-slate-50"
+                                >
+                                    <div className="flex items-center gap-3">
+                                        <Heart className="w-4 h-4 text-rose-500" />
+                                        <span>My Wishlist</span>
+                                    </div>
+                                    {wishlistCount > 0 && (
+                                        <span className="px-2 py-0.5 rounded-full bg-rose-500 text-white text-[10px] font-bold">
+                                            {wishlistCount}
+                                        </span>
+                                    )}
+                                </Link>
+
+                                <Link
+                                    href="/cart"
+                                    onClick={() => setMobileMenuOpen(false)}
+                                    className="flex items-center justify-between px-3 py-2.5 rounded-lg text-sm font-semibold text-slate-700 hover:bg-slate-50"
+                                >
+                                    <div className="flex items-center gap-3">
+                                        <ShoppingBag className="w-4 h-4 text-brand-primary" />
+                                        <span>Shopping Bag</span>
+                                    </div>
+                                    {cartCount > 0 && (
+                                        <span className="px-2 py-0.5 rounded-full bg-brand-primary text-white text-[10px] font-bold">
+                                            {cartCount}
+                                        </span>
+                                    )}
+                                </Link>
+
+                                <Link
+                                    href="/track"
+                                    onClick={() => setMobileMenuOpen(false)}
+                                    className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-semibold text-slate-700 hover:bg-slate-50"
+                                >
+                                    <Truck className="w-4 h-4 text-indigo-500" />
+                                    <span>Track Your Shipment</span>
+                                </Link>
+                            </nav>
+
+                            <div className="pt-3 border-t border-brand-border">
+                                {user ? (
+                                    <div className="space-y-1">
+                                        <div className="px-3 py-1.5 mb-1 bg-slate-50 rounded-lg">
+                                            <p className="text-xs font-bold text-slate-900 truncate">{user.name}</p>
+                                            <p className="text-[11px] text-slate-500 truncate">{user.email}</p>
+                                        </div>
+
+                                        <Link
+                                            href="/account"
+                                            onClick={() => setMobileMenuOpen(false)}
+                                            className="block px-3 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50 rounded-lg"
+                                        >
+                                            My Profile & Addresses
+                                        </Link>
+
+                                        <Link
+                                            href="/account/orders"
+                                            onClick={() => setMobileMenuOpen(false)}
+                                            className="block px-3 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50 rounded-lg"
+                                        >
+                                            Order History & Returns
+                                        </Link>
+
+                                        {user.roles && (user.roles.includes('admin') || user.roles.includes('manager')) && (
+                                            <Link
+                                                href={`/${adminPrefix}/dashboard`}
+                                                onClick={() => setMobileMenuOpen(false)}
+                                                className="block px-3 py-2 text-xs font-bold text-indigo-600 hover:bg-indigo-50 rounded-lg"
+                                            >
+                                                Store Admin Panel &rarr;
+                                            </Link>
+                                        )}
+
+                                        <Link
+                                            href="/logout"
+                                            method="post"
+                                            as="button"
+                                            className="w-full text-left px-3 py-2 text-xs font-bold text-rose-600 hover:bg-rose-50 rounded-lg"
+                                        >
+                                            Sign Out
+                                        </Link>
+                                    </div>
+                                ) : (
+                                    <Link
+                                        href="/login"
+                                        onClick={() => setMobileMenuOpen(false)}
+                                        className="flex items-center justify-center gap-2 w-full py-2.5 text-xs font-bold text-white bg-brand-primary rounded-xl shadow-xs"
+                                    >
+                                        <User className="w-4 h-4" />
+                                        <span>Sign In / Register</span>
+                                    </Link>
+                                )}
+                            </div>
                         </div>
-                    </div>
+                    </>
                 )}
             </header>
 
             {/* Main Storefront Content */}
-            <main className="flex-1">{children}</main>
+            <main className="flex-1 pb-16 md:pb-0">{children}</main>
+
+            {/* Mobile Bottom Navigation Bar (Persistent one-thumb navigation) */}
+            <nav
+                aria-label="Mobile Bottom Navigation"
+                className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-slate-200 px-3 py-2 flex items-center justify-around shadow-lg"
+            >
+                <Link
+                    href="/"
+                    className={`flex flex-col items-center gap-0.5 p-1 transition-colors ${
+                        currentUrl === '/' ? 'text-brand-primary font-bold' : 'text-slate-500 hover:text-slate-800'
+                    }`}
+                >
+                    <Home className="w-5 h-5" />
+                    <span className="text-[10px]">Home</span>
+                </Link>
+
+                <Link
+                    href="/products"
+                    className={`flex flex-col items-center gap-0.5 p-1 transition-colors ${
+                        currentUrl.startsWith('/products') ? 'text-brand-primary font-bold' : 'text-slate-500 hover:text-slate-800'
+                    }`}
+                >
+                    <ShoppingBag className="w-5 h-5" />
+                    <span className="text-[10px]">Catalog</span>
+                </Link>
+
+                <Link
+                    href="/wishlist"
+                    className={`relative flex flex-col items-center gap-0.5 p-1 transition-colors ${
+                        currentUrl.startsWith('/wishlist') ? 'text-rose-500 font-bold' : 'text-slate-500 hover:text-rose-500'
+                    }`}
+                >
+                    <Heart className="w-5 h-5" />
+                    {wishlistCount > 0 && (
+                        <span className="absolute top-0 right-1 min-w-[15px] h-[15px] px-1 rounded-full bg-rose-500 text-white text-[9px] font-bold flex items-center justify-center">
+                            {wishlistCount > 9 ? '9+' : wishlistCount}
+                        </span>
+                    )}
+                    <span className="text-[10px]">Wishlist</span>
+                </Link>
+
+                <Link
+                    href="/cart"
+                    className={`relative flex flex-col items-center gap-0.5 p-1 transition-colors ${
+                        currentUrl === '/cart' ? 'text-brand-primary font-bold' : 'text-slate-500 hover:text-brand-primary'
+                    }`}
+                >
+                    <ShoppingBag className="w-5 h-5" />
+                    {cartCount > 0 && (
+                        <span className="absolute top-0 right-1 min-w-[15px] h-[15px] px-1 rounded-full bg-brand-primary text-white text-[9px] font-bold flex items-center justify-center">
+                            {cartCount > 9 ? '9+' : cartCount}
+                        </span>
+                    )}
+                    <span className="text-[10px]">Bag</span>
+                </Link>
+
+                <Link
+                    href={user ? '/account' : '/login'}
+                    className={`flex flex-col items-center gap-0.5 p-1 transition-colors ${
+                        currentUrl.startsWith('/account') ? 'text-brand-primary font-bold' : 'text-slate-500 hover:text-slate-800'
+                    }`}
+                >
+                    <User className="w-5 h-5" />
+                    <span className="text-[10px]">{user ? 'Account' : 'Sign In'}</span>
+                </Link>
+            </nav>
 
             {/* Premium Dark E-Commerce Footer */}
             <footer className="bg-slate-950 text-slate-300 border-t border-slate-800 mt-0">
@@ -341,6 +494,11 @@ export default function StorefrontLayout({ children, categories = [] }) {
                                 <li>
                                     <Link href="/products" className="hover:text-indigo-400 transition-colors">
                                         All Products
+                                    </Link>
+                                </li>
+                                <li>
+                                    <Link href="/about" className="hover:text-indigo-400 transition-colors">
+                                        About Our Story
                                     </Link>
                                 </li>
                                 <li>
