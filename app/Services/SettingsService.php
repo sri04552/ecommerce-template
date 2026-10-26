@@ -162,15 +162,16 @@ class SettingsService
         $defaults = config('ecommerce.theme', []);
 
         return [
-            '--brand-primary' => $this->getString('theme_primary_color', $defaults['primary_color'] ?? '#1e40af'),
-            '--brand-primary-hover' => $this->getString('theme_primary_hover', $defaults['primary_hover'] ?? '#1e3a8a'),
-            '--brand-secondary' => $this->getString('theme_secondary_color', $defaults['secondary_color'] ?? '#090d16'),
-            '--brand-accent' => $this->getString('theme_accent_color', $defaults['accent_color'] ?? '#d97706'),
-            '--brand-surface' => '#ffffff',
-            '--brand-surface-muted' => '#f8fafc',
-            '--brand-text' => '#090d16',
-            '--brand-text-muted' => '#64748b',
-            '--brand-border' => '#e2e8f0',
+            '--brand-primary' => $this->getString('theme_primary_color', $defaults['primary_color'] ?? '#C2185B'),
+            '--brand-primary-hover' => $this->getString('theme_primary_hover', $defaults['primary_hover'] ?? '#880E4F'),
+            '--brand-secondary' => $this->getString('theme_secondary_color', $defaults['secondary_color'] ?? '#880E4F'),
+            '--brand-accent' => $this->getString('theme_accent_color', $defaults['accent_color'] ?? '#E91E63'),
+            '--brand-surface' => '#FFFFFF',
+            '--brand-surface-muted' => '#FFF1F6',
+            '--brand-surface-accent' => '#FCE4EC',
+            '--brand-text' => '#19121B',
+            '--brand-text-muted' => '#6B5B66',
+            '--brand-border' => '#F0DCE5',
             '--brand-radius' => $this->getString('theme_border_radius', $defaults['border_radius'] ?? '0.75rem'),
         ];
     }

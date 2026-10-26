@@ -1,14 +1,12 @@
 import { useState } from 'react';
-import { Head, Link, router, usePage } from '@inertiajs/react';
+import { Head, router, usePage } from '@inertiajs/react';
 import StorefrontLayout from '@/Layouts/StorefrontLayout';
 import {
     Search,
     Truck,
     Package,
     CheckCircle2,
-    Clock,
     XCircle,
-    ArrowRight,
     ShoppingBag,
     RotateCcw,
     CreditCard,
@@ -125,16 +123,16 @@ export default function TrackOrder({ order, queriedOrderNumber, categories = [] 
             <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10 w-full">
                 {/* Tracking Search Hero Card */}
                 <div className="bg-slate-900 rounded-2xl p-6 sm:p-10 text-white shadow-xl text-center mb-8 relative overflow-hidden">
-                    <div className="absolute -right-10 -bottom-10 w-60 h-60 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none" />
+                    <div className="absolute -right-10 -bottom-10 w-60 h-60 bg-brand-primary/15 rounded-full blur-3xl pointer-events-none" />
                     <div className="relative z-10 max-w-xl mx-auto">
-                        <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 mb-3">
+                        <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-brand-primary/20 text-pink-300 border border-brand-primary/30 mb-3">
                             <Truck className="w-3.5 h-3.5" /> Real-time Tracking System
                         </span>
                         <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight">
                             Track Your Order Live
                         </h1>
                         <p className="text-xs sm:text-sm text-slate-300 mt-2">
-                            Enter your Order Number (e.g. <span className="font-mono text-indigo-400">ORD-20261025-...</span>) received in your confirmation email or SMS.
+                            Enter your Order Number (e.g. <span className="font-mono text-pink-300">ORD-20261025-...</span>) received in your confirmation email or SMS.
                         </p>
 
                         <form onSubmit={handleSearch} className="mt-6 flex flex-col sm:flex-row gap-2 max-w-lg mx-auto">
@@ -144,13 +142,13 @@ export default function TrackOrder({ order, queriedOrderNumber, categories = [] 
                                     value={orderNumberInput}
                                     onChange={(e) => setOrderNumberInput(e.target.value)}
                                     placeholder="Enter your order number..."
-                                    className="w-full pl-10 pr-4 py-3 rounded-xl bg-slate-800/90 border border-slate-700 text-white placeholder-slate-400 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent font-mono"
+                                    className="w-full pl-10 pr-4 py-3 rounded-xl bg-slate-800/90 border border-slate-700 text-white placeholder-slate-400 text-sm focus:outline-none focus:ring-2 focus:ring-brand-primary focus:border-transparent font-mono"
                                 />
                                 <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-3.5" />
                             </div>
                             <button
                                 type="submit"
-                                className="px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-sm rounded-xl transition-colors shadow-lg shadow-indigo-600/30 shrink-0"
+                                className="px-6 py-3 bg-brand-primary hover:bg-brand-primary-hover text-white font-bold text-sm rounded-xl transition-colors shadow-lg shadow-brand-primary/30 shrink-0"
                             >
                                 Track Now
                             </button>
@@ -172,7 +170,7 @@ export default function TrackOrder({ order, queriedOrderNumber, categories = [] 
                                         <span className={`px-2.5 py-0.5 rounded-full text-xs font-bold uppercase tracking-wider ${
                                             order.status === 'delivered' ? 'bg-emerald-100 text-emerald-800' :
                                             order.status === 'cancelled' ? 'bg-red-100 text-red-800' :
-                                            'bg-indigo-100 text-indigo-800'
+                                            'bg-brand-surface-accent text-brand-primary'
                                         }`}>
                                             {order.status}
                                         </span>
@@ -243,13 +241,13 @@ export default function TrackOrder({ order, queriedOrderNumber, categories = [] 
 
                             {/* Courier Tracking Dispatch Details */}
                             {latestShipment && (
-                                <div className="mt-4 p-4 rounded-xl bg-indigo-50/70 border border-indigo-100 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">
+                                <div className="mt-4 p-4 rounded-xl bg-brand-surface-muted border border-brand-border flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">
                                     <div>
-                                        <p className="font-semibold text-indigo-950 flex items-center gap-1.5">
-                                            <Truck className="w-4 h-4 text-indigo-600" />
+                                        <p className="font-semibold text-brand-secondary flex items-center gap-1.5">
+                                            <Truck className="w-4 h-4 text-brand-primary" />
                                             <span>Carrier Partner: {latestShipment.carrier_name || 'Standard Courier'}</span>
                                         </p>
-                                        <p className="text-indigo-800 font-mono mt-0.5">
+                                        <p className="text-brand-text-muted font-mono mt-0.5">
                                             Tracking AWB: {latestShipment.tracking_number}
                                         </p>
                                     </div>
@@ -259,7 +257,7 @@ export default function TrackOrder({ order, queriedOrderNumber, categories = [] 
                                             href={latestShipment.tracking_url}
                                             target="_blank"
                                             rel="noreferrer"
-                                            className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-indigo-600 text-white font-semibold hover:bg-indigo-700 transition-colors shadow-xs"
+                                            className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-brand-primary text-white font-semibold hover:bg-brand-primary-hover transition-colors shadow-xs"
                                         >
                                             <span>Track with Courier</span>
                                             <ExternalLink className="w-3.5 h-3.5" />
@@ -319,7 +317,7 @@ export default function TrackOrder({ order, queriedOrderNumber, categories = [] 
                                                 <div className="bg-white p-3 rounded-xl border border-emerald-200 space-y-1">
                                                     <p className="text-[11px] text-slate-500 font-medium">Credited To Account</p>
                                                     {ret.refund_method === 'upi' ? (
-                                                        <p className="font-mono font-bold text-indigo-700">{ret.payout_details?.upi_id}</p>
+                                                        <p className="font-mono font-bold text-brand-primary">{ret.payout_details?.upi_id}</p>
                                                     ) : (
                                                         <p className="font-bold text-slate-800">
                                                             {ret.payout_details?.bank_name} &bull; A/C ending in {ret.payout_details?.account_number ? String(ret.payout_details.account_number).slice(-4) : '****'}
@@ -348,7 +346,7 @@ export default function TrackOrder({ order, queriedOrderNumber, categories = [] 
                             <div className="md:col-span-2 bg-white rounded-2xl border border-slate-200 p-6 shadow-sm space-y-4">
                                 <div className="flex items-center justify-between border-b border-slate-100 pb-3">
                                     <h3 className="font-bold text-slate-900 text-sm flex items-center gap-2">
-                                        <ShoppingBag className="w-4 h-4 text-indigo-600" />
+                                        <ShoppingBag className="w-4 h-4 text-brand-primary" />
                                         <span>Ordered Products ({order.items?.length || 0})</span>
                                     </h3>
 
@@ -356,7 +354,7 @@ export default function TrackOrder({ order, queriedOrderNumber, categories = [] 
                                     <button
                                         type="button"
                                         onClick={() => setReturnModalOpen(true)}
-                                        className="inline-flex items-center gap-1 text-xs font-bold text-indigo-600 hover:text-indigo-700 hover:underline"
+                                        className="inline-flex items-center gap-1 text-xs font-bold text-brand-primary hover:text-brand-primary-hover hover:underline"
                                     >
                                         <RotateCcw className="w-3.5 h-3.5" />
                                         <span>Request Return / Exchange</span>
@@ -442,7 +440,7 @@ export default function TrackOrder({ order, queriedOrderNumber, categories = [] 
                         <div className="bg-white rounded-t-2xl sm:rounded-2xl shadow-2xl max-w-lg w-full p-5 sm:p-6 max-h-[90vh] overflow-y-auto">
                             <div className="flex items-center justify-between pb-4 border-b border-slate-100">
                                 <div className="flex items-center gap-2">
-                                    <RotateCcw className="w-5 h-5 text-indigo-600" />
+                                    <RotateCcw className="w-5 h-5 text-brand-primary" />
                                     <h3 className="font-bold text-base text-slate-900">Request Return or Exchange</h3>
                                 </div>
                                 <button
@@ -477,7 +475,7 @@ export default function TrackOrder({ order, queriedOrderNumber, categories = [] 
                                         <select
                                             value={selectedItemId}
                                             onChange={(e) => setSelectedItemId(e.target.value)}
-                                            className="w-full px-3 py-2 border border-slate-200 rounded-lg text-xs focus:ring-2 focus:ring-indigo-500"
+                                            className="w-full px-3 py-2 border border-slate-200 rounded-lg text-xs focus:ring-2 focus:ring-brand-primary"
                                         >
                                             {order.items?.map((item) => (
                                                 <option key={item.id} value={item.id}>
@@ -498,7 +496,7 @@ export default function TrackOrder({ order, queriedOrderNumber, categories = [] 
                                                 onClick={() => setReturnType('return')}
                                                 className={`py-2 px-3 text-xs font-bold rounded-lg border text-center transition-all ${
                                                     returnType === 'return'
-                                                        ? 'bg-indigo-50 border-indigo-600 text-indigo-700 ring-2 ring-indigo-500/20'
+                                                        ? 'bg-brand-surface-accent border-brand-primary text-brand-primary ring-2 ring-brand-primary/20'
                                                         : 'bg-white border-slate-200 text-slate-700'
                                                 }`}
                                             >
@@ -509,7 +507,7 @@ export default function TrackOrder({ order, queriedOrderNumber, categories = [] 
                                                 onClick={() => setReturnType('exchange')}
                                                 className={`py-2 px-3 text-xs font-bold rounded-lg border text-center transition-all ${
                                                     returnType === 'exchange'
-                                                        ? 'bg-indigo-50 border-indigo-600 text-indigo-700 ring-2 ring-indigo-500/20'
+                                                        ? 'bg-brand-surface-accent border-brand-primary text-brand-primary ring-2 ring-brand-primary/20'
                                                         : 'bg-white border-slate-200 text-slate-700'
                                                 }`}
                                             >
@@ -529,7 +527,7 @@ export default function TrackOrder({ order, queriedOrderNumber, categories = [] 
                                             required
                                             rows={2}
                                             placeholder="E.g., Size issue, damaged package, defective item..."
-                                            className="w-full px-3 py-2 border border-slate-200 rounded-lg text-xs focus:ring-2 focus:ring-indigo-500"
+                                            className="w-full px-3 py-2 border border-slate-200 rounded-lg text-xs focus:ring-2 focus:ring-brand-primary"
                                         />
                                     </div>
 
@@ -539,7 +537,7 @@ export default function TrackOrder({ order, queriedOrderNumber, categories = [] 
                                             <label className="block text-xs font-bold text-slate-900">
                                                 Refund Payout Method (UPI / Bank Account)
                                             </label>
-                                            <span className="text-[10px] text-indigo-600 font-semibold uppercase">100% Secure</span>
+                                            <span className="text-[10px] text-brand-primary font-semibold uppercase">100% Secure</span>
                                         </div>
                                         <p className="text-[11px] text-slate-500">
                                             In compliance with our 3-Day Return Policy & Indian Consumer Protection Rules: provide your UPI ID or Bank Account where the refund should be deposited. A bank UTR reference receipt will be emailed to you immediately upon transfer.
@@ -553,9 +551,9 @@ export default function TrackOrder({ order, queriedOrderNumber, categories = [] 
                                                     value="upi"
                                                     checked={refundMethod === 'upi'}
                                                     onChange={() => setRefundMethod('upi')}
-                                                    className="text-indigo-600 focus:ring-indigo-500"
+                                                    className="text-brand-primary focus:ring-brand-primary"
                                                 />
-                                                <QrCode className="w-3.5 h-3.5 text-indigo-600" />
+                                                <QrCode className="w-3.5 h-3.5 text-brand-primary" />
                                                 <span>Instant UPI ID</span>
                                             </label>
                                             <label className="flex items-center gap-1.5 text-xs text-slate-800 cursor-pointer">
@@ -565,9 +563,9 @@ export default function TrackOrder({ order, queriedOrderNumber, categories = [] 
                                                     value="bank"
                                                     checked={refundMethod === 'bank'}
                                                     onChange={() => setRefundMethod('bank')}
-                                                    className="text-indigo-600 focus:ring-indigo-500"
+                                                    className="text-brand-primary focus:ring-brand-primary"
                                                 />
-                                                <Building2 className="w-3.5 h-3.5 text-indigo-600" />
+                                                <Building2 className="w-3.5 h-3.5 text-brand-primary" />
                                                 <span>Bank Account Transfer</span>
                                             </label>
                                         </div>
@@ -580,7 +578,7 @@ export default function TrackOrder({ order, queriedOrderNumber, categories = [] 
                                                     onChange={(e) => setUpiId(e.target.value)}
                                                     required={refundMethod === 'upi'}
                                                     placeholder="e.g. mobile@paytm or name@oksbi"
-                                                    className="w-full px-3 py-2 border border-slate-200 rounded-lg text-xs font-mono focus:ring-2 focus:ring-indigo-500"
+                                                    className="w-full px-3 py-2 border border-slate-200 rounded-lg text-xs font-mono focus:ring-2 focus:ring-brand-primary"
                                                 />
                                             </div>
                                         ) : (
@@ -644,7 +642,7 @@ export default function TrackOrder({ order, queriedOrderNumber, categories = [] 
                                         <button
                                             type="submit"
                                             disabled={submittingReturn}
-                                            className="px-5 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-xs font-bold transition-colors shadow-sm disabled:opacity-50"
+                                            className="px-5 py-2 bg-brand-primary hover:bg-brand-primary-hover text-white rounded-lg text-xs font-bold transition-colors shadow-sm disabled:opacity-50"
                                         >
                                             {submittingReturn ? 'Submitting...' : 'Submit Request'}
                                         </button>

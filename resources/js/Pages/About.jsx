@@ -375,12 +375,12 @@ export default function About({ storeName = 'Aura Store', categories = [] }) {
             </section>
 
             {/* Final CTA Banner */}
-            <section className="py-14 sm:py-20 bg-gradient-to-r from-blue-700 via-indigo-700 to-slate-950 text-white text-center relative overflow-hidden">
+            <section className="py-14 sm:py-20 bg-gradient-to-r from-brand-secondary via-brand-primary to-[#19121B] text-white text-center relative overflow-hidden">
                 <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 space-y-5 relative z-10">
                     <h2 className="text-2xl sm:text-4xl font-black tracking-tight text-white">
                         Ready to Upgrade Your Daily Essentials?
                     </h2>
-                    <p className="text-xs sm:text-sm text-blue-100 max-w-xl mx-auto leading-relaxed">
+                    <p className="text-xs sm:text-sm text-pink-100 max-w-xl mx-auto leading-relaxed">
                         Join over 50,000 satisfied shoppers who trust {storeName} for authentic items, honest pricing, and prompt delivery.
                     </p>
                     <div className="pt-2 flex flex-col sm:flex-row items-center justify-center gap-3">

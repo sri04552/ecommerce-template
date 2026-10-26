@@ -25,14 +25,14 @@ const SLIDES = [
         imageJpg: '/assets/images/hero/home-page-hero-section-carousel-image-1.jpg',
         alt: 'Smiling woman with sunglasses holding shopping bags and credit card',
         personSide: 'right', // Person is on the right -> Content on the LEFT
-        bgColor: '#ff91a2',
+        bgColor: '#FCE4EC',
         badge: {
             icon: Sparkles,
             text: 'NEW SEASON COLLECTION',
-            style: 'bg-rose-900/10 text-rose-950 border-rose-900/20',
+            style: 'bg-brand-surface-accent text-brand-primary border-brand-primary/25',
         },
         title: 'Shop Smart. Spend Better.',
-        subtitle: 'Unlock exclusive member rewards, instant checkout perks, and up to 40% off curated fashion and lifestyle trends.',
+        subtitle: 'Unlock exclusive member rewards, instant checkout perks, and curated lifestyle trends with guaranteed quality.',
         primaryCta: {
             text: 'Shop New Arrivals',
             url: '/products',
@@ -43,7 +43,7 @@ const SLIDES = [
         },
         highlights: [
             { icon: Truck, text: 'Fast & Secure Delivery' },
-            { icon: CreditCard, text: 'Member Cashback Rewards' },
+            { icon: CreditCard, text: 'Instant UPI & COD' },
         ],
     },
     {
@@ -52,14 +52,14 @@ const SLIDES = [
         imageJpg: '/assets/images/hero/home-page-hero-section-carousel-image-2.jpg',
         alt: 'Modern guy holding shopping bag over shoulder shushing camera with secret deals',
         personSide: 'left', // Person is on the left -> Content on the RIGHT
-        bgColor: '#86c8e0',
+        bgColor: '#FFF1F6',
         badge: {
             icon: Flame,
             text: 'INSIDER FLASH OFFERS',
-            style: 'bg-sky-900/10 text-sky-950 border-sky-900/20',
+            style: 'bg-brand-surface-accent text-brand-primary border-brand-primary/25',
         },
         title: "Don't Miss The Best Kept Deals.",
-        subtitle: 'Secret discounts on premium tech accessories, streetwear, and lifestyle must-haves before they sell out.',
+        subtitle: 'Handpicked discounts on premium fashion, accessories, and daily essentials before they sell out.',
         primaryCta: {
             text: 'Claim Flash Deals',
             url: '/products',
@@ -70,7 +70,7 @@ const SLIDES = [
         },
         highlights: [
             { icon: Percent, text: 'Up to 50% Off Selected' },
-            { icon: Clock, text: 'Daily Limited Quantities' },
+            { icon: Clock, text: 'Limited Quantities' },
         ],
     },
     {
@@ -79,11 +79,11 @@ const SLIDES = [
         imageJpg: '/assets/images/hero/home-page-hero-section-carousel-image-3.jpg',
         alt: 'Dreamy woman smiling and holding colorful shopping bags',
         personSide: 'left', // Person is on the left -> Content on the RIGHT
-        bgColor: '#95e2ea',
+        bgColor: '#FCE4EC',
         badge: {
             icon: ShoppingBag,
             text: 'WISHLIST FAVORITES',
-            style: 'bg-teal-900/10 text-teal-950 border-teal-900/20',
+            style: 'bg-brand-surface-accent text-brand-primary border-brand-primary/25',
         },
         title: 'Turn Your Wishlist Into Reality.',
         subtitle: 'Discover handpicked styles and everyday essentials crafted with verified quality for the modern home and wardrobe.',
@@ -96,7 +96,7 @@ const SLIDES = [
             url: '/categories',
         },
         highlights: [
-            { icon: Star, text: '4.9/5 Customer Rating' },
+            { icon: Star, text: '4.9/5 Quality Rating' },
             { icon: RotateCcw, text: '3-Day Easy Returns' },
         ],
     },
@@ -106,11 +106,11 @@ const SLIDES = [
         imageJpg: '/assets/images/hero/home-page-hero-section-carousel-image-4.jpg',
         alt: 'Smiling guy demonstrating gift and orange shopping bag',
         personSide: 'left', // Person is on the left -> Content on the RIGHT
-        bgColor: '#87c7e0',
+        bgColor: '#FFF1F6',
         badge: {
             icon: Gift,
             text: 'SPECIAL FINDS & GIFTS',
-            style: 'bg-sky-900/10 text-sky-950 border-sky-900/20',
+            style: 'bg-brand-surface-accent text-brand-primary border-brand-primary/25',
         },
         title: 'Delivering Happiness To Your Door.',
         subtitle: 'Thoughtfully curated gifts and signature essentials with premium packaging, guaranteed quality, and rapid dispatch.',
@@ -257,9 +257,9 @@ export default function HeroCarousel() {
                                         <div className="flex items-center gap-3.5 mb-6">
                                             <Link href={slide.primaryCta.url}>
                                                 <Button
-                                                    variant="secondary"
+                                                    variant="primary"
                                                     size="lg"
-                                                    className="gap-2 text-sm sm:text-base font-semibold px-6 py-3 shadow-md hover:scale-[1.02] active:scale-[0.98] transition-transform bg-slate-950 hover:bg-slate-800 text-white"
+                                                    className="gap-2 text-sm sm:text-base font-semibold px-7 py-3.5 shadow-md shadow-brand-primary/25 hover:scale-[1.02] active:scale-[0.98] transition-transform bg-brand-primary hover:bg-brand-primary-hover text-white"
                                                 >
                                                     <span>{slide.primaryCta.text}</span>
                                                     <ArrowRight className="w-4 h-4" />
@@ -270,7 +270,7 @@ export default function HeroCarousel() {
                                                 <Button
                                                     variant="outline"
                                                     size="lg"
-                                                    className="text-sm sm:text-base font-semibold px-6 py-3 bg-white/80 hover:bg-white text-slate-900 border-slate-300 shadow-2xs backdrop-blur-sm"
+                                                    className="text-sm sm:text-base font-semibold px-6 py-3.5 bg-white/90 hover:bg-white text-brand-text border-brand-border shadow-2xs hover:border-brand-primary/40 backdrop-blur-sm"
                                                 >
                                                     {slide.secondaryCta.text}
                                                 </Button>
@@ -320,9 +320,9 @@ export default function HeroCarousel() {
                                             <div className="flex flex-wrap items-center gap-3 pt-2">
                                                 <Link href={slide.primaryCta.url}>
                                                     <Button
-                                                        variant="secondary"
+                                                        variant="primary"
                                                         size="md"
-                                                        className="gap-2 text-xs font-semibold px-4 py-2.5 bg-slate-950 hover:bg-slate-800 text-white shadow-md"
+                                                        className="gap-2 text-xs font-semibold px-5 py-2.5 bg-brand-primary hover:bg-brand-primary-hover text-white shadow-md shadow-brand-primary/25"
                                                     >
                                                         <span>{slide.primaryCta.text}</span>
                                                         <ArrowRight className="w-3.5 h-3.5" />
@@ -332,7 +332,7 @@ export default function HeroCarousel() {
                                                     <Button
                                                         variant="outline"
                                                         size="md"
-                                                        className="text-xs font-semibold px-4 py-2.5 bg-white/80 hover:bg-white text-slate-900 border-slate-300"
+                                                        className="text-xs font-semibold px-4 py-2.5 bg-white/90 hover:bg-white text-brand-text border-brand-border hover:border-brand-primary/40"
                                                     >
                                                         {slide.secondaryCta.text}
                                                     </Button>
@@ -397,9 +397,9 @@ export default function HeroCarousel() {
                                             <div className="flex flex-wrap items-center gap-3 pt-2">
                                                 <Link href={slide.primaryCta.url}>
                                                     <Button
-                                                        variant="secondary"
+                                                        variant="primary"
                                                         size="md"
-                                                        className="gap-2 text-xs font-semibold px-4 py-2.5 bg-slate-950 hover:bg-slate-800 text-white shadow-md"
+                                                        className="gap-2 text-xs font-semibold px-5 py-2.5 bg-brand-primary hover:bg-brand-primary-hover text-white shadow-md shadow-brand-primary/25"
                                                     >
                                                         <span>{slide.primaryCta.text}</span>
                                                         <ArrowRight className="w-3.5 h-3.5" />
@@ -409,7 +409,7 @@ export default function HeroCarousel() {
                                                     <Button
                                                         variant="outline"
                                                         size="md"
-                                                        className="text-xs font-semibold px-4 py-2.5 bg-white/80 hover:bg-white text-slate-900 border-slate-300"
+                                                        className="text-xs font-semibold px-4 py-2.5 bg-white/90 hover:bg-white text-brand-text border-brand-border hover:border-brand-primary/40"
                                                     >
                                                         {slide.secondaryCta.text}
                                                     </Button>
@@ -472,9 +472,9 @@ export default function HeroCarousel() {
                                 <div className="flex items-center justify-center gap-2.5 mb-3 w-full max-w-xs">
                                     <Link href={slide.primaryCta.url} className="flex-1">
                                         <Button
-                                            variant="secondary"
+                                            variant="primary"
                                             size="sm"
-                                            className="w-full justify-center gap-1.5 text-xs font-semibold py-2.5 bg-slate-950 hover:bg-slate-800 text-white shadow-sm"
+                                            className="w-full justify-center gap-1.5 text-xs font-semibold py-2.5 bg-brand-primary hover:bg-brand-primary-hover text-white shadow-sm shadow-brand-primary/25"
                                         >
                                             <span>{slide.primaryCta.text}</span>
                                             <ArrowRight className="w-3 h-3" />
@@ -485,7 +485,7 @@ export default function HeroCarousel() {
                                         <Button
                                             variant="outline"
                                             size="sm"
-                                            className="w-full justify-center text-xs font-semibold py-2.5 bg-white/85 hover:bg-white text-slate-900 border-slate-300 shadow-2xs"
+                                            className="w-full justify-center text-xs font-semibold py-2.5 bg-white/90 hover:bg-white text-brand-text border-brand-border hover:border-brand-primary/40 shadow-2xs"
                                         >
                                             {slide.secondaryCta.text}
                                         </Button>
@@ -559,7 +559,7 @@ export default function HeroCarousel() {
                             onClick={() => setCurrent(index)}
                             aria-label={`Go to slide ${index + 1}`}
                             className={`h-2 rounded-full transition-all duration-300 ${
-                                isActive ? 'w-6 bg-white shadow-xs' : 'w-2 bg-white/50 hover:bg-white/80'
+                                isActive ? 'w-6 bg-brand-primary shadow-xs' : 'w-2 bg-white/70 hover:bg-white'
                             }`}
                         />
                     );

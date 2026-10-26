@@ -200,7 +200,7 @@ export default function Profile({ profile, sessions = [], cooldown = 0 }) {
                 className="p-6 bg-brand-surface border border-brand-border rounded-brand"
             >
                 <div className="flex items-center gap-2.5 pb-4 border-b border-brand-border mb-6">
-                    <div className="w-8 h-8 rounded-full bg-blue-500/10 text-blue-600 flex items-center justify-center">
+                    <div className="w-8 h-8 rounded-full bg-brand-surface-accent text-brand-primary flex items-center justify-center">
                         <Smartphone className="w-4 h-4" />
                     </div>
                     <div>
@@ -411,16 +411,16 @@ export default function Profile({ profile, sessions = [], cooldown = 0 }) {
                                 key={sess.id}
                                 className={`p-4 rounded-xl border flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs ${
                                     sess.is_current_device
-                                        ? 'bg-blue-50/60 border-blue-200'
+                                        ? 'bg-brand-surface-muted border-brand-border'
                                         : 'bg-white border-slate-200'
                                 }`}
                             >
                                 <div className="flex items-center gap-3">
                                     <div className="w-10 h-10 rounded-lg bg-white border border-slate-200 flex items-center justify-center text-slate-700 shadow-2xs shrink-0">
                                         {sess.device.includes('iPhone') || sess.device.includes('Android') ? (
-                                            <Smartphone className="w-5 h-5 text-blue-600" />
+                                            <Smartphone className="w-5 h-5 text-brand-primary" />
                                         ) : (
-                                            <Laptop className="w-5 h-5 text-blue-600" />
+                                            <Laptop className="w-5 h-5 text-brand-primary" />
                                         )}
                                     </div>
                                     <div>
@@ -444,7 +444,7 @@ export default function Profile({ profile, sessions = [], cooldown = 0 }) {
                     ) : (
                         <div className="p-4 bg-slate-50 rounded-xl border border-slate-200 text-xs text-slate-600 flex items-center justify-between">
                             <div className="flex items-center gap-2.5">
-                                <Laptop className="w-4 h-4 text-blue-600" />
+                                <Laptop className="w-4 h-4 text-brand-primary" />
                                 <span>Current Browser Session · Active</span>
                             </div>
                             <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">

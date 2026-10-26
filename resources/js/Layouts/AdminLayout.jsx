@@ -85,7 +85,7 @@ export default function AdminLayout({ title, subtitle, actions, children }) {
             {/* Mobile Header */}
             <div className="lg:hidden bg-slate-900 text-white px-4 py-3 flex items-center justify-between border-b border-slate-800">
                 <div className="flex items-center gap-2.5">
-                    <div className="w-8 h-8 rounded-lg bg-indigo-600 flex items-center justify-center font-bold text-white text-sm">
+                    <div className="w-8 h-8 rounded-lg bg-brand-primary flex items-center justify-center font-bold text-white text-sm">
                         A
                     </div>
                     <div>
@@ -114,14 +114,14 @@ export default function AdminLayout({ title, subtitle, actions, children }) {
                     <div className="p-5">
                         {/* Logo / Brand Header */}
                         <div className="hidden lg:flex items-center gap-3 pb-6 border-b border-slate-800 mb-6">
-                            <div className="w-9 h-9 rounded-lg bg-indigo-600 flex items-center justify-center font-bold text-white shadow-sm">
+                            <div className="w-9 h-9 rounded-lg bg-brand-primary flex items-center justify-center font-bold text-white shadow-sm">
                                 <Shield className="w-5 h-5 text-white" />
                             </div>
                             <div>
                                 <span className="font-bold text-base text-white tracking-tight block">
                                     {storeSettings?.store_name || 'Store'}
                                 </span>
-                                <span className="text-xs text-indigo-400 font-medium tracking-wide uppercase">
+                                <span className="text-xs text-pink-400 font-medium tracking-wide uppercase">
                                     Administration
                                 </span>
                             </div>
@@ -141,7 +141,7 @@ export default function AdminLayout({ title, subtitle, actions, children }) {
                                         onClick={() => setMobileOpen(false)}
                                         className={`flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg transition-colors ${
                                             item.active
-                                                ? 'bg-indigo-600 text-white shadow-xs font-semibold'
+                                                ? 'bg-brand-primary text-white shadow-xs font-semibold'
                                                 : 'text-slate-300 hover:text-white hover:bg-slate-800'
                                         }`}
                                     >

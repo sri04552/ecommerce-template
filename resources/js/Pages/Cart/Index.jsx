@@ -648,7 +648,7 @@ export default function CartIndex({ categories = [] }) {
                                             onChange={(e) => setCustomerName(e.target.value)}
                                             required
                                             placeholder="Enter your full name"
-                                            className="w-full px-3 py-2 border border-slate-200 rounded-lg text-xs focus:ring-2 focus:ring-indigo-500"
+                                            className="w-full px-3 py-2 border border-slate-200 rounded-lg text-xs focus:ring-2 focus:ring-brand-primary"
                                         />
                                     </div>
 
@@ -663,7 +663,7 @@ export default function CartIndex({ categories = [] }) {
                                                 onChange={(e) => setCustomerEmail(e.target.value)}
                                                 required
                                                 placeholder="Order confirmation email"
-                                                className="w-full px-3 py-2 border border-slate-200 rounded-lg text-xs focus:ring-2 focus:ring-indigo-500"
+                                                className="w-full px-3 py-2 border border-slate-200 rounded-lg text-xs focus:ring-2 focus:ring-brand-primary"
                                             />
                                         </div>
                                         <div>
@@ -676,7 +676,7 @@ export default function CartIndex({ categories = [] }) {
                                                 onChange={(e) => setCustomerPhone(e.target.value)}
                                                 required
                                                 placeholder="10-digit mobile number"
-                                                className="w-full px-3 py-2 border border-slate-200 rounded-lg text-xs focus:ring-2 focus:ring-indigo-500"
+                                                className="w-full px-3 py-2 border border-slate-200 rounded-lg text-xs focus:ring-2 focus:ring-brand-primary"
                                             />
                                         </div>
                                     </div>
@@ -685,7 +685,7 @@ export default function CartIndex({ categories = [] }) {
                                 {/* Shipping Address */}
                                 <div className="space-y-3 pt-2 border-t border-slate-100">
                                     <p className="text-xs font-bold text-slate-900 flex items-center gap-1.5">
-                                        <MapPin className="w-3.5 h-3.5 text-indigo-600" />
+                                        <MapPin className="w-3.5 h-3.5 text-brand-primary" />
                                         <span>Shipping Address</span>
                                     </p>
 
@@ -699,7 +699,7 @@ export default function CartIndex({ categories = [] }) {
                                             onChange={(e) => setStreetAddress(e.target.value)}
                                             required
                                             placeholder="House no, Building, Street address"
-                                            className="w-full px-3 py-2 border border-slate-200 rounded-lg text-xs focus:ring-2 focus:ring-indigo-500"
+                                            className="w-full px-3 py-2 border border-slate-200 rounded-lg text-xs focus:ring-2 focus:ring-brand-primary"
                                         />
                                     </div>
 
@@ -714,7 +714,7 @@ export default function CartIndex({ categories = [] }) {
                                                 onChange={(e) => setCity(e.target.value)}
                                                 required
                                                 placeholder="City"
-                                                className="w-full px-3 py-2 border border-slate-200 rounded-lg text-xs focus:ring-2 focus:ring-indigo-500"
+                                                className="w-full px-3 py-2 border border-slate-200 rounded-lg text-xs focus:ring-2 focus:ring-brand-primary"
                                             />
                                         </div>
                                         <div>
@@ -727,7 +727,7 @@ export default function CartIndex({ categories = [] }) {
                                                 onChange={(e) => setState(e.target.value)}
                                                 required
                                                 placeholder="State"
-                                                className="w-full px-3 py-2 border border-slate-200 rounded-lg text-xs focus:ring-2 focus:ring-indigo-500"
+                                                className="w-full px-3 py-2 border border-slate-200 rounded-lg text-xs focus:ring-2 focus:ring-brand-primary"
                                             />
                                         </div>
                                         <div>
@@ -740,7 +740,7 @@ export default function CartIndex({ categories = [] }) {
                                                 onChange={(e) => setPostalCode(e.target.value)}
                                                 required
                                                 placeholder="6-digit PIN"
-                                                className="w-full px-3 py-2 border border-slate-200 rounded-lg text-xs font-mono focus:ring-2 focus:ring-indigo-500"
+                                                className="w-full px-3 py-2 border border-slate-200 rounded-lg text-xs font-mono focus:ring-2 focus:ring-brand-primary"
                                             />
                                         </div>
                                     </div>

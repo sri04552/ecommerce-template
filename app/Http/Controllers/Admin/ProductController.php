@@ -5,20 +5,22 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Brand;
 use App\Models\Category;
+use App\Models\InventoryLevel;
 use App\Models\Product;
 use App\Models\ProductImage;
 use App\Models\ProductVariant;
-use App\Models\InventoryLevel;
 use App\Services\CatalogService;
-use App\Services\InventoryService;
 use App\Services\ImageOptimizationService;
+use App\Services\InventoryService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use Inertia\Inertia;
 use Inertia\Response;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class ProductController extends Controller
 {
@@ -194,7 +196,9 @@ class ProductController extends Controller
             if ($request->input('has_variants') && is_array($request->input('variants'))) {
                 $product->update(['has_variants' => true]);
                 foreach ($request->input('variants') as $vData) {
-                    if (empty($vData['sku'])) continue;
+                    if (empty($vData['sku'])) {
+                        continue;
+                    }
                     $customVariant = ProductVariant::updateOrCreate(
                         ['product_id' => $product->id, 'sku' => strtoupper(trim($vData['sku']))],
                         [
@@ -429,7 +433,7 @@ class ProductController extends Controller
     /**
      * Export all products to a CSV download.
      */
-    public function export(): \Symfony\Component\HttpFoundation\StreamedResponse
+    public function export(): StreamedResponse
     {
         $headers = [
             'Content-Type' => 'text/csv',
@@ -469,7 +473,7 @@ class ProductController extends Controller
     /**
      * Download sample CSV template for bulk product import.
      */
-    public function importTemplate(): \Symfony\Component\HttpFoundation\StreamedResponse
+    public function importTemplate(): StreamedResponse
     {
         $headers = [
             'Content-Type' => 'text/csv',
@@ -514,6 +518,7 @@ class ProductController extends Controller
 
         if (! $header || count($header) < 3) {
             fclose($handle);
+
             return back()->with('error', 'Invalid CSV format. Please download and use the official CSV template.');
         }
 
@@ -610,7 +615,7 @@ class ProductController extends Controller
             if (is_resource($handle)) {
                 fclose($handle);
             }
-            \Illuminate\Support\Facades\Log::error('Bulk Product Import Failed: '.$e->getMessage(), [
+            Log::error('Bulk Product Import Failed: '.$e->getMessage(), [
                 'trace' => $e->getTraceAsString(),
             ]);
 

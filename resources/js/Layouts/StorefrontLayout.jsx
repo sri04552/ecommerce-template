@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link, usePage, router } from '@inertiajs/react';
-import { ShoppingBag, Search, User, Menu, X, Layers, ChevronDown, LogOut, ShieldCheck, MapPin, RotateCcw, Truck, CreditCard, Heart, Home, Info } from 'lucide-react';
+import { ShoppingBag, Search, User, Menu, X, Layers, ChevronDown, LogOut, ShieldCheck, MapPin, Truck, Heart, Home, Info } from 'lucide-react';
 import { getCartCount, onCartChange } from '../utils/cart';
 import { getWishlistCount } from '../utils/wishlist';
 
@@ -68,8 +68,8 @@ export default function StorefrontLayout({ children, categories = [] }) {
         <div className="min-h-screen flex flex-col bg-brand-surface-muted text-brand-text">
             {/* Store Announcement Bar (Desktop Only) */}
             {announcement && (
-                <div className="hidden lg:flex bg-slate-950 text-slate-200 border-b border-slate-800 text-xs py-2 px-4 text-center font-medium items-center justify-center gap-2">
-                    <span className="inline-flex items-center gap-1 text-amber-400 font-bold uppercase tracking-wider text-[10px] bg-amber-400/10 px-2 py-0.5 rounded-full border border-amber-400/20">
+                <div className="hidden lg:flex bg-[#880E4F] text-[#FFF1F6] border-b border-[#C2185B]/30 text-xs py-2 px-4 text-center font-medium items-center justify-center gap-2">
+                    <span className="inline-flex items-center gap-1 text-[#C2185B] bg-white font-bold uppercase tracking-wider text-[10px] px-2 py-0.5 rounded-full shadow-2xs">
                         Special
                     </span>
                     <span>{announcement}</span>
@@ -82,7 +82,7 @@ export default function StorefrontLayout({ children, categories = [] }) {
                     <div className="flex items-center justify-between h-16 gap-4">
                         {/* Brand Logo & Name */}
                         <Link href="/" className="flex items-center gap-3 shrink-0">
-                            <div className="w-9 h-9 rounded-brand bg-gradient-to-tr from-brand-primary to-indigo-700 flex items-center justify-center text-white font-bold text-lg shadow-md shadow-brand-primary/20">
+                            <div className="w-9 h-9 rounded-brand bg-gradient-to-tr from-brand-primary to-brand-accent flex items-center justify-center text-white font-bold text-lg shadow-md shadow-brand-primary/20">
                                 <Layers className="w-5 h-5" />
                             </div>
                             <span className="font-extrabold text-xl tracking-tight text-brand-secondary">
@@ -329,22 +329,22 @@ export default function StorefrontLayout({ children, categories = [] }) {
                             </div>
 
                             {/* Search Bar Inside Hamburger Menu (Tablets & Mobile) */}
-                            <form onSubmit={handleMobileSearch} className="p-3.5 bg-slate-50 border-b border-slate-200">
+                            <form onSubmit={handleMobileSearch} className="p-3.5 bg-brand-surface-muted border-b border-brand-border">
                                 <div className="relative">
-                                    <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
+                                    <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-brand-text-muted" />
                                     <input
                                         type="search"
                                         value={searchQuery}
                                         onChange={(e) => setSearchQuery(e.target.value)}
                                         placeholder="Search products, brands, deals..."
-                                        className="w-full pl-9 pr-3 py-2 text-xs bg-white border border-slate-300 rounded-xl text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-blue-600 transition-all shadow-2xs"
+                                        className="w-full pl-9 pr-3 py-2 text-xs bg-brand-surface border border-brand-border rounded-xl text-brand-text placeholder-brand-text-muted focus:outline-none focus:ring-2 focus:ring-brand-primary focus:border-brand-primary transition-all shadow-2xs"
                                     />
                                 </div>
                             </form>
 
                             {/* Commerce Quick Actions: Profile, Cart, Wishlist */}
-                            <div className="p-4 border-b border-slate-100 bg-slate-50/60 space-y-2">
-                                <p className="text-[10px] font-bold uppercase tracking-wider text-slate-400 px-1">
+                            <div className="p-4 border-b border-brand-border bg-brand-surface-muted/60 space-y-2">
+                                <p className="text-[10px] font-bold uppercase tracking-wider text-brand-text-muted px-1">
                                     Commerce Essentials
                                 </p>
 
@@ -352,18 +352,18 @@ export default function StorefrontLayout({ children, categories = [] }) {
                                 <Link
                                     href="/cart"
                                     onClick={() => setMobileMenuOpen(false)}
-                                    className="flex items-center justify-between p-2.5 bg-white border border-slate-200 rounded-xl hover:border-brand-primary hover:bg-blue-50/30 transition-all"
+                                    className="flex items-center justify-between p-2.5 bg-brand-surface border border-brand-border rounded-xl hover:border-brand-primary hover:bg-brand-surface-accent/40 transition-all"
                                 >
                                     <div className="flex items-center gap-3">
-                                        <div className="w-8 h-8 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center">
+                                        <div className="w-8 h-8 rounded-lg bg-brand-surface-accent text-brand-primary flex items-center justify-center">
                                             <ShoppingBag className="w-4 h-4" />
                                         </div>
                                         <div>
-                                            <span className="text-xs font-bold text-slate-900 block">My Cart</span>
-                                            <span className="text-[11px] text-slate-500 block">View shopping bag</span>
+                                            <span className="text-xs font-bold text-brand-text block">My Cart</span>
+                                            <span className="text-[11px] text-brand-text-muted block">View shopping bag</span>
                                         </div>
                                     </div>
-                                    <span className="px-2.5 py-0.5 rounded-full bg-blue-600 text-white text-xs font-extrabold font-mono">
+                                    <span className="px-2.5 py-0.5 rounded-full bg-brand-primary text-white text-xs font-extrabold font-mono">
                                         {cartCount}
                                     </span>
                                 </Link>
@@ -372,18 +372,18 @@ export default function StorefrontLayout({ children, categories = [] }) {
                                 <Link
                                     href="/wishlist"
                                     onClick={() => setMobileMenuOpen(false)}
-                                    className="flex items-center justify-between p-2.5 bg-white border border-slate-200 rounded-xl hover:border-rose-400 hover:bg-rose-50/30 transition-all"
+                                    className="flex items-center justify-between p-2.5 bg-brand-surface border border-brand-border rounded-xl hover:border-brand-primary hover:bg-brand-surface-accent/40 transition-all"
                                 >
                                     <div className="flex items-center gap-3">
-                                        <div className="w-8 h-8 rounded-lg bg-rose-50 text-rose-500 flex items-center justify-center">
-                                            <Heart className="w-4 h-4 fill-rose-500/20" />
+                                        <div className="w-8 h-8 rounded-lg bg-brand-surface-accent text-brand-primary flex items-center justify-center">
+                                            <Heart className="w-4 h-4 fill-brand-primary/20" />
                                         </div>
                                         <div>
-                                            <span className="text-xs font-bold text-slate-900 block">My Wishlist</span>
-                                            <span className="text-[11px] text-slate-500 block">Saved favorites</span>
+                                            <span className="text-xs font-bold text-brand-text block">My Wishlist</span>
+                                            <span className="text-[11px] text-brand-text-muted block">Saved favorites</span>
                                         </div>
                                     </div>
-                                    <span className="px-2.5 py-0.5 rounded-full bg-rose-500 text-white text-xs font-extrabold font-mono">
+                                    <span className="px-2.5 py-0.5 rounded-full bg-brand-primary text-white text-xs font-extrabold font-mono">
                                         {wishlistCount}
                                     </span>
                                 </Link>
@@ -472,7 +472,7 @@ export default function StorefrontLayout({ children, categories = [] }) {
                                                 key={cat.id}
                                                 href={`/categories/${cat.slug}`}
                                                 onClick={() => setMobileMenuOpen(false)}
-                                                className="flex items-center justify-between px-3 py-1.5 text-xs text-slate-600 hover:text-blue-600 hover:bg-slate-50 rounded-lg transition-colors"
+                                                className="flex items-center justify-between px-3 py-1.5 text-xs text-slate-600 hover:text-brand-primary hover:bg-brand-surface-muted rounded-lg transition-colors"
                                             >
                                                 <span>{cat.name}</span>
                                                 <span className="text-[10px] text-slate-400">View</span>
@@ -522,25 +522,25 @@ export default function StorefrontLayout({ children, categories = [] }) {
             {/* Main Storefront Content */}
             <main className="flex-1">{children}</main>
 
-            {/* Premium Dark E-Commerce Footer */}
-            <footer className="bg-slate-950 text-slate-300 border-t border-slate-800 mt-0">
+            {/* Premium Distinctive Magenta Brand Footer */}
+            <footer className="bg-[#19121B] text-[#F0DCE5] border-t border-[#6B5B66]/30 mt-0">
                 {/* Footer Main Links */}
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:flex lg:flex-row lg:justify-between lg:items-start gap-8 lg:gap-12 pb-10 border-b border-slate-800">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:flex lg:flex-row lg:justify-between lg:items-start gap-8 lg:gap-12 pb-10 border-b border-[#6B5B66]/25">
                         {/* Column 1: Store Bio */}
                         <div className="w-full lg:max-w-[280px] space-y-4">
                             <div className="flex items-center gap-2.5">
-                                <div className="w-8 h-8 rounded-lg bg-gradient-to-tr from-brand-primary to-indigo-700 flex items-center justify-center text-white font-bold text-sm shadow-md shadow-brand-primary/20">
+                                <div className="w-8 h-8 rounded-lg bg-gradient-to-tr from-brand-primary to-brand-accent flex items-center justify-center text-white font-bold text-sm shadow-md shadow-brand-primary/20">
                                     <Layers className="w-4 h-4" />
                                 </div>
                                 <span className="font-bold text-lg text-white tracking-tight">{storeName}</span>
                             </div>
-                            <p className="text-xs text-slate-400 leading-relaxed">
+                            <p className="text-xs text-[#D8CAD3] leading-relaxed">
                                 Premium Indian online retail destination. Discover handpicked electronics, lifestyle trends, apparel, and home essentials with guaranteed transparent pricing.
                             </p>
-                            <div className="text-xs text-slate-400 space-y-1">
-                                <p><span className="text-slate-300 font-medium">Customer Support:</span> 10 AM – 7 PM IST</p>
-                                <p><span className="text-slate-300 font-medium">Email:</span> support@ecommerce-store.in</p>
+                            <div className="text-xs text-[#D8CAD3] space-y-1">
+                                <p><span className="text-white font-medium">Customer Support:</span> 10 AM – 7 PM IST</p>
+                                <p><span className="text-white font-medium">Email:</span> support@ecommerce-store.in</p>
                             </div>
                         </div>
 
@@ -549,34 +549,34 @@ export default function StorefrontLayout({ children, categories = [] }) {
                             <h4 className="font-bold text-xs uppercase tracking-wider text-white">
                                 Shop Categories
                             </h4>
-                            <ul className="space-y-2 text-xs text-slate-400">
+                            <ul className="space-y-2 text-xs text-[#D8CAD3]">
                                 <li>
-                                    <Link href="/products" className="hover:text-amber-400 transition-colors">
+                                    <Link href="/products" className="hover:text-brand-accent transition-colors">
                                         All Products
                                     </Link>
                                 </li>
                                 <li>
-                                    <Link href="/about" className="hover:text-amber-400 transition-colors">
+                                    <Link href="/about" className="hover:text-brand-accent transition-colors">
                                         About Our Story
                                     </Link>
                                 </li>
                                 <li>
-                                    <Link href="/products?featured=1" className="hover:text-amber-400 transition-colors">
+                                    <Link href="/products?featured=1" className="hover:text-brand-accent transition-colors">
                                         Today's Deals & Offers
                                     </Link>
                                 </li>
                                 <li>
-                                    <Link href="/wishlist" className="hover:text-amber-400 transition-colors">
+                                    <Link href="/wishlist" className="hover:text-brand-accent transition-colors">
                                         My Wishlist
                                     </Link>
                                 </li>
                                 <li>
-                                    <Link href="/cart" className="hover:text-amber-400 transition-colors">
+                                    <Link href="/cart" className="hover:text-brand-accent transition-colors">
                                         Shopping Bag ({cartCount})
                                     </Link>
                                 </li>
                                 <li>
-                                    <Link href="/track" className="hover:text-amber-400 transition-colors">
+                                    <Link href="/track" className="hover:text-brand-accent transition-colors">
                                         Track Your Order
                                     </Link>
                                 </li>
@@ -588,24 +588,24 @@ export default function StorefrontLayout({ children, categories = [] }) {
                             <h4 className="font-bold text-xs uppercase tracking-wider text-white">
                                 Customer Care
                             </h4>
-                            <ul className="space-y-2 text-xs text-slate-400">
+                            <ul className="space-y-2 text-xs text-[#D8CAD3]">
                                 <li>
-                                    <Link href="/account" className="hover:text-amber-400 transition-colors">
+                                    <Link href="/account" className="hover:text-brand-accent transition-colors">
                                         My Profile & Orders
                                     </Link>
                                 </li>
                                 <li>
-                                    <Link href="/account/addresses" className="hover:text-amber-400 transition-colors">
+                                    <Link href="/account/addresses" className="hover:text-brand-accent transition-colors">
                                         Saved Delivery Addresses
                                     </Link>
                                 </li>
                                 <li>
-                                    <Link href="/track" className="hover:text-amber-400 transition-colors">
+                                    <Link href="/track" className="hover:text-brand-accent transition-colors">
                                         Live Shipment Tracking
                                     </Link>
                                 </li>
                                 <li>
-                                    <span className="hover:text-amber-400 transition-colors cursor-pointer">
+                                    <span className="hover:text-brand-accent transition-colors cursor-pointer">
                                         Returns & UPI Refund Policy
                                     </span>
                                 </li>
@@ -617,33 +617,33 @@ export default function StorefrontLayout({ children, categories = [] }) {
                             <h4 className="font-bold text-xs uppercase tracking-wider text-white">
                                 100% Secure Payments
                             </h4>
-                            <p className="text-xs text-slate-400 leading-relaxed">
+                            <p className="text-xs text-[#D8CAD3] leading-relaxed">
                                 We accept UPI (Google Pay, PhonePe, Paytm), RuPay, Visa, Mastercard, Net Banking, and Cash on Delivery.
                             </p>
                             <div className="flex flex-wrap gap-2 pt-1">
-                                <span className="px-2 py-1 bg-slate-900 border border-slate-700 rounded text-[11px] font-semibold text-slate-200">
+                                <span className="px-2 py-1 bg-[#251A27] border border-[#433140] rounded text-[11px] font-semibold text-[#F0DCE5]">
                                     UPI / QR
                                 </span>
-                                <span className="px-2 py-1 bg-slate-900 border border-slate-700 rounded text-[11px] font-semibold text-slate-200">
+                                <span className="px-2 py-1 bg-[#251A27] border border-[#433140] rounded text-[11px] font-semibold text-[#F0DCE5]">
                                     RuPay
                                 </span>
-                                <span className="px-2 py-1 bg-slate-900 border border-slate-700 rounded text-[11px] font-semibold text-slate-200">
+                                <span className="px-2 py-1 bg-[#251A27] border border-[#433140] rounded text-[11px] font-semibold text-[#F0DCE5]">
                                     Visa / MC
                                 </span>
-                                <span className="px-2 py-1 bg-slate-900 border border-slate-700 rounded text-[11px] font-semibold text-emerald-400">
+                                <span className="px-2 py-1 bg-[#251A27] border border-[#433140] rounded text-[11px] font-semibold text-emerald-400">
                                     Cash on Delivery
                                 </span>
                             </div>
-                            <p className="text-[11px] text-slate-400 flex items-center gap-1.5 pt-2">
+                            <p className="text-[11px] text-[#D8CAD3] flex items-center gap-1.5 pt-2">
                                 <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
                                 <span>256-Bit SSL Encrypted Checkout</span>
                             </p>
                         </div>
                     </div>
 
-                    <div className="pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-400">
+                    <div className="pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-[#A998A4]">
                         <p>© {new Date().getFullYear()} {storeName}. All rights reserved.</p>
-                        <p className="text-[11px] text-slate-400">
+                        <p className="text-[11px] text-[#A998A4]">
                             Designed for high-performance retail commerce across India.
                         </p>
                     </div>

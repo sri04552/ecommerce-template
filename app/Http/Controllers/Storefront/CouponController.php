@@ -51,7 +51,7 @@ class CouponController extends Controller
             'discount_amount' => $discount,
             'original_subtotal' => $subtotal,
             'discounted_subtotal' => $newSubtotal,
-            'message' => "Coupon '{$promotion->coupon_code}' applied successfully! You save ₹".number_format($discount, 2).".",
+            'message' => "Coupon '{$promotion->coupon_code}' applied successfully! You save ₹".number_format($discount, 2).'.',
         ]);
     }
 }

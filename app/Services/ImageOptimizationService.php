@@ -68,7 +68,7 @@ class ImageOptimizationService
         imagedestroy($src);
         imagedestroy($dest);
 
-        $filename = 'product-' . $slug . '-' . time() . '-' . $index . '-' . uniqid() . '.webp';
+        $filename = 'product-'.$slug.'-'.time().'-'.$index.'-'.uniqid().'.webp';
         $uploadDir = public_path('uploads/products');
         $storedPath = null;
 
@@ -78,15 +78,15 @@ class ImageOptimizationService
                 @mkdir($uploadDir, 0755, true);
             }
             if (is_dir($uploadDir) && is_writable($uploadDir)) {
-                file_put_contents($uploadDir . '/' . $filename, $webpData);
-                $storedPath = '/uploads/products/' . $filename;
+                file_put_contents($uploadDir.'/'.$filename, $webpData);
+                $storedPath = '/uploads/products/'.$filename;
             }
         } catch (\Throwable $e) {
             $storedPath = null;
         }
 
         // Generate reliable self-contained Data URI (ensures 100% persistence on serverless)
-        $dataUri = 'data:image/webp;base64,' . base64_encode($webpData);
+        $dataUri = 'data:image/webp;base64,'.base64_encode($webpData);
 
         // On serverless or read-only environments, persist via dataUri directly
         if (! $storedPath || env('VERCEL') || ! file_exists(public_path($storedPath))) {

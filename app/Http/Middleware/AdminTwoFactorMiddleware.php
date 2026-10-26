@@ -38,6 +38,7 @@ class AdminTwoFactorMiddleware
             $expectedSignature = hash_hmac('sha256', 'admin_trust_'.$user->id, config('app.key'));
             if (hash_equals($expectedSignature, $trustedCookie)) {
                 $request->session()->put('admin_2fa_verified', true);
+
                 return $next($request);
             }
         }

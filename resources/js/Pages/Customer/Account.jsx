@@ -153,7 +153,7 @@ export default function Account({ profile, defaultAddress, addressCount }) {
 
                     <Link href="/account/profile#phone-verification">
                         <Button size="sm" variant="outline" className="gap-2">
-                            <Phone className="w-4 h-4 text-blue-500" />
+                            <Phone className="w-4 h-4 text-brand-primary" />
                             <span>{profile.phone ? 'Update Phone' : 'Add Mobile Phone'}</span>
                         </Button>
                     </Link>

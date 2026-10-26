@@ -50,7 +50,7 @@ class BulkProductImportExportTest extends TestCase
     {
         $csvContent = "Name,Slug,SKU,Category,Base Price,Sale Price,Delivery Fee,COD Available,Returnable,Return Window Days,Stock,Status\n"
             ."Designer Cotton Shirt,designer-cotton-shirt,SHIRT-099,Apparel,999.00,799.00,40.00,Yes,Yes,3,45,Active\n"
-            ."Wireless Gaming Mouse,wireless-gaming-mouse,MOUSE-099,Electronics,1499.00,,0.00,Yes,No,3,25,Active";
+            .'Wireless Gaming Mouse,wireless-gaming-mouse,MOUSE-099,Electronics,1499.00,,0.00,Yes,No,3,25,Active';
 
         $file = UploadedFile::fake()->createWithContent('import_test.csv', $csvContent);
 
@@ -104,7 +104,7 @@ class BulkProductImportExportTest extends TestCase
         ]);
 
         $csvContent = "Name,Slug,SKU,Category,Base Price,Sale Price,Delivery Fee,COD Available,Returnable,Return Window Days,Stock,Status\n"
-            ."Designer Cotton Shirt,designer-cotton-shirt,SHIRT-999,Apparel,999.00,799.00,40.00,Yes,Yes,3,50,Active";
+            .'Designer Cotton Shirt,designer-cotton-shirt,SHIRT-999,Apparel,999.00,799.00,40.00,Yes,Yes,3,50,Active';
 
         $file = UploadedFile::fake()->createWithContent('import_test.csv', $csvContent);
 

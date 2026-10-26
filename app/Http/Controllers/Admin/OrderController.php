@@ -131,7 +131,7 @@ class OrderController extends Controller
             'created_by_user_id' => $request->user()?->id,
         ]);
 
-        return back()->with('success', "Order #{$order->order_number} status updated to ".strtoupper($validated['status']).".");
+        return back()->with('success', "Order #{$order->order_number} status updated to ".strtoupper($validated['status']).'.');
     }
 
     /**
@@ -149,7 +149,7 @@ class OrderController extends Controller
             'admin_notes' => $validated['admin_notes'] ?? null,
         ]);
 
-        return back()->with('success', "Return request updated to ".strtoupper($validated['status']).".");
+        return back()->with('success', 'Return request updated to '.strtoupper($validated['status']).'.');
     }
 
     /**

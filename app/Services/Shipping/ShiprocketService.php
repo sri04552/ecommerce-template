@@ -12,7 +12,9 @@ use Illuminate\Support\Str;
 class ShiprocketService
 {
     protected string $email;
+
     protected string $password;
+
     protected string $baseUrl;
 
     public function __construct()

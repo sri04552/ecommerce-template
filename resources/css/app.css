@@ -16,6 +16,7 @@
     --color-brand-accent: var(--brand-accent);
     --color-brand-surface: var(--brand-surface);
     --color-brand-surface-muted: var(--brand-surface-muted);
+    --color-brand-surface-accent: var(--brand-surface-accent);
     --color-brand-text: var(--brand-text);
     --color-brand-text-muted: var(--brand-text-muted);
     --color-brand-border: var(--brand-border);

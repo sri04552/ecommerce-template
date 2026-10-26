@@ -62,7 +62,7 @@ export async function toggleWishlistItem(product, authUser = null) {
 
     const items = getLocalWishlist();
     const existingIndex = items.findIndex((item) => String(item.id) === String(product.id));
-    let inWishlist = false;
+    let inWishlist;
 
     if (existingIndex > -1) {
         // Remove from local list

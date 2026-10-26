@@ -4,8 +4,11 @@ namespace App\Http\Controllers\Customer;
 
 use App\Http\Controllers\Controller;
 use App\Services\OtpService;
+use Carbon\Carbon;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Password;
@@ -58,25 +61,37 @@ class ProfileController extends Controller
         $sessions = [];
         try {
             if (config('session.driver') === 'database') {
-                $sessions = \Illuminate\Support\Facades\DB::table('sessions')
+                $sessions = DB::table('sessions')
                     ->where('user_id', $user->id)
                     ->orderBy('last_activity', 'desc')
                     ->get()
                     ->map(function ($s) use ($request) {
                         $ua = $s->user_agent ?: 'Unknown Device';
                         $device = 'Desktop / PC';
-                        if (str_contains($ua, 'iPhone')) $device = 'Apple iPhone';
-                        elseif (str_contains($ua, 'iPad')) $device = 'Apple iPad';
-                        elseif (str_contains($ua, 'Android')) $device = 'Android Device';
-                        elseif (str_contains($ua, 'Macintosh') || str_contains($ua, 'Mac OS')) $device = 'Apple Mac';
-                        elseif (str_contains($ua, 'Windows')) $device = 'Windows PC';
-                        elseif (str_contains($ua, 'Linux')) $device = 'Linux Computer';
+                        if (str_contains($ua, 'iPhone')) {
+                            $device = 'Apple iPhone';
+                        } elseif (str_contains($ua, 'iPad')) {
+                            $device = 'Apple iPad';
+                        } elseif (str_contains($ua, 'Android')) {
+                            $device = 'Android Device';
+                        } elseif (str_contains($ua, 'Macintosh') || str_contains($ua, 'Mac OS')) {
+                            $device = 'Apple Mac';
+                        } elseif (str_contains($ua, 'Windows')) {
+                            $device = 'Windows PC';
+                        } elseif (str_contains($ua, 'Linux')) {
+                            $device = 'Linux Computer';
+                        }
 
                         $browser = 'Web Browser';
-                        if (str_contains($ua, 'Chrome') && ! str_contains($ua, 'Edg')) $browser = 'Google Chrome';
-                        elseif (str_contains($ua, 'Safari') && ! str_contains($ua, 'Chrome')) $browser = 'Safari';
-                        elseif (str_contains($ua, 'Firefox')) $browser = 'Mozilla Firefox';
-                        elseif (str_contains($ua, 'Edg')) $browser = 'Microsoft Edge';
+                        if (str_contains($ua, 'Chrome') && ! str_contains($ua, 'Edg')) {
+                            $browser = 'Google Chrome';
+                        } elseif (str_contains($ua, 'Safari') && ! str_contains($ua, 'Chrome')) {
+                            $browser = 'Safari';
+                        } elseif (str_contains($ua, 'Firefox')) {
+                            $browser = 'Mozilla Firefox';
+                        } elseif (str_contains($ua, 'Edg')) {
+                            $browser = 'Microsoft Edge';
+                        }
 
                         return [
                             'id' => $s->id,
@@ -84,7 +99,7 @@ class ProfileController extends Controller
                             'browser' => $browser,
                             'ip_address' => $s->ip_address,
                             'is_current_device' => $s->id === $request->session()->getId(),
-                            'last_active' => \Carbon\Carbon::createFromTimestamp($s->last_activity)->diffForHumans(),
+                            'last_active' => Carbon::createFromTimestamp($s->last_activity)->diffForHumans(),
                         ];
                     })->values()->all();
             }
@@ -247,11 +262,11 @@ class ProfileController extends Controller
             'password' => ['required', 'string', 'current_password'],
         ]);
 
-        \Illuminate\Support\Facades\Auth::logoutOtherDevices($validated['password']);
+        Auth::logoutOtherDevices($validated['password']);
 
         try {
             if (config('session.driver') === 'database') {
-                \Illuminate\Support\Facades\DB::table('sessions')
+                DB::table('sessions')
                     ->where('user_id', $request->user()->id)
                     ->where('id', '!=', $request->session()->getId())
                     ->delete();

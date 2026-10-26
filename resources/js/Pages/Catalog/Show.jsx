@@ -8,7 +8,6 @@ import {
     ShoppingBag,
     CheckCircle2,
     AlertCircle,
-    ArrowLeft,
     Truck,
     ShieldCheck,
     RefreshCw,
@@ -21,7 +20,6 @@ import {
     Star,
     Camera,
     Image as ImageIcon,
-    Upload,
     X,
 } from 'lucide-react';
 import { addToCart, MAX_CART_LIMIT } from '../../utils/cart';
@@ -542,7 +540,7 @@ export default function Show({ product, relatedProducts = [], categories = [] })
                                 </span>
                             </div>
                             <div className="flex flex-col items-center gap-1 p-2 rounded-lg bg-brand-surface-muted border border-brand-border/60">
-                                <CheckCircle2 className="w-4 h-4 text-indigo-600" />
+                                <CheckCircle2 className="w-4 h-4 text-brand-primary" />
                                 <span className="font-semibold text-brand-secondary">100% Genuine</span>
                             </div>
                         </div>
@@ -593,7 +591,7 @@ export default function Show({ product, relatedProducts = [], categories = [] })
                     {allPhotos.length > 0 && (
                         <div className="py-6 border-b border-slate-100">
                             <h3 className="text-xs font-bold uppercase tracking-wider text-slate-700 mb-3 flex items-center gap-1.5">
-                                <ImageIcon className="w-4 h-4 text-indigo-600" />
+                                <ImageIcon className="w-4 h-4 text-brand-primary" />
                                 <span>Customer Photos ({allPhotos.length})</span>
                             </h3>
                             <div className="flex items-center gap-3 overflow-x-auto pb-2">
@@ -701,7 +699,7 @@ export default function Show({ product, relatedProducts = [], categories = [] })
                                 <button
                                     type="button"
                                     onClick={() => setReviewModalOpen(true)}
-                                    className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs rounded-xl transition-colors shadow-sm"
+                                    className="px-4 py-2 bg-brand-primary hover:bg-brand-primary-hover text-white font-bold text-xs rounded-xl transition-colors shadow-sm"
                                 >
                                     Write the First Review
                                 </button>
@@ -783,7 +781,7 @@ export default function Show({ product, relatedProducts = [], categories = [] })
                                             onChange={(e) => setAuthorName(e.target.value)}
                                             required
                                             placeholder="Display name on review"
-                                            className="w-full px-3 py-2 border border-slate-200 rounded-lg text-xs focus:ring-2 focus:ring-indigo-500"
+                                            className="w-full px-3 py-2 border border-slate-200 rounded-lg text-xs focus:ring-2 focus:ring-brand-primary"
                                         />
                                     </div>
 
@@ -796,7 +794,7 @@ export default function Show({ product, relatedProducts = [], categories = [] })
                                             value={reviewTitle}
                                             onChange={(e) => setReviewTitle(e.target.value)}
                                             placeholder="E.g., Great quality, fits perfectly!"
-                                            className="w-full px-3 py-2 border border-slate-200 rounded-lg text-xs focus:ring-2 focus:ring-indigo-500"
+                                            className="w-full px-3 py-2 border border-slate-200 rounded-lg text-xs focus:ring-2 focus:ring-brand-primary"
                                         />
                                     </div>
 
@@ -810,7 +808,7 @@ export default function Show({ product, relatedProducts = [], categories = [] })
                                             required
                                             rows={3}
                                             placeholder="Write your honest opinion about the product quality, fit, material..."
-                                            className="w-full px-3 py-2 border border-slate-200 rounded-lg text-xs focus:ring-2 focus:ring-indigo-500"
+                                            className="w-full px-3 py-2 border border-slate-200 rounded-lg text-xs focus:ring-2 focus:ring-brand-primary"
                                         />
                                     </div>
 
@@ -834,7 +832,7 @@ export default function Show({ product, relatedProducts = [], categories = [] })
                                             ))}
 
                                             {reviewPhotos.length < 3 && (
-                                                <label className="w-16 h-16 rounded-lg border-2 border-dashed border-slate-300 hover:border-indigo-500 flex flex-col items-center justify-center cursor-pointer text-slate-400 hover:text-indigo-600 transition-colors">
+                                                <label className="w-16 h-16 rounded-lg border-2 border-dashed border-slate-300 hover:border-brand-primary flex flex-col items-center justify-center cursor-pointer text-slate-400 hover:text-brand-primary transition-colors">
                                                     <Camera className="w-5 h-5 mb-0.5" />
                                                     <span className="text-[9px] font-semibold">Upload</span>
                                                     <input
@@ -848,7 +846,7 @@ export default function Show({ product, relatedProducts = [], categories = [] })
                                             )}
                                         </div>
                                         {photoOptimizing && (
-                                            <p className="text-[11px] text-indigo-600 mt-1">Optimizing photos to 1:1 format...</p>
+                                            <p className="text-[11px] text-brand-primary mt-1">Optimizing photos to 1:1 format...</p>
                                         )}
                                     </div>
 
@@ -863,7 +861,7 @@ export default function Show({ product, relatedProducts = [], categories = [] })
                                         <button
                                             type="submit"
                                             disabled={reviewSubmitting || photoOptimizing}
-                                            className="px-5 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-xs font-bold transition-colors shadow-sm disabled:opacity-50"
+                                            className="px-5 py-2 bg-brand-primary hover:bg-brand-primary-hover text-white rounded-lg text-xs font-bold transition-colors shadow-sm disabled:opacity-50"
                                         >
                                             {reviewSubmitting ? 'Submitting...' : 'Submit Review'}
                                         </button>

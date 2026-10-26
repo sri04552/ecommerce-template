@@ -90,7 +90,7 @@ export default function Index({ products, categories = [], selectedCategory = nu
                             className={`shrink-0 px-3.5 py-1.5 rounded-full font-semibold transition-colors ${
                                 !filters.category
                                     ? 'bg-brand-primary text-white shadow-xs'
-                                    : 'bg-white border border-slate-200 text-slate-700 hover:bg-slate-50'
+                                    : 'bg-brand-surface border border-brand-border text-brand-text hover:bg-brand-surface-muted hover:border-brand-primary/40'
                             }`}
                         >
                             All Categories
@@ -102,7 +102,7 @@ export default function Index({ products, categories = [], selectedCategory = nu
                                 className={`shrink-0 px-3.5 py-1.5 rounded-full font-medium transition-colors ${
                                     Number(filters.category) === cat.id
                                         ? 'bg-brand-primary text-white font-semibold shadow-xs'
-                                        : 'bg-white border border-slate-200 text-slate-700 hover:bg-slate-50'
+                                        : 'bg-brand-surface border border-brand-border text-brand-text hover:bg-brand-surface-muted hover:border-brand-primary/40'
                                 }`}
                             >
                                 {cat.name}

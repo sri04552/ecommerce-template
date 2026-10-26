@@ -21,8 +21,8 @@ export default function CustomerOrders({ orders, categories = [] }) {
     const getStatusBadge = (status) => {
         const styles = {
             pending: 'bg-amber-50 text-amber-700 border-amber-200',
-            confirmed: 'bg-blue-50 text-blue-700 border-blue-200',
-            processing: 'bg-indigo-50 text-indigo-700 border-indigo-200',
+            confirmed: 'bg-emerald-50 text-emerald-700 border-emerald-200',
+            processing: 'bg-brand-surface-accent text-brand-primary border-brand-border',
             shipped: 'bg-purple-50 text-purple-700 border-purple-200',
             delivered: 'bg-emerald-50 text-emerald-700 border-emerald-200',
             cancelled: 'bg-red-50 text-red-700 border-red-200',
@@ -62,7 +62,7 @@ export default function CustomerOrders({ orders, categories = [] }) {
                             <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-3 border-b border-slate-100 gap-2">
                                 <div>
                                     <div className="flex items-center gap-2">
-                                        <span className="font-mono font-bold text-sm text-indigo-600">
+                                        <span className="font-mono font-bold text-sm text-brand-primary">
                                             {order.order_number}
                                         </span>
                                         {getStatusBadge(order.status)}
@@ -86,7 +86,7 @@ export default function CustomerOrders({ orders, categories = [] }) {
 
                                     <Link
                                         href={`/track?order_number=${order.order_number}`}
-                                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-indigo-50 text-indigo-700 hover:bg-indigo-100 text-xs font-bold transition-colors"
+                                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-brand-surface-accent text-brand-primary hover:bg-brand-surface-muted text-xs font-bold transition-colors"
                                     >
                                         <span>Track Live</span>
                                         <ArrowRight className="w-3.5 h-3.5" />
@@ -138,7 +138,7 @@ export default function CustomerOrders({ orders, categories = [] }) {
                                 </div>
 
                                 {order.shipments?.[0] && (
-                                    <div className="flex items-center gap-1 text-indigo-600 font-mono font-medium">
+                                    <div className="flex items-center gap-1 text-brand-primary font-mono font-medium">
                                         <Truck className="w-3.5 h-3.5" />
                                         <span>{order.shipments[0].carrier_name}: {order.shipments[0].tracking_number}</span>
                                     </div>

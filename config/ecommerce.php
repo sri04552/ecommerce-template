@@ -39,11 +39,11 @@ return [
     |
     */
     'theme' => [
-        'active' => env('ACTIVE_THEME', 'luxury_sapphire'),
-        'primary_color' => env('THEME_PRIMARY_COLOR', '#1e40af'),
-        'primary_hover' => env('THEME_PRIMARY_HOVER', '#1e3a8a'),
-        'secondary_color' => env('THEME_SECONDARY_COLOR', '#090d16'),
-        'accent_color' => env('THEME_ACCENT_COLOR', '#d97706'),
+        'active' => env('ACTIVE_THEME', 'luxury_magenta'),
+        'primary_color' => env('THEME_PRIMARY_COLOR', '#C2185B'),
+        'primary_hover' => env('THEME_PRIMARY_HOVER', '#880E4F'),
+        'secondary_color' => env('THEME_SECONDARY_COLOR', '#880E4F'),
+        'accent_color' => env('THEME_ACCENT_COLOR', '#E91E63'),
         'border_radius' => env('THEME_BORDER_RADIUS', '0.75rem'),
     ],
 ];

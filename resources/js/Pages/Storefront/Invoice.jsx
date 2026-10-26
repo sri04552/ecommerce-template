@@ -1,5 +1,5 @@
 import { Head, Link } from '@inertiajs/react';
-import { Printer, ArrowLeft, ShieldCheck, CheckCircle2 } from 'lucide-react';
+import { Printer, ArrowLeft, ShieldCheck } from 'lucide-react';
 import StorefrontLayout from '@/Layouts/StorefrontLayout';
 import Button from '@/Components/ui/Button';
 
@@ -53,7 +53,7 @@ export default function Invoice({ order, taxBreakdown, categories }) {
 
                         <div className="text-left sm:text-right">
                             <p className="text-sm font-semibold text-slate-900">
-                                Invoice No: <span className="font-mono text-indigo-600">INV-{order?.order_number?.replace('ORD-', '')}</span>
+                                Invoice No: <span className="font-mono text-brand-primary">INV-{order?.order_number?.replace('ORD-', '')}</span>
                             </p>
                             <p className="text-xs text-slate-600 mt-0.5">
                                 Order Reference: <span className="font-mono font-medium">{order?.order_number}</span>
@@ -77,7 +77,7 @@ export default function Invoice({ order, taxBreakdown, categories }) {
                             <p className="text-slate-600">Registered Office: Industrial Area, Phase II</p>
                             <p className="text-slate-600">State: {taxBreakdown?.supplier_state}, India</p>
                             <p className="text-slate-900 font-semibold mt-1">
-                                GSTIN: <span className="font-mono text-indigo-700">{taxBreakdown?.supplier_gstin}</span>
+                                GSTIN: <span className="font-mono text-brand-primary">{taxBreakdown?.supplier_gstin}</span>
                             </p>
                         </div>
 
@@ -184,7 +184,7 @@ export default function Invoice({ order, taxBreakdown, categories }) {
 
                             <div className="border-t-2 border-slate-900 pt-3 flex justify-between font-bold text-base text-slate-900">
                                 <span>Grand Total:</span>
-                                <span className="font-mono text-indigo-700">₹{parseFloat(order?.grand_total).toFixed(2)}</span>
+                                <span className="font-mono text-brand-primary">₹{parseFloat(order?.grand_total).toFixed(2)}</span>
                             </div>
                         </div>
                     </div>

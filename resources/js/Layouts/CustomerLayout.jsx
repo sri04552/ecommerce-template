@@ -65,8 +65,8 @@ export default function CustomerLayout({ title, subtitle, children }) {
                         )}
 
                         {user?.phone_verified && (
-                            <span className="inline-flex items-center gap-1.5 px-3 py-1 text-xs font-medium bg-blue-50 text-blue-700 border border-blue-200 rounded-full">
-                                <CheckCircle2 className="w-3.5 h-3.5 text-blue-500" />
+                            <span className="inline-flex items-center gap-1.5 px-3 py-1 text-xs font-medium bg-emerald-50 text-emerald-700 border border-emerald-200 rounded-full">
+                                <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500" />
                                 Phone Verified
                             </span>
                         )}
