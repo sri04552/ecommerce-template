@@ -68,7 +68,10 @@ export default function StorefrontLayout({ children, categories = [] }) {
         <div className="min-h-screen flex flex-col bg-brand-surface-muted text-brand-text">
             {/* Store Announcement Bar */}
             {announcement && (
-                <div className="bg-brand-secondary text-white text-xs py-2 px-4 text-center font-medium">
+                <div className="bg-slate-950 text-slate-200 border-b border-slate-800 text-xs py-2 px-4 text-center font-medium flex items-center justify-center gap-2">
+                    <span className="inline-flex items-center gap-1 text-amber-400 font-bold uppercase tracking-wider text-[10px] bg-amber-400/10 px-2 py-0.5 rounded-full border border-amber-400/20">
+                        Special
+                    </span>
                     <span>{announcement}</span>
                 </div>
             )}
@@ -79,10 +82,10 @@ export default function StorefrontLayout({ children, categories = [] }) {
                     <div className="flex items-center justify-between h-16 gap-4">
                         {/* Brand Logo & Name */}
                         <Link href="/" className="flex items-center gap-3 shrink-0">
-                            <div className="w-9 h-9 rounded-brand bg-brand-primary flex items-center justify-center text-white font-bold text-lg shadow-xs">
+                            <div className="w-9 h-9 rounded-brand bg-gradient-to-tr from-brand-primary to-indigo-700 flex items-center justify-center text-white font-bold text-lg shadow-md shadow-brand-primary/20">
                                 <Layers className="w-5 h-5" />
                             </div>
-                            <span className="font-bold text-xl tracking-tight text-brand-secondary">
+                            <span className="font-extrabold text-xl tracking-tight text-brand-secondary">
                                 {storeName}
                             </span>
                         </Link>
@@ -418,7 +421,7 @@ export default function StorefrontLayout({ children, categories = [] }) {
                                     href="/"
                                     onClick={() => setMobileMenuOpen(false)}
                                     className={`flex items-center gap-3 px-3 py-2 rounded-lg text-xs font-semibold transition-colors ${
-                                        currentUrl === '/' ? 'bg-blue-50 text-blue-700 font-bold' : 'text-slate-700 hover:bg-slate-50'
+                                        currentUrl === '/' ? 'bg-brand-primary/10 text-brand-primary font-bold' : 'text-slate-700 hover:bg-slate-50'
                                     }`}
                                 >
                                     <Home className="w-4 h-4" />
@@ -429,7 +432,7 @@ export default function StorefrontLayout({ children, categories = [] }) {
                                     href="/products"
                                     onClick={() => setMobileMenuOpen(false)}
                                     className={`flex items-center gap-3 px-3 py-2 rounded-lg text-xs font-semibold transition-colors ${
-                                        currentUrl.startsWith('/products') ? 'bg-blue-50 text-blue-700 font-bold' : 'text-slate-700 hover:bg-slate-50'
+                                        currentUrl.startsWith('/products') ? 'bg-brand-primary/10 text-brand-primary font-bold' : 'text-slate-700 hover:bg-slate-50'
                                     }`}
                                 >
                                     <ShoppingBag className="w-4 h-4" />
@@ -449,7 +452,7 @@ export default function StorefrontLayout({ children, categories = [] }) {
                                     href="/about"
                                     onClick={() => setMobileMenuOpen(false)}
                                     className={`flex items-center gap-3 px-3 py-2 rounded-lg text-xs font-semibold transition-colors ${
-                                        currentUrl === '/about' ? 'bg-blue-50 text-blue-700 font-bold' : 'text-slate-700 hover:bg-slate-50'
+                                        currentUrl === '/about' ? 'bg-brand-primary/10 text-brand-primary font-bold' : 'text-slate-700 hover:bg-slate-50'
                                     }`}
                                 >
                                     <Info className="w-4 h-4" />
@@ -485,10 +488,10 @@ export default function StorefrontLayout({ children, categories = [] }) {
                                     <Link
                                         href={`/${adminPrefix}/dashboard`}
                                         onClick={() => setMobileMenuOpen(false)}
-                                        className="flex items-center justify-between p-2.5 bg-blue-50 text-blue-700 border border-blue-200 rounded-xl text-xs font-bold hover:bg-blue-100 transition-colors"
+                                        className="flex items-center justify-between p-2.5 bg-brand-primary/10 text-brand-primary border border-brand-primary/20 rounded-xl text-xs font-bold hover:bg-brand-primary/15 transition-colors"
                                     >
                                         <span className="flex items-center gap-2">
-                                            <ShieldCheck className="w-4 h-4 text-blue-600" />
+                                            <ShieldCheck className="w-4 h-4 text-brand-primary" />
                                             <span>Store Admin Panel</span>
                                         </span>
                                         <span>&rarr;</span>
@@ -527,7 +530,7 @@ export default function StorefrontLayout({ children, categories = [] }) {
                         {/* Column 1: Store Bio */}
                         <div className="w-full lg:max-w-[280px] space-y-4">
                             <div className="flex items-center gap-2.5">
-                                <div className="w-8 h-8 rounded-lg bg-indigo-600 flex items-center justify-center text-white font-bold text-sm shadow-md">
+                                <div className="w-8 h-8 rounded-lg bg-gradient-to-tr from-brand-primary to-indigo-700 flex items-center justify-center text-white font-bold text-sm shadow-md shadow-brand-primary/20">
                                     <Layers className="w-4 h-4" />
                                 </div>
                                 <span className="font-bold text-lg text-white tracking-tight">{storeName}</span>
@@ -548,32 +551,32 @@ export default function StorefrontLayout({ children, categories = [] }) {
                             </h4>
                             <ul className="space-y-2 text-xs text-slate-400">
                                 <li>
-                                    <Link href="/products" className="hover:text-indigo-400 transition-colors">
+                                    <Link href="/products" className="hover:text-amber-400 transition-colors">
                                         All Products
                                     </Link>
                                 </li>
                                 <li>
-                                    <Link href="/about" className="hover:text-indigo-400 transition-colors">
+                                    <Link href="/about" className="hover:text-amber-400 transition-colors">
                                         About Our Story
                                     </Link>
                                 </li>
                                 <li>
-                                    <Link href="/products?featured=1" className="hover:text-indigo-400 transition-colors">
+                                    <Link href="/products?featured=1" className="hover:text-amber-400 transition-colors">
                                         Today's Deals & Offers
                                     </Link>
                                 </li>
                                 <li>
-                                    <Link href="/wishlist" className="hover:text-indigo-400 transition-colors">
+                                    <Link href="/wishlist" className="hover:text-amber-400 transition-colors">
                                         My Wishlist
                                     </Link>
                                 </li>
                                 <li>
-                                    <Link href="/cart" className="hover:text-indigo-400 transition-colors">
+                                    <Link href="/cart" className="hover:text-amber-400 transition-colors">
                                         Shopping Bag ({cartCount})
                                     </Link>
                                 </li>
                                 <li>
-                                    <Link href="/track" className="hover:text-indigo-400 transition-colors">
+                                    <Link href="/track" className="hover:text-amber-400 transition-colors">
                                         Track Your Order
                                     </Link>
                                 </li>
@@ -587,22 +590,22 @@ export default function StorefrontLayout({ children, categories = [] }) {
                             </h4>
                             <ul className="space-y-2 text-xs text-slate-400">
                                 <li>
-                                    <Link href="/account" className="hover:text-indigo-400 transition-colors">
+                                    <Link href="/account" className="hover:text-amber-400 transition-colors">
                                         My Profile & Orders
                                     </Link>
                                 </li>
                                 <li>
-                                    <Link href="/account/addresses" className="hover:text-indigo-400 transition-colors">
+                                    <Link href="/account/addresses" className="hover:text-amber-400 transition-colors">
                                         Saved Delivery Addresses
                                     </Link>
                                 </li>
                                 <li>
-                                    <Link href="/track" className="hover:text-indigo-400 transition-colors">
+                                    <Link href="/track" className="hover:text-amber-400 transition-colors">
                                         Live Shipment Tracking
                                     </Link>
                                 </li>
                                 <li>
-                                    <span className="hover:text-indigo-400 transition-colors cursor-pointer">
+                                    <span className="hover:text-amber-400 transition-colors cursor-pointer">
                                         Returns & UPI Refund Policy
                                     </span>
                                 </li>

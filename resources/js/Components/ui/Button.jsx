@@ -18,6 +18,10 @@ export default function Button({
         outline:
             'border border-brand-border bg-brand-surface text-brand-text hover:bg-brand-surface-muted focus:ring-brand-primary',
         ghost: 'text-brand-text hover:bg-brand-surface-muted focus:ring-brand-primary',
+        white:
+            'bg-white text-slate-950 hover:bg-amber-50 focus:ring-white shadow-sm font-semibold',
+        accent:
+            'bg-brand-accent text-white hover:opacity-95 focus:ring-brand-accent shadow-xs font-semibold',
     };
 
     const sizes = {

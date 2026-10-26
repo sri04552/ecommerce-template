@@ -162,16 +162,16 @@ class SettingsService
         $defaults = config('ecommerce.theme', []);
 
         return [
-            '--brand-primary' => $this->getString('theme_primary_color', $defaults['primary_color'] ?? '#2563eb'),
-            '--brand-primary-hover' => $this->getString('theme_primary_hover', $defaults['primary_hover'] ?? '#1d4ed8'),
-            '--brand-secondary' => $this->getString('theme_secondary_color', $defaults['secondary_color'] ?? '#0f172a'),
-            '--brand-accent' => $this->getString('theme_accent_color', $defaults['accent_color'] ?? '#f59e0b'),
+            '--brand-primary' => $this->getString('theme_primary_color', $defaults['primary_color'] ?? '#1e40af'),
+            '--brand-primary-hover' => $this->getString('theme_primary_hover', $defaults['primary_hover'] ?? '#1e3a8a'),
+            '--brand-secondary' => $this->getString('theme_secondary_color', $defaults['secondary_color'] ?? '#090d16'),
+            '--brand-accent' => $this->getString('theme_accent_color', $defaults['accent_color'] ?? '#d97706'),
             '--brand-surface' => '#ffffff',
             '--brand-surface-muted' => '#f8fafc',
-            '--brand-text' => '#0f172a',
+            '--brand-text' => '#090d16',
             '--brand-text-muted' => '#64748b',
             '--brand-border' => '#e2e8f0',
-            '--brand-radius' => $this->getString('theme_border_radius', $defaults['border_radius'] ?? '0.5rem'),
+            '--brand-radius' => $this->getString('theme_border_radius', $defaults['border_radius'] ?? '0.75rem'),
         ];
     }
 

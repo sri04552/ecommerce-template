@@ -77,8 +77,8 @@ export default function ProductCard({ product }) {
                 {/* Floating Badges (Offers, Discounts, Featured) */}
                 <div className="absolute top-2.5 left-2.5 flex flex-col gap-1 z-10 pointer-events-none">
                     {product.offer_tag && (
-                        <span className="inline-flex items-center gap-1 bg-amber-500 text-white text-[9px] font-extrabold uppercase px-2 py-0.5 rounded shadow-xs tracking-wide">
-                            <Sparkles className="w-2.5 h-2.5" />
+                        <span className="inline-flex items-center gap-1 bg-amber-400 text-slate-950 text-[9px] font-black uppercase px-2 py-0.5 rounded shadow-xs tracking-wide">
+                            <Sparkles className="w-2.5 h-2.5 text-slate-950" />
                             <span>{product.offer_tag}</span>
                         </span>
                     )}
