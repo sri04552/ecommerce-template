@@ -70,7 +70,7 @@ class HandleInertiaRequests extends Middleware
             'storeSettings' => [
                 'admin_prefix' => config('ecommerce.admin_prefix', 'admin'),
                 'store_name' => config('ecommerce.store_name', 'Ecommerce Store'),
-                'announcement_text' => 'Fast delivery across India • Best prices & genuine products guaranteed',
+                'announcement_text' => 'Fast delivery across India & genuine products',
                 'currency' => config('ecommerce.currency', 'INR'),
                 'currency_symbol' => config('ecommerce.currency_symbol', '₹'),
             ],
