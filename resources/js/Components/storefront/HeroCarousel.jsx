@@ -300,7 +300,7 @@ export default function HeroCarousel() {
                                         </div>
 
                                         {/* Verified Operational Highlights */}
-                                        <div className="flex flex-wrap items-center gap-x-6 gap-y-2.5 pt-2 border-t border-brand-border text-xs sm:text-sm font-semibold text-brand-text">
+                                        <div className="flex flex-wrap items-center gap-x-6 gap-y-2.5 pt-1 text-xs sm:text-sm font-semibold text-brand-text">
                                             {slide.highlights.map((item, i) => {
                                                 const ItemIcon = item.icon;
                                                 return (
