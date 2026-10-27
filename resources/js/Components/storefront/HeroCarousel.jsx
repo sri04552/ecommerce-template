@@ -219,10 +219,10 @@ export default function HeroCarousel() {
                     <div
                         key={slide.id}
                         aria-hidden={!isActive}
-                        className={`absolute inset-0 w-full h-full bg-gradient-to-br ${slide.bgGradient} transition-opacity duration-700 ease-in-out ${
+                        className={`absolute inset-0 w-full h-full bg-gradient-to-br ${slide.bgGradient} transition-[opacity,visibility] duration-500 ease-in-out ${
                             isActive
-                                ? 'opacity-100 z-10 pointer-events-auto'
-                                : 'opacity-0 z-0 pointer-events-none'
+                                ? 'opacity-100 z-10 visible pointer-events-auto'
+                                : 'opacity-0 z-0 invisible pointer-events-none'
                         }`}
                     >
                         {/* Subtle Radial Glow Aura */}
@@ -243,7 +243,7 @@ export default function HeroCarousel() {
                                 <img
                                     src={slide.imageJpg}
                                     alt={slide.alt}
-                                    loading={index === 0 ? 'eager' : 'lazy'}
+                                    loading="eager"
                                     decoding="async"
                                     className={`w-full h-full object-cover select-none ${
                                         isContentLeft ? 'object-right' : 'object-left'
@@ -263,8 +263,8 @@ export default function HeroCarousel() {
                             <div className="relative z-20 max-w-7xl mx-auto h-full px-8 lg:px-12 flex items-center">
                                 <div className={`w-full flex ${isContentLeft ? 'justify-start' : 'justify-end'}`}>
                                     <div
-                                        className={`w-full max-w-xl lg:max-w-2xl text-left backdrop-blur-md bg-white/80 p-8 lg:p-10 rounded-3xl border border-white/80 shadow-xl shadow-slate-900/5 transition-all duration-700 delay-100 transform ${
-                                            isActive ? 'translate-y-0 opacity-100' : 'translate-y-6 opacity-0'
+                                        className={`w-full max-w-xl lg:max-w-2xl text-left backdrop-blur-md bg-white/90 p-8 lg:p-10 rounded-3xl border border-white/80 shadow-xl shadow-slate-900/5 transition-all duration-500 transform ${
+                                            isActive ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'
                                         }`}
                                     >
                                         {/* Editorial Eyebrow Badge */}
@@ -390,7 +390,7 @@ export default function HeroCarousel() {
                                                 <img
                                                     src={slide.imageJpg}
                                                     alt={slide.alt}
-                                                    loading={index === 0 ? 'eager' : 'lazy'}
+                                                    loading="eager"
                                                     decoding="async"
                                                     className="w-full h-full object-cover"
                                                 />
@@ -455,7 +455,7 @@ export default function HeroCarousel() {
                                                 <img
                                                     src={slide.imageJpg}
                                                     alt={slide.alt}
-                                                    loading={index === 0 ? 'eager' : 'lazy'}
+                                                    loading="eager"
                                                     decoding="async"
                                                     className="w-full h-full object-cover"
                                                 />
@@ -477,7 +477,7 @@ export default function HeroCarousel() {
                                     <img
                                         src={slide.imageJpg}
                                         alt={slide.alt}
-                                        loading={index === 0 ? 'eager' : 'lazy'}
+                                        loading="eager"
                                         decoding="async"
                                         className={`w-full h-full object-cover select-none ${
                                             isContentLeft ? 'object-right' : 'object-left'
