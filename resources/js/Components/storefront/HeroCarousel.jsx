@@ -251,10 +251,19 @@ export default function HeroCarousel() {
                                 />
                             </picture>
 
+                            {/* Directional contrast scrim guaranteeing crystal-clear text legibility over any photo */}
+                            <div
+                                className={`absolute inset-0 pointer-events-none z-10 ${
+                                    isContentLeft
+                                        ? 'bg-gradient-to-r from-white/95 via-white/80 via-45% to-transparent'
+                                        : 'bg-gradient-to-l from-white/95 via-white/80 via-45% to-transparent'
+                                }`}
+                            />
+
                             <div className="relative z-20 max-w-7xl mx-auto h-full px-8 lg:px-12 flex items-center">
                                 <div className={`w-full flex ${isContentLeft ? 'justify-start' : 'justify-end'}`}>
                                     <div
-                                        className={`w-full max-w-xl lg:max-w-2xl text-left transition-all duration-700 delay-100 transform ${
+                                        className={`w-full max-w-xl lg:max-w-2xl text-left backdrop-blur-md bg-white/80 p-8 lg:p-10 rounded-3xl border border-white/80 shadow-xl shadow-slate-900/5 transition-all duration-700 delay-100 transform ${
                                             isActive ? 'translate-y-0 opacity-100' : 'translate-y-6 opacity-0'
                                         }`}
                                     >
@@ -265,13 +274,13 @@ export default function HeroCarousel() {
                                         </div>
 
                                         {/* Headline */}
-                                        <h1 className="text-4xl lg:text-6xl font-black tracking-tight text-slate-900 leading-[1.08] mb-5">
+                                        <h1 className="text-4xl lg:text-5xl font-black tracking-tight text-slate-900 leading-[1.12] mb-5">
                                             <span>{slide.titlePrimary} </span>
                                             <span>{slide.titleAccent}</span>
                                         </h1>
 
-                                        {/* Supporting Copy */}
-                                        <p className="text-base lg:text-lg text-slate-700 font-normal leading-relaxed mb-8 max-w-xl">
+                                        {/* Supporting Copy - High Contrast, Crystal Clear */}
+                                        <p className="text-base lg:text-lg text-slate-800 font-medium leading-relaxed mb-8 max-w-xl">
                                             {slide.subtitle}
                                         </p>
 
@@ -325,7 +334,7 @@ export default function HeroCarousel() {
                             <div className="max-w-5xl mx-auto h-full px-6 py-8 flex items-center">
                                 <div className="grid grid-cols-2 gap-8 items-center w-full">
                                     {isContentLeft ? (
-                                        <div className="text-left space-y-4">
+                                        <div className="text-left space-y-4 bg-white/90 backdrop-blur-md p-6 sm:p-8 rounded-2xl border border-slate-200/80 shadow-xs">
                                             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold tracking-wide uppercase backdrop-blur-md bg-white/95 border border-slate-200 text-slate-800 shadow-2xs">
                                                 <BadgeIcon className="w-3.5 h-3.5 text-slate-700" />
                                                 <span>{slide.badge.text}</span>
@@ -336,7 +345,7 @@ export default function HeroCarousel() {
                                                 <span>{slide.titleAccent}</span>
                                             </h1>
 
-                                            <p className="text-sm text-slate-700 font-normal leading-relaxed">
+                                            <p className="text-sm sm:text-base text-slate-800 font-medium leading-relaxed">
                                                 {slide.subtitle}
                                             </p>
 
@@ -390,7 +399,7 @@ export default function HeroCarousel() {
                                     )}
 
                                     {!isContentLeft ? (
-                                        <div className="text-left space-y-4">
+                                        <div className="text-left space-y-4 bg-white/90 backdrop-blur-md p-6 sm:p-8 rounded-2xl border border-slate-200/80 shadow-xs">
                                             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold tracking-wide uppercase backdrop-blur-md bg-white/95 border border-slate-200 text-slate-800 shadow-2xs">
                                                 <BadgeIcon className="w-3.5 h-3.5 text-slate-700" />
                                                 <span>{slide.badge.text}</span>
@@ -401,7 +410,7 @@ export default function HeroCarousel() {
                                                 <span>{slide.titleAccent}</span>
                                             </h1>
 
-                                            <p className="text-sm text-slate-700 font-normal leading-relaxed">
+                                            <p className="text-sm sm:text-base text-slate-800 font-medium leading-relaxed">
                                                 {slide.subtitle}
                                             </p>
 
@@ -477,55 +486,57 @@ export default function HeroCarousel() {
                                 </picture>
                             </div>
 
-                            {/* Text & CTAs */}
-                            <div className="w-full flex-1 flex flex-col justify-center text-center items-center px-1 pt-3 pb-2">
-                                <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-bold tracking-wide uppercase bg-white/95 border border-slate-200 text-slate-800 mb-2 shadow-2xs">
-                                    <BadgeIcon className="w-3 h-3 text-slate-700" />
-                                    <span>{slide.badge.text}</span>
-                                </div>
+                            {/* Text & CTAs Card Container */}
+                            <div className="w-full flex-1 flex flex-col justify-center items-center px-1 pt-2 pb-2">
+                                <div className="w-full max-w-md bg-white/95 backdrop-blur-md px-4 py-4 sm:px-5 sm:py-5 rounded-2xl border border-slate-200/80 shadow-xs flex flex-col items-center text-center">
+                                    <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-bold tracking-wide uppercase bg-slate-100 border border-slate-200 text-slate-800 mb-2 shadow-2xs">
+                                        <BadgeIcon className="w-3 h-3 text-slate-700" />
+                                        <span>{slide.badge.text}</span>
+                                    </div>
 
-                                <h1 className="text-2xl sm:text-3xl font-black tracking-tight text-slate-900 leading-tight mb-2">
-                                    <span>{slide.titlePrimary} </span>
-                                    <span>{slide.titleAccent}</span>
-                                </h1>
+                                    <h1 className="text-2xl sm:text-3xl font-black tracking-tight text-slate-900 leading-tight mb-2">
+                                        <span>{slide.titlePrimary} </span>
+                                        <span>{slide.titleAccent}</span>
+                                    </h1>
 
-                                <p className="text-xs text-slate-700 font-normal leading-relaxed max-w-sm mb-4 line-clamp-2">
-                                    {slide.subtitle}
-                                </p>
+                                    <p className="text-xs sm:text-sm text-slate-800 font-medium leading-relaxed max-w-sm mb-3">
+                                        {slide.subtitle}
+                                    </p>
 
-                                <div className="flex items-center justify-center gap-2.5 mb-3.5 w-full max-w-xs">
-                                    <Link href={slide.primaryCta.url} className="flex-1">
-                                        <Button
-                                            variant="primary"
-                                            size="sm"
-                                            className="w-full justify-center gap-1.5 text-xs font-semibold py-2.5 bg-brand-primary hover:bg-brand-primary-hover text-white shadow-sm shadow-brand-primary/25 rounded-brand"
-                                        >
-                                            <span>{slide.primaryCta.text}</span>
-                                            <ArrowRight className="w-3 h-3" />
-                                        </Button>
-                                    </Link>
+                                    <div className="flex items-center justify-center gap-2.5 mb-3 w-full max-w-xs">
+                                        <Link href={slide.primaryCta.url} className="flex-1">
+                                            <Button
+                                                variant="primary"
+                                                size="sm"
+                                                className="w-full justify-center gap-1.5 text-xs font-semibold py-2.5 bg-brand-primary hover:bg-brand-primary-hover text-white shadow-sm shadow-brand-primary/25 rounded-brand"
+                                            >
+                                                <span>{slide.primaryCta.text}</span>
+                                                <ArrowRight className="w-3 h-3" />
+                                            </Button>
+                                        </Link>
 
-                                    <Link href={slide.secondaryCta.url} className="flex-1">
-                                        <Button
-                                            variant="outline"
-                                            size="sm"
-                                            className="w-full justify-center text-xs font-semibold py-2.5 bg-white hover:bg-slate-50 text-slate-800 border border-slate-200 hover:border-slate-400 shadow-2xs rounded-brand"
-                                        >
-                                            {slide.secondaryCta.text}
-                                        </Button>
-                                    </Link>
-                                </div>
+                                        <Link href={slide.secondaryCta.url} className="flex-1">
+                                            <Button
+                                                variant="outline"
+                                                size="sm"
+                                                className="w-full justify-center text-xs font-semibold py-2.5 bg-white hover:bg-slate-50 text-slate-800 border border-slate-200 hover:border-slate-400 shadow-2xs rounded-brand"
+                                            >
+                                                {slide.secondaryCta.text}
+                                            </Button>
+                                        </Link>
+                                    </div>
 
-                                <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-1 text-[11px] font-semibold text-slate-800">
-                                    {slide.highlights.map((item, i) => {
-                                        const ItemIcon = item.icon;
-                                        return (
-                                            <div key={i} className="inline-flex items-center gap-1.5">
-                                                <ItemIcon className="w-3.5 h-3.5 text-slate-700 shrink-0" />
-                                                <span>{item.text}</span>
-                                            </div>
-                                        );
-                                    })}
+                                    <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-1 text-[11px] font-semibold text-slate-800">
+                                        {slide.highlights.map((item, i) => {
+                                            const ItemIcon = item.icon;
+                                            return (
+                                                <div key={i} className="inline-flex items-center gap-1.5">
+                                                    <ItemIcon className="w-3.5 h-3.5 text-slate-700 shrink-0" />
+                                                    <span>{item.text}</span>
+                                                </div>
+                                            );
+                                        })}
+                                    </div>
                                 </div>
                             </div>
                         </div>
