@@ -829,7 +829,7 @@ export default function Show({ product, relatedProducts = [], categories = [] })
                                             )}
                                         </div>
                                         {photoOptimizing && (
-                                            <p className="text-[11px] text-brand-primary mt-1">Optimizing photos to 1:1 format...</p>
+                                            <p className="text-[11px] text-slate-500 mt-1">Optimizing photos to 1:1 format...</p>
                                         )}
                                     </div>
 

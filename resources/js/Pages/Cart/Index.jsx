@@ -383,7 +383,7 @@ export default function CartIndex({ categories = [] }) {
                                                         </Link>
                                                     </h3>
                                                     {item.variantTitle && (
-                                                        <p className="text-xs text-brand-primary font-medium">
+                                                        <p className="text-xs text-slate-600 font-medium">
                                                             Option: {item.variantTitle}
                                                         </p>
                                                     )}

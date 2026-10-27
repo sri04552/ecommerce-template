@@ -508,11 +508,11 @@ export default function StorefrontLayout({ children, categories = [] }) {
             {/* Main Storefront Content */}
             <main className="flex-1">{children}</main>
 
-            {/* Premium Distinctive Magenta Brand Footer */}
-            <footer className="bg-brand-text text-brand-border border-t border-brand-text-muted/30 mt-0">
+            {/* Premium Distinctive Brand Footer */}
+            <footer className="bg-brand-text text-slate-300 border-t border-white/10 mt-0">
                 {/* Footer Main Links */}
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:flex lg:flex-row lg:justify-between lg:items-start gap-8 lg:gap-12 pb-10 border-b border-brand-text-muted/25">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:flex lg:flex-row lg:justify-between lg:items-start gap-8 lg:gap-12 pb-10 border-b border-white/10">
                         {/* Column 1: Store Bio */}
                         <div className="w-full lg:max-w-[280px] space-y-4">
                             <div className="flex items-center gap-2.5">
@@ -521,12 +521,12 @@ export default function StorefrontLayout({ children, categories = [] }) {
                                 </div>
                                 <span className="font-bold text-lg text-white tracking-tight">{storeName}</span>
                             </div>
-                            <p className="text-xs text-brand-border/80 leading-relaxed">
+                            <p className="text-xs text-slate-300 leading-relaxed">
                                 Premium Indian online retail destination. Discover handpicked electronics, lifestyle trends, apparel, and home essentials with guaranteed transparent pricing.
                             </p>
-                            <div className="text-xs text-brand-border/80 space-y-1">
-                                <p><span className="text-white font-medium">Customer Support:</span> 10 AM – 7 PM IST</p>
-                                <p><span className="text-white font-medium">Email:</span> support@ecommerce-store.in</p>
+                            <div className="text-xs text-slate-300 space-y-1.5">
+                                <p><span className="text-white font-semibold">Customer Support:</span> 10 AM – 7 PM IST</p>
+                                <p><span className="text-white font-semibold">Email:</span> support@ecommerce-store.in</p>
                             </div>
                         </div>
 
@@ -535,29 +535,29 @@ export default function StorefrontLayout({ children, categories = [] }) {
                             <h4 className="font-bold text-xs uppercase tracking-wider text-white">
                                 Shop Categories
                             </h4>
-                            <ul className="space-y-2 text-xs text-brand-border/80">
+                            <ul className="space-y-2 text-xs text-slate-300">
                                 <li>
-                                    <Link href="/products" className="hover:text-brand-accent transition-colors">
+                                    <Link href="/products" className="hover:text-white transition-colors">
                                         All Products
                                     </Link>
                                 </li>
                                 <li>
-                                    <Link href="/products?featured=1" className="hover:text-brand-accent transition-colors">
+                                    <Link href="/products?featured=1" className="hover:text-white transition-colors">
                                         Today's Deals & Offers
                                     </Link>
                                 </li>
                                 <li>
-                                    <Link href="/wishlist" className="hover:text-brand-accent transition-colors">
+                                    <Link href="/wishlist" className="hover:text-white transition-colors">
                                         My Wishlist
                                     </Link>
                                 </li>
                                 <li>
-                                    <Link href="/cart" className="hover:text-brand-accent transition-colors">
+                                    <Link href="/cart" className="hover:text-white transition-colors">
                                         Shopping Bag ({cartCount})
                                     </Link>
                                 </li>
                                 <li>
-                                    <Link href="/track" className="hover:text-brand-accent transition-colors">
+                                    <Link href="/track" className="hover:text-white transition-colors">
                                         Track Your Order
                                     </Link>
                                 </li>
@@ -569,24 +569,24 @@ export default function StorefrontLayout({ children, categories = [] }) {
                             <h4 className="font-bold text-xs uppercase tracking-wider text-white">
                                 Customer Care
                             </h4>
-                            <ul className="space-y-2 text-xs text-brand-border/80">
+                            <ul className="space-y-2 text-xs text-slate-300">
                                 <li>
-                                    <Link href="/account" className="hover:text-brand-accent transition-colors">
+                                    <Link href="/account" className="hover:text-white transition-colors">
                                         My Profile & Orders
                                     </Link>
                                 </li>
                                 <li>
-                                    <Link href="/account/addresses" className="hover:text-brand-accent transition-colors">
+                                    <Link href="/account/addresses" className="hover:text-white transition-colors">
                                         Saved Delivery Addresses
                                     </Link>
                                 </li>
                                 <li>
-                                    <Link href="/track" className="hover:text-brand-accent transition-colors">
+                                    <Link href="/track" className="hover:text-white transition-colors">
                                         Live Shipment Tracking
                                     </Link>
                                 </li>
                                 <li>
-                                    <span className="hover:text-brand-accent transition-colors cursor-pointer">
+                                    <span className="hover:text-white transition-colors cursor-pointer">
                                         Returns & UPI Refund Policy
                                     </span>
                                 </li>
@@ -598,33 +598,33 @@ export default function StorefrontLayout({ children, categories = [] }) {
                             <h4 className="font-bold text-xs uppercase tracking-wider text-white">
                                 100% Secure Payments
                             </h4>
-                            <p className="text-xs text-brand-border/80 leading-relaxed">
+                            <p className="text-xs text-slate-300 leading-relaxed">
                                 We accept UPI (Google Pay, PhonePe, Paytm), RuPay, Visa, Mastercard, Net Banking, and Cash on Delivery.
                             </p>
                             <div className="flex flex-wrap gap-2 pt-1">
-                                <span className="px-2 py-1 bg-white/5 border border-white/10 rounded text-[11px] font-semibold text-brand-border">
+                                <span className="px-2.5 py-1 bg-white/10 border border-white/15 rounded text-[11px] font-medium text-slate-200">
                                     UPI / QR
                                 </span>
-                                <span className="px-2 py-1 bg-white/5 border border-white/10 rounded text-[11px] font-semibold text-brand-border">
+                                <span className="px-2.5 py-1 bg-white/10 border border-white/15 rounded text-[11px] font-medium text-slate-200">
                                     RuPay
                                 </span>
-                                <span className="px-2 py-1 bg-white/5 border border-white/10 rounded text-[11px] font-semibold text-brand-border">
+                                <span className="px-2.5 py-1 bg-white/10 border border-white/15 rounded text-[11px] font-medium text-slate-200">
                                     Visa / MC
                                 </span>
-                                <span className="px-2 py-1 bg-white/5 border border-white/10 rounded text-[11px] font-semibold text-emerald-400">
+                                <span className="px-2.5 py-1 bg-emerald-500/15 border border-emerald-500/30 rounded text-[11px] font-medium text-emerald-300">
                                     Cash on Delivery
                                 </span>
                             </div>
-                            <p className="text-[11px] text-brand-border/80 flex items-center gap-1.5 pt-2">
+                            <p className="text-[11px] text-slate-300 flex items-center gap-1.5 pt-2">
                                 <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
                                 <span>256-Bit SSL Encrypted Checkout</span>
                             </p>
                         </div>
                     </div>
 
-                    <div className="pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-brand-text-muted">
+                    <div className="pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-400">
                         <p>© {new Date().getFullYear()} {storeName}. All rights reserved.</p>
-                        <p className="text-[11px] text-brand-text-muted">
+                        <p className="text-[11px] text-slate-400">
                             Designed for high-performance retail commerce across India.
                         </p>
                     </div>

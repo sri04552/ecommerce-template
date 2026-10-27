@@ -271,7 +271,7 @@ export default function HeroCarousel() {
                                         </h1>
 
                                         {/* Supporting Copy */}
-                                        <p className="text-base lg:text-lg text-brand-text-muted font-medium leading-relaxed mb-8 max-w-xl">
+                                        <p className="text-base lg:text-lg text-slate-600 font-normal leading-relaxed mb-8 max-w-xl">
                                             {slide.subtitle}
                                         </p>
 
@@ -336,7 +336,7 @@ export default function HeroCarousel() {
                                                 <span className="text-brand-primary">{slide.titleAccent}</span>
                                             </h1>
 
-                                            <p className="text-sm text-brand-text-muted font-medium leading-relaxed">
+                                            <p className="text-sm text-slate-600 font-normal leading-relaxed">
                                                 {slide.subtitle}
                                             </p>
 
@@ -401,7 +401,7 @@ export default function HeroCarousel() {
                                                 <span className="text-brand-primary">{slide.titleAccent}</span>
                                             </h1>
 
-                                            <p className="text-sm text-brand-text-muted font-medium leading-relaxed">
+                                            <p className="text-sm text-slate-600 font-normal leading-relaxed">
                                                 {slide.subtitle}
                                             </p>
 
@@ -489,7 +489,7 @@ export default function HeroCarousel() {
                                     <span className="text-brand-primary">{slide.titleAccent}</span>
                                 </h1>
 
-                                <p className="text-xs text-brand-text-muted font-medium leading-relaxed max-w-sm mb-4 line-clamp-2">
+                                <p className="text-xs text-slate-600 font-normal leading-relaxed max-w-sm mb-4 line-clamp-2">
                                     {slide.subtitle}
                                 </p>
 
@@ -573,7 +573,7 @@ export default function HeroCarousel() {
             </div>
 
             {/* Bottom Pagination Dots */}
-            <div className="absolute bottom-4 sm:bottom-6 left-1/2 -translate-x-1/2 z-30 flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/80 backdrop-blur-md border border-brand-border shadow-sm">
+            <div className="absolute bottom-4 sm:bottom-6 left-1/2 -translate-x-1/2 z-30 flex items-center gap-2.5 px-4 py-2 rounded-full bg-white/95 backdrop-blur-md border border-slate-200/90 shadow-md">
                 {SLIDES.map((slide, index) => {
                     const isActive = index === current;
                     return (
@@ -582,8 +582,10 @@ export default function HeroCarousel() {
                             type="button"
                             onClick={() => setCurrent(index)}
                             aria-label={`Go to slide ${index + 1}`}
-                            className={`h-2 rounded-full transition-all duration-300 ${
-                                isActive ? 'w-6 bg-brand-primary shadow-xs' : 'w-2 bg-brand-border hover:bg-brand-primary/50'
+                            className={`rounded-full transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-brand-primary/40 cursor-pointer ${
+                                isActive
+                                    ? 'w-7 h-2.5 bg-brand-primary shadow-xs shadow-brand-primary/30'
+                                    : 'w-2.5 h-2.5 bg-slate-300 hover:bg-slate-400'
                             }`}
                         />
                     );
