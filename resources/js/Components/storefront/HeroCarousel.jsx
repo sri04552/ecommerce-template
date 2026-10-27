@@ -259,19 +259,19 @@ export default function HeroCarousel() {
                                         }`}
                                     >
                                         {/* Editorial Eyebrow Badge */}
-                                        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-bold tracking-wider uppercase mb-5 shadow-xs backdrop-blur-md bg-white/90 border border-brand-border text-brand-primary">
-                                            <BadgeIcon className="w-3.5 h-3.5 text-brand-primary" />
+                                        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-bold tracking-wider uppercase mb-5 shadow-xs backdrop-blur-md bg-white/95 border border-slate-200 text-slate-800">
+                                            <BadgeIcon className="w-3.5 h-3.5 text-slate-700" />
                                             <span>{slide.badge.text}</span>
                                         </div>
 
                                         {/* Headline */}
-                                        <h1 className="text-4xl lg:text-6xl font-black tracking-tight text-brand-text leading-[1.08] mb-5">
+                                        <h1 className="text-4xl lg:text-6xl font-black tracking-tight text-slate-900 leading-[1.08] mb-5">
                                             <span>{slide.titlePrimary} </span>
-                                            <span className="text-brand-primary">{slide.titleAccent}</span>
+                                            <span>{slide.titleAccent}</span>
                                         </h1>
 
                                         {/* Supporting Copy */}
-                                        <p className="text-base lg:text-lg text-slate-600 font-normal leading-relaxed mb-8 max-w-xl">
+                                        <p className="text-base lg:text-lg text-slate-700 font-normal leading-relaxed mb-8 max-w-xl">
                                             {slide.subtitle}
                                         </p>
 
@@ -292,7 +292,7 @@ export default function HeroCarousel() {
                                                 <Button
                                                     variant="outline"
                                                     size="lg"
-                                                    className="text-sm sm:text-base font-semibold px-7 py-4 bg-white/90 hover:bg-white text-brand-text border border-brand-border shadow-xs hover:border-brand-primary/50 backdrop-blur-sm rounded-brand"
+                                                    className="text-sm sm:text-base font-semibold px-7 py-4 bg-white/95 hover:bg-white text-slate-800 border border-slate-200 shadow-xs hover:border-slate-400 backdrop-blur-sm rounded-brand"
                                                 >
                                                     {slide.secondaryCta.text}
                                                 </Button>
@@ -300,12 +300,12 @@ export default function HeroCarousel() {
                                         </div>
 
                                         {/* Verified Operational Highlights */}
-                                        <div className="flex flex-wrap items-center gap-x-6 gap-y-2.5 pt-1 text-xs sm:text-sm font-semibold text-brand-text">
+                                        <div className="flex flex-wrap items-center gap-x-6 gap-y-2.5 pt-1 text-xs sm:text-sm font-semibold text-slate-800">
                                             {slide.highlights.map((item, i) => {
                                                 const ItemIcon = item.icon;
                                                 return (
                                                     <div key={i} className="inline-flex items-center gap-2">
-                                                        <div className="w-6 h-6 rounded-full bg-brand-surface-accent flex items-center justify-center text-brand-primary shrink-0">
+                                                        <div className="w-6 h-6 rounded-full bg-slate-100 flex items-center justify-center text-slate-700 shrink-0">
                                                             <ItemIcon className="w-3.5 h-3.5" />
                                                         </div>
                                                         <span>{item.text}</span>
@@ -326,17 +326,17 @@ export default function HeroCarousel() {
                                 <div className="grid grid-cols-2 gap-8 items-center w-full">
                                     {isContentLeft ? (
                                         <div className="text-left space-y-4">
-                                            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold tracking-wide uppercase backdrop-blur-md bg-white/90 border border-brand-border text-brand-primary shadow-2xs">
-                                                <BadgeIcon className="w-3.5 h-3.5 text-brand-primary" />
+                                            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold tracking-wide uppercase backdrop-blur-md bg-white/95 border border-slate-200 text-slate-800 shadow-2xs">
+                                                <BadgeIcon className="w-3.5 h-3.5 text-slate-700" />
                                                 <span>{slide.badge.text}</span>
                                             </div>
 
-                                            <h1 className="text-3xl font-black tracking-tight text-brand-text leading-tight">
+                                            <h1 className="text-3xl font-black tracking-tight text-slate-900 leading-tight">
                                                 <span>{slide.titlePrimary} </span>
-                                                <span className="text-brand-primary">{slide.titleAccent}</span>
+                                                <span>{slide.titleAccent}</span>
                                             </h1>
 
-                                            <p className="text-sm text-slate-600 font-normal leading-relaxed">
+                                            <p className="text-sm text-slate-700 font-normal leading-relaxed">
                                                 {slide.subtitle}
                                             </p>
 
@@ -355,19 +355,19 @@ export default function HeroCarousel() {
                                                     <Button
                                                         variant="outline"
                                                         size="md"
-                                                        className="text-xs font-semibold px-4 py-2.5 bg-white/90 hover:bg-white text-brand-text border border-brand-border hover:border-brand-primary/50 rounded-brand"
+                                                        className="text-xs font-semibold px-4 py-2.5 bg-white/95 hover:bg-white text-slate-800 border border-slate-200 hover:border-slate-400 rounded-brand"
                                                     >
                                                         {slide.secondaryCta.text}
                                                     </Button>
                                                 </Link>
                                             </div>
 
-                                            <div className="flex flex-col gap-2 pt-2 text-xs font-semibold text-brand-text">
+                                            <div className="flex flex-col gap-2 pt-2 text-xs font-semibold text-slate-800">
                                                 {slide.highlights.map((item, i) => {
                                                     const ItemIcon = item.icon;
                                                     return (
                                                         <div key={i} className="inline-flex items-center gap-2">
-                                                            <ItemIcon className="w-4 h-4 text-brand-primary shrink-0" />
+                                                            <ItemIcon className="w-4 h-4 text-slate-700 shrink-0" />
                                                             <span>{item.text}</span>
                                                         </div>
                                                     );
@@ -375,7 +375,7 @@ export default function HeroCarousel() {
                                             </div>
                                         </div>
                                     ) : (
-                                        <div className="h-[460px] w-full flex items-center justify-center overflow-hidden rounded-brand bg-brand-surface-muted/50 border border-brand-border shadow-xs">
+                                        <div className="h-[460px] w-full flex items-center justify-center overflow-hidden rounded-brand bg-slate-50 border border-slate-200 shadow-xs">
                                             <picture className="w-full h-full block">
                                                 <source srcSet={slide.imageWebp} type="image/webp" />
                                                 <img
@@ -391,17 +391,17 @@ export default function HeroCarousel() {
 
                                     {!isContentLeft ? (
                                         <div className="text-left space-y-4">
-                                            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold tracking-wide uppercase backdrop-blur-md bg-white/90 border border-brand-border text-brand-primary shadow-2xs">
-                                                <BadgeIcon className="w-3.5 h-3.5 text-brand-primary" />
+                                            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold tracking-wide uppercase backdrop-blur-md bg-white/95 border border-slate-200 text-slate-800 shadow-2xs">
+                                                <BadgeIcon className="w-3.5 h-3.5 text-slate-700" />
                                                 <span>{slide.badge.text}</span>
                                             </div>
 
-                                            <h1 className="text-3xl font-black tracking-tight text-brand-text leading-tight">
+                                            <h1 className="text-3xl font-black tracking-tight text-slate-900 leading-tight">
                                                 <span>{slide.titlePrimary} </span>
-                                                <span className="text-brand-primary">{slide.titleAccent}</span>
+                                                <span>{slide.titleAccent}</span>
                                             </h1>
 
-                                            <p className="text-sm text-slate-600 font-normal leading-relaxed">
+                                            <p className="text-sm text-slate-700 font-normal leading-relaxed">
                                                 {slide.subtitle}
                                             </p>
 
@@ -420,19 +420,19 @@ export default function HeroCarousel() {
                                                     <Button
                                                         variant="outline"
                                                         size="md"
-                                                        className="text-xs font-semibold px-4 py-2.5 bg-white/90 hover:bg-white text-brand-text border border-brand-border hover:border-brand-primary/50 rounded-brand"
+                                                        className="text-xs font-semibold px-4 py-2.5 bg-white/95 hover:bg-white text-slate-800 border border-slate-200 hover:border-slate-400 rounded-brand"
                                                     >
                                                         {slide.secondaryCta.text}
                                                     </Button>
                                                 </Link>
                                             </div>
 
-                                            <div className="flex flex-col gap-2 pt-2 text-xs font-semibold text-brand-text">
+                                            <div className="flex flex-col gap-2 pt-2 text-xs font-semibold text-slate-800">
                                                 {slide.highlights.map((item, i) => {
                                                     const ItemIcon = item.icon;
                                                     return (
                                                         <div key={i} className="inline-flex items-center gap-2">
-                                                            <ItemIcon className="w-4 h-4 text-brand-primary shrink-0" />
+                                                            <ItemIcon className="w-4 h-4 text-slate-700 shrink-0" />
                                                             <span>{item.text}</span>
                                                         </div>
                                                     );
@@ -440,7 +440,7 @@ export default function HeroCarousel() {
                                             </div>
                                         </div>
                                     ) : (
-                                        <div className="h-[460px] w-full flex items-center justify-center overflow-hidden rounded-brand bg-brand-surface-muted/50 border border-brand-border shadow-xs">
+                                        <div className="h-[460px] w-full flex items-center justify-center overflow-hidden rounded-brand bg-slate-50 border border-slate-200 shadow-xs">
                                             <picture className="w-full h-full block">
                                                 <source srcSet={slide.imageWebp} type="image/webp" />
                                                 <img
@@ -479,17 +479,17 @@ export default function HeroCarousel() {
 
                             {/* Text & CTAs */}
                             <div className="w-full flex-1 flex flex-col justify-center text-center items-center px-1 pt-3 pb-2">
-                                <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-bold tracking-wide uppercase bg-white/90 border border-brand-border text-brand-primary mb-2 shadow-2xs">
-                                    <BadgeIcon className="w-3 h-3 text-brand-primary" />
+                                <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-bold tracking-wide uppercase bg-white/95 border border-slate-200 text-slate-800 mb-2 shadow-2xs">
+                                    <BadgeIcon className="w-3 h-3 text-slate-700" />
                                     <span>{slide.badge.text}</span>
                                 </div>
 
-                                <h1 className="text-2xl sm:text-3xl font-black tracking-tight text-brand-text leading-tight mb-2">
+                                <h1 className="text-2xl sm:text-3xl font-black tracking-tight text-slate-900 leading-tight mb-2">
                                     <span>{slide.titlePrimary} </span>
-                                    <span className="text-brand-primary">{slide.titleAccent}</span>
+                                    <span>{slide.titleAccent}</span>
                                 </h1>
 
-                                <p className="text-xs text-slate-600 font-normal leading-relaxed max-w-sm mb-4 line-clamp-2">
+                                <p className="text-xs text-slate-700 font-normal leading-relaxed max-w-sm mb-4 line-clamp-2">
                                     {slide.subtitle}
                                 </p>
 
@@ -509,19 +509,19 @@ export default function HeroCarousel() {
                                         <Button
                                             variant="outline"
                                             size="sm"
-                                            className="w-full justify-center text-xs font-semibold py-2.5 bg-white hover:bg-brand-surface-muted text-brand-text border border-brand-border hover:border-brand-primary/50 shadow-2xs rounded-brand"
+                                            className="w-full justify-center text-xs font-semibold py-2.5 bg-white hover:bg-slate-50 text-slate-800 border border-slate-200 hover:border-slate-400 shadow-2xs rounded-brand"
                                         >
                                             {slide.secondaryCta.text}
                                         </Button>
                                     </Link>
                                 </div>
 
-                                <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-1 text-[11px] font-semibold text-brand-text">
+                                <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-1 text-[11px] font-semibold text-slate-800">
                                     {slide.highlights.map((item, i) => {
                                         const ItemIcon = item.icon;
                                         return (
                                             <div key={i} className="inline-flex items-center gap-1.5">
-                                                <ItemIcon className="w-3.5 h-3.5 text-brand-primary shrink-0" />
+                                                <ItemIcon className="w-3.5 h-3.5 text-slate-700 shrink-0" />
                                                 <span>{item.text}</span>
                                             </div>
                                         );
@@ -538,18 +538,18 @@ export default function HeroCarousel() {
                 type="button"
                 onClick={prevSlide}
                 aria-label="Previous slide"
-                className="hidden md:flex absolute left-4 lg:left-6 top-1/2 -translate-y-1/2 z-30 w-11 h-11 rounded-full bg-white/90 hover:bg-white text-brand-text border border-brand-border shadow-md backdrop-blur-sm items-center justify-center transition-all hover:scale-110 active:scale-95 focus:outline-none focus:ring-2 focus:ring-brand-primary"
+                className="hidden md:flex absolute left-4 lg:left-6 top-1/2 -translate-y-1/2 z-30 w-11 h-11 rounded-full bg-white/95 hover:bg-white text-slate-700 border border-slate-200 shadow-md backdrop-blur-sm items-center justify-center transition-all hover:scale-110 active:scale-95 focus:outline-none focus:ring-2 focus:ring-brand-primary"
             >
-                <ChevronLeft className="w-5 h-5 text-brand-secondary" />
+                <ChevronLeft className="w-5 h-5 text-slate-700" />
             </button>
 
             <button
                 type="button"
                 onClick={nextSlide}
                 aria-label="Next slide"
-                className="hidden md:flex absolute right-4 lg:right-6 top-1/2 -translate-y-1/2 z-30 w-11 h-11 rounded-full bg-white/90 hover:bg-white text-brand-text border border-brand-border shadow-md backdrop-blur-sm items-center justify-center transition-all hover:scale-110 active:scale-95 focus:outline-none focus:ring-2 focus:ring-brand-primary"
+                className="hidden md:flex absolute right-4 lg:right-6 top-1/2 -translate-y-1/2 z-30 w-11 h-11 rounded-full bg-white/95 hover:bg-white text-slate-700 border border-slate-200 shadow-md backdrop-blur-sm items-center justify-center transition-all hover:scale-110 active:scale-95 focus:outline-none focus:ring-2 focus:ring-brand-primary"
             >
-                <ChevronRight className="w-5 h-5 text-brand-secondary" />
+                <ChevronRight className="w-5 h-5 text-slate-700" />
             </button>
 
             {/* Mobile Navigation Chevrons */}
@@ -558,17 +558,17 @@ export default function HeroCarousel() {
                     type="button"
                     onClick={prevSlide}
                     aria-label="Previous slide"
-                    className="pointer-events-auto w-8 h-8 rounded-full bg-white/90 hover:bg-white text-brand-secondary border border-brand-border shadow-sm flex items-center justify-center transition-transform active:scale-95"
+                    className="pointer-events-auto w-8 h-8 rounded-full bg-white/95 hover:bg-white text-slate-700 border border-slate-200 shadow-sm flex items-center justify-center transition-transform active:scale-95"
                 >
-                    <ChevronLeft className="w-4 h-4" />
+                    <ChevronLeft className="w-4 h-4 text-slate-700" />
                 </button>
                 <button
                     type="button"
                     onClick={nextSlide}
                     aria-label="Next slide"
-                    className="pointer-events-auto w-8 h-8 rounded-full bg-white/90 hover:bg-white text-brand-secondary border border-brand-border shadow-sm flex items-center justify-center transition-transform active:scale-95"
+                    className="pointer-events-auto w-8 h-8 rounded-full bg-white/95 hover:bg-white text-slate-700 border border-slate-200 shadow-sm flex items-center justify-center transition-transform active:scale-95"
                 >
-                    <ChevronRight className="w-4 h-4" />
+                    <ChevronRight className="w-4 h-4 text-slate-700" />
                 </button>
             </div>
 

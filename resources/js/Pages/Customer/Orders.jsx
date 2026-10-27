@@ -22,8 +22,8 @@ export default function CustomerOrders({ orders, categories = [] }) {
         const styles = {
             pending: 'bg-amber-50 text-amber-700 border-amber-200',
             confirmed: 'bg-emerald-50 text-emerald-700 border-emerald-200',
-            processing: 'bg-brand-surface-accent text-brand-primary border-brand-border',
-            shipped: 'bg-purple-50 text-purple-700 border-purple-200',
+            processing: 'bg-slate-100 text-slate-800 border-slate-200',
+            shipped: 'bg-indigo-50 text-indigo-700 border-indigo-200',
             delivered: 'bg-emerald-50 text-emerald-700 border-emerald-200',
             cancelled: 'bg-red-50 text-red-700 border-red-200',
         };

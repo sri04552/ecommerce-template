@@ -189,14 +189,14 @@ class SettingsService
         return [
             '--brand-primary' => $primary,
             '--brand-primary-hover' => $primaryHover,
-            '--brand-secondary' => $secondary,
+            '--brand-secondary' => '#1E293B',
             '--brand-accent' => $accent,
             '--brand-surface' => '#FFFFFF',
-            '--brand-surface-muted' => '#FFF1F6',
-            '--brand-surface-accent' => '#FCE4EC',
-            '--brand-text' => '#19121B',
+            '--brand-surface-muted' => '#F8FAFC',
+            '--brand-surface-accent' => '#F1F5F9',
+            '--brand-text' => '#0F172A',
             '--brand-text-muted' => '#475569',
-            '--brand-border' => 'rgba(240, 220, 229, 0.5)',
+            '--brand-border' => 'rgba(226, 232, 240, 0.8)',
             '--brand-radius' => $radius,
         ];
     }

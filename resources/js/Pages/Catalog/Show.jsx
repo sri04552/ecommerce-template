@@ -297,7 +297,7 @@ export default function Show({ product, relatedProducts = [], categories = [] })
                             {/* Brand & Badges */}
                             <div className="flex items-center gap-2 flex-wrap">
                                 {product.brand && (
-                                    <span className="text-xs font-bold uppercase tracking-wider text-brand-primary">
+                                    <span className="text-xs font-semibold uppercase tracking-wider text-slate-500">
                                         {product.brand.name}
                                     </span>
                                 )}
@@ -382,8 +382,8 @@ export default function Show({ product, relatedProducts = [], categories = [] })
                             {/* Variant Selector (if variants exist) */}
                             {variants.length > 1 && (
                                 <div className="pt-4 border-t border-brand-border space-y-2">
-                                    <label className="block text-xs font-semibold uppercase tracking-wider text-brand-secondary">
-                                        Select Option: <span className="text-brand-primary">{selectedVariant?.title}</span>
+                                    <label className="block text-xs font-semibold uppercase tracking-wider text-slate-700">
+                                        Select Option: <span className="font-bold text-slate-900">{selectedVariant?.title}</span>
                                     </label>
                                     <div className="flex flex-wrap gap-2">
                                         {variants.map((v) => (

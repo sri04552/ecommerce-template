@@ -125,14 +125,14 @@ export default function TrackOrder({ order, queriedOrderNumber, categories = [] 
                 <div className="bg-slate-900 rounded-2xl p-6 sm:p-10 text-white shadow-xl text-center mb-8 relative overflow-hidden">
                     <div className="absolute -right-10 -bottom-10 w-60 h-60 bg-brand-primary/15 rounded-full blur-3xl pointer-events-none" />
                     <div className="relative z-10 max-w-xl mx-auto">
-                        <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-brand-primary/20 text-pink-300 border border-brand-primary/30 mb-3">
+                        <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-white/10 text-slate-200 border border-white/20 mb-3">
                             <Truck className="w-3.5 h-3.5" /> Real-time Tracking System
                         </span>
                         <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight">
                             Track Your Order Live
                         </h1>
                         <p className="text-xs sm:text-sm text-slate-300 mt-2">
-                            Enter your Order Number (e.g. <span className="font-mono text-pink-300">ORD-20261025-...</span>) received in your confirmation email or SMS.
+                            Enter your Order Number (e.g. <span className="font-mono text-slate-200">ORD-20261025-...</span>) received in your confirmation email or SMS.
                         </p>
 
                         <form onSubmit={handleSearch} className="mt-6 flex flex-col sm:flex-row gap-2 max-w-lg mx-auto">

@@ -110,12 +110,12 @@ export default function ProductCard({ product }) {
             <div className="p-3 sm:p-4 flex-1 flex flex-col justify-between">
                 <div>
                     {product.category && (
-                        <p className="text-[10px] sm:text-[11px] font-semibold uppercase tracking-wider text-brand-primary mb-1 truncate">
+                        <p className="text-[10px] sm:text-[11px] font-semibold uppercase tracking-wider text-slate-500 mb-1 truncate">
                             {product.category.name}
                         </p>
                     )}
 
-                    <h3 className="font-semibold text-xs sm:text-sm text-brand-secondary line-clamp-2 group-hover:text-brand-primary transition-colors leading-snug">
+                    <h3 className="font-semibold text-xs sm:text-sm text-slate-900 line-clamp-2 group-hover:text-brand-primary transition-colors leading-snug">
                         <Link href={`/products/${product.slug}`}>
                             <span aria-hidden="true" className="absolute inset-0 z-0"></span>
                             {product.name}
@@ -123,7 +123,7 @@ export default function ProductCard({ product }) {
                     </h3>
 
                     {product.short_description && (
-                        <p className="mt-1 text-[11px] sm:text-xs text-brand-text-muted line-clamp-2 leading-relaxed hidden sm:block">
+                        <p className="mt-1 text-[11px] sm:text-xs text-slate-600 line-clamp-2 leading-relaxed hidden sm:block">
                             {product.short_description}
                         </p>
                     )}
@@ -146,12 +146,12 @@ export default function ProductCard({ product }) {
 
                 <div className="mt-3 sm:mt-4 pt-2.5 sm:pt-3 border-t border-brand-border flex items-center justify-between z-10 relative">
                     <div className="flex items-baseline gap-1 sm:gap-1.5 flex-wrap">
-                        <span className="text-sm sm:text-base font-bold text-brand-secondary">
+                        <span className="text-sm sm:text-base font-bold text-slate-900">
                             {formatPrice(displayPrice)}
                         </span>
                         {hasDiscount && (
                             <>
-                                <span className="text-[10px] sm:text-xs text-brand-text-muted line-through">
+                                <span className="text-[10px] sm:text-xs text-slate-400 line-through">
                                     {formatPrice(originalPrice)}
                                 </span>
                                 {discountPercent && (
